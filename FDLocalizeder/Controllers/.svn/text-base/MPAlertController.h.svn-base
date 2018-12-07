@@ -1,0 +1,18 @@
+//
+//  MPAlertController.h
+//  MobPods
+//
+//  Created by chuxiao on 2017/5/31.
+//  Copyright © 2017年 mob.com. All rights reserved.
+//
+
+#import <Cocoa/Cocoa.h>
+
+@interface MPAlertController : NSViewController
+
+@property (nonatomic, copy) NSString *alertInfo;
+
+@property (nonatomic, copy) void (^confirmBlock)();
+@property (nonatomic, copy) void (^chooseBlock)();
+
+@end

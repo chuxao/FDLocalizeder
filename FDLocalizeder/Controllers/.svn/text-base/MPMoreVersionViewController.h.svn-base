@@ -1,0 +1,16 @@
+//
+//  MPMoreVersionViewController.h
+//  MobPods
+//
+//  Created by chuxiao on 2017/6/11.
+//  Copyright © 2017年 mob.com. All rights reserved.
+//
+
+#import <Cocoa/Cocoa.h>
+
+@interface MPMoreVersionViewController : NSViewController
+
+@property (nonatomic, strong) NSArray *arrData;
+
+@property (nonatomic, copy) selecteOtherVersionBlock selecteOtherVersionBlock;
+@end

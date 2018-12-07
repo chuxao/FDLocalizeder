@@ -1,0 +1,63 @@
+//
+//  ViewController.h
+//  MobPods
+//
+//  Created by ShengQiangLiu on 16/8/18.
+//  Copyright © 2016年 mob.com. All rights reserved.
+//
+
+#import <Cocoa/Cocoa.h>
+
+@interface MPMainViewController : NSViewController <NSOutlineViewDelegate, NSOutlineViewDataSource, NSTableViewDelegate, NSTableViewDataSource>
+
+/**
+ *  选中工程路径
+ */
+@property (nonatomic, copy) NSString *selectedPath;
+/**
+ *  搜索 SearchField
+ */
+@property (nonatomic, strong) NSSearchField *libSearchField;
+/**
+ *  左边展示库源 OutlineView
+ */
+@property (weak) IBOutlet NSOutlineView *libsOutlineView;
+/**
+ *  展示库 TableView
+ */
+@property (weak) IBOutlet NSTableView *libsTableView;
+/**
+ *  库名称 Field
+ */
+@property (weak) IBOutlet NSTextField *libNameField;
+/**
+ *  库版本 Field
+ */
+@property (weak) IBOutlet NSTextField *libVersionField;
+/**
+ *  库描述信息 Field
+ */
+@property (weak) IBOutlet NSTextField *libDescField;
+/**
+ *  库相关的依赖，是否集成 TableView
+ */
+@property (weak) IBOutlet NSTableView *relatedTableView;
+/**
+ *  库操作相关按钮
+ */
+@property (weak) IBOutlet NSButton *updateBtn;
+@property (weak) IBOutlet NSButton *addBtn;
+@property (weak) IBOutlet NSButton *configBtn;
+@property (weak) IBOutlet NSButton *docBtn;
+@property (weak) IBOutlet NSButton *deleteBtn;
+@property (weak) IBOutlet NSTextField *lbTitle;
+
+@property (nonatomic, copy) backAction backBlock;
+@property (nonatomic, copy) moreVsrsionBlock moreVsrsionBlock;
+
+- (void)searchFieldAction:(NSString *)searchValue;
+
+- (void)chageOtherVersion:(NSDictionary *)dic;
+
+@end
+

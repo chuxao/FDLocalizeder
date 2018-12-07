@@ -1,0 +1,48 @@
+//
+//  MPAlertController.m
+//  MobPods
+//
+//  Created by chuxiao on 2017/5/31.
+//  Copyright © 2017年 mob.com. All rights reserved.
+//
+
+#import "MPAlertController.h"
+
+@interface MPAlertController ()
+@property (weak) IBOutlet NSTextField *lbAlertInfo;
+
+
+@end
+
+@implementation MPAlertController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do view setup here.
+    
+    self.lbAlertInfo.stringValue = self.alertInfo;
+}
+
+- (void)viewDidAppear{
+    [super viewDidAppear];
+    [self.view.window setLevel:kCGPopUpMenuWindowLevel];
+}
+
+- (IBAction)confirmActiobn:(id)sender {
+    if (self.confirmBlock) {
+        self.confirmBlock();
+    }
+    [self.view.window close];
+}
+
+- (IBAction)chooseAction:(id)sender {
+    if (self.chooseBlock) {
+        self.chooseBlock();
+    }
+    [self.view.window close];
+}
+
+
+
+
+@end

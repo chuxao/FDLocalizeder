@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>German(de)</key>
+	<string>de</string>
+	<key>Hebrew(he)</key>
+	<string>he</string>
+	<key>Arabic(ar)</key>
+	<string>ar</string>
+	<key>English(en)</key>
+	<string>en</string>
+	<key>Norwegian(nb)</key>
+	<string>nb</string>
+	<key>Spanish(es)</key>
+	<string>es</string>
+	<key>Danish(da)</key>
+	<string>da</string>
+	<key>Italian(it)</key>
+	<string>it</string>
+	<key>Slovak(sk)</key>
+	<string>sk</string>
+	<key>Swedish(sv)</key>
+	<string>sv</string>
+	<key>Czech(cs)</key>
+	<string>cs</string>
+	<key>English(Base)</key>
+	<string>Base</string>
+	<key>Turkish(tr)</key>
+	<string>tr</string>
+	<key>Polish(pl)</key>
+	<string>pl</string>
+	<key>Russian(ru)</key>
+	<string>ru</string>
+	<key>French(fr)</key>
+	<string>fr</string>
+	<key>Finnish(fi)</key>
+	<string>fi</string>
+	<key>Dutch(nl)</key>
+	<string>nl</string>
+	<key>Portuguese(pt)</key>
+	<string>pt</string>
+	<key>Indonesia(id)</key>
+	<string>id</string>
+	<key>Thailand(th)</key>
+	<string>th</string>
+	<key>Chinese(Traditional)</key>
+	<string>zh-Hant</string>
+</dict>
+</plist>

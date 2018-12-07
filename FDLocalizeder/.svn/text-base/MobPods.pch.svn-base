@@ -1,0 +1,75 @@
+//
+//  MobPods.pch
+//  MobPods
+//
+//  Created by ShengQiangLiu on 16/8/18.
+//  Copyright © 2016年 mob.com. All rights reserved.
+//
+#ifndef __OPTIMIZE__
+
+//#define NSLog(...) printf("%f %s %ld :%s\n",[[NSDate date]timeIntervalSince1970],strrchr(__FILE__,'/'),[[NSNumber numberWithInt:__LINE__] integerValue],[[NSString stringWithFormat:__VA_ARGS__]UTF8String]);
+
+#endif
+
+
+#ifndef MobPods_pch
+#define MobPods_pch
+
+#import "AppDelegate.h"
+#import "MPBaseWindowController.h"
+#import "NSColor+MPColor.h"
+#import "MPBlockCommon.h"
+#import "MPSingleton.h"
+
+#define KNOTIFICATION_selectContact           @"KNOTIFICATION_selectContact"
+//#define NSLog(...) printf("%f %s\n",[[NSDate date]timeIntervalSince1970],[[NSString stringWithFormat:__VA_ARGS__]UTF8String]);
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+/**
+ *  错误域定义
+ */
+#define MOBF_ERROR_DOMAIN @"MOBFErrorDomain"
+
+/**
+ *  定义名称
+ *
+ *  @param pre  前缀
+ *  @param name 名称
+ *
+ *  @return 返回以“前缀_名称”形式
+ */
+#define MOBF_MAKE_NAME(pre, name) pre##name
+
+/**
+ *  定义名称，要修改前缀可以通过此宏进行调整
+ *
+ *  @param name 名称
+ *
+ *  @return 定义名称
+ */
+#define MOBF_NAME(name) MOBF_MAKE_NAME(MPP, name)
+
+// MobPodsList 和 数据库存储路径
+#define MOB_BASE_PATH [NSHomeDirectory() stringByAppendingPathComponent:@".__MobPods"]
+
+// 第三方库存放路径
+#define MOBPODS_PREFIX_PATH [NSHomeDirectory() stringByAppendingPathComponent:@"MobPods"]
+
+// MobPodsList 路径  /Users/chuxiao/.__MobPods
+#define MobPods_List_Path [NSString stringWithFormat:@"%@%@", MOB_BASE_PATH,  @"/MobPodsList"]
+
+#define Notification_center [NSNotificationCenter defaultCenter]
+#define EC_ImageNamed(str) [NSImage imageNamed:str]
+#define EC_RGB_String(colorStr) [NSColor colorWithHexString:colorStr alpha:1.0f]
+
+// 三方库名称和版本组合 传入 包含如下所需的两个key的dictionary
+#define FrameworkNameVersion(dic) [NSString stringWithFormat:@"%@_%@", dic[@"respositoryName"],dic[@"remoteVersion"]]
+
+// 三方库名称和版本组合 传入 MPLibModel 模型
+#define FrameworkNameVersion_Model(model) [NSString stringWithFormat:@"%@_%@", model.respositoryName,model.remoteVersion]
+// 三方库本地地址和版本组合 传入 包含如下所需的两个key的dictionary
+#define FrameworkPathVersion(dic) [NSString stringWithFormat:@"%@/%@_%@", MOBPODS_PREFIX_PATH,dic[@"respositoryName"],dic[@"remoteVersion"]]
+#define FrameworkPath_Model(model) [MOBPODS_PREFIX_PATH stringByAppendingPathComponent:model.respositoryName]
+
+#endif /* MobPods_pch */

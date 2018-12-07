@@ -1,0 +1,25 @@
+//
+//  main.m
+//  MobPods
+//
+//  Created by ShengQiangLiu on 16/8/18.
+//  Copyright © 2016年 mob.com. All rights reserved.
+//
+
+#import <Cocoa/Cocoa.h>
+#import "MPUserNotification.h"
+#import "AppDelegate.h"
+
+int main(int argc, const char * argv[])
+{
+    for (int i = 0; i < argc; i ++) {
+        NSString *windowID = [NSString stringWithUTF8String:argv[i]];
+        
+        if (i == 1) {
+            [[NSUserDefaults standardUserDefaults] setValue:windowID forKey:@"currentWindowID"];
+        }
+
+    }
+    
+    return NSApplicationMain(argc, argv);
+}

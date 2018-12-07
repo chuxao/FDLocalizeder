@@ -1,0 +1,13 @@
+//
+//  MPCocoaPodsViewController.h
+//  MobPods
+//
+//  Created by ShengQiangLiu on 16/11/14.
+//  Copyright © 2016年 mob.com. All rights reserved.
+//
+
+#import <Cocoa/Cocoa.h>
+
+@interface MPCocoaPodsViewController : NSViewController
+
+@end

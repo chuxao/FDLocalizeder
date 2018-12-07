@@ -1,0 +1,764 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3A16877320A9404B0042230A /* FDSafetyFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A16877220A9404B0042230A /* FDSafetyFileManager.m */; };
+		3A16877A20A969120042230A /* FDWriteFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A16877920A969120042230A /* FDWriteFile.m */; };
+		3A16877D20A96BBB0042230A /* FDReadFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A16877C20A96BBB0042230A /* FDReadFile.m */; };
+		3A16878020A98FD00042230A /* FDXMLFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A16877F20A98FD00042230A /* FDXMLFileManager.m */; };
+		3A16878E20AAC4D40042230A /* NSColor+Hexa.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A16878620AAC4D40042230A /* NSColor+Hexa.m */; };
+		3A16878F20AAC4D40042230A /* CustomSliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A16878A20AAC4D40042230A /* CustomSliderCell.m */; };
+		3A16879020AAC4D40042230A /* CustomSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A16878B20AAC4D40042230A /* CustomSlider.m */; };
+		3A16879320AACDA80042230A /* CXSliderRangeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A16879220AACDA80042230A /* CXSliderRangeView.m */; };
+		3A16879520AACDC10042230A /* CXSliderRangeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A16879420AACDC10042230A /* CXSliderRangeView.xib */; };
+		3A1687C420AAFD0A0042230A /* SCSelectionBorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1687C220AAFD090042230A /* SCSelectionBorder.m */; };
+		3A1687C720AAFD860042230A /* FDImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1687C620AAFD860042230A /* FDImageView.m */; };
+		3A2C3BE620F8737B005A3BB1 /* FDMainExtendViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C3BE520F8737A005A3BB1 /* FDMainExtendViewModel.m */; };
+		3A3468FC21B6763C00EA6D85 /* FDCompareManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3468FB21B6763C00EA6D85 /* FDCompareManager.m */; };
+		3A872C7E20CA35D300C9D67E /* FDSecondVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A872C7D20CA35D300C9D67E /* FDSecondVC.m */; };
+		3A872CAA20CA37B200C9D67E /* MyCustomSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A872CA620CA37B100C9D67E /* MyCustomSegue.m */; };
+		3A872CAB20CA37B200C9D67E /* MyCustomAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A872CA920CA37B200C9D67E /* MyCustomAnimator.m */; };
+		3A872CB320CA37FE00C9D67E /* MyCustomSwiftAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A872CB120CA37FD00C9D67E /* MyCustomSwiftAnimator.swift */; };
+		3A872CB420CA37FE00C9D67E /* MyCustomSwiftSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A872CB220CA37FD00C9D67E /* MyCustomSwiftSegue.swift */; };
+		3AC89D6720C4D3F0007C3FEB /* FDPredicateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC89D6620C4D3F0007C3FEB /* FDPredicateManager.m */; };
+		3AD135FE20A041250098664E /* FDProjectFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD135FB20A041250098664E /* FDProjectFileManager.m */; };
+		3AD135FF20A041250098664E /* FDFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD135FC20A041250098664E /* FDFileManager.m */; };
+		3AD1360020A041250098664E /* FDDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD135FD20A041250098664E /* FDDataManager.m */; };
+		3AD136AB20A3FDFB0098664E /* CXPopUpButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD136AA20A3FDFB0098664E /* CXPopUpButton.m */; };
+		3AD136AF20A4345D0098664E /* AXStatusItemPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD136AD20A4345C0098664E /* AXStatusItemPopup.m */; };
+		3AD136B220A43C300098664E /* FDLanguagePopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD136B120A43C300098664E /* FDLanguagePopoverViewController.m */; };
+		3AD136BC20A444FC0098664E /* FDLanguagePopoverViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AD136BB20A444FC0098664E /* FDLanguagePopoverViewController.xib */; };
+		3AD136C520A539690098664E /* FDMainDataViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD136C420A539690098664E /* FDMainDataViewModel.m */; };
+		3AD136CA20A57AA60098664E /* FDUndoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD136C920A57AA60098664E /* FDUndoManager.m */; };
+		3ADB72642099B14700946E67 /* FDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB72632099B14700946E67 /* FDViewController.m */; };
+		3ADB727A2099C7F600946E67 /* XlsxReaderWriter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ADB72762099C78900946E67 /* XlsxReaderWriter.framework */; };
+		3ADB727C2099C80100946E67 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ADB727B2099C80100946E67 /* libz.tbd */; };
+		3ADB72832099C83900946E67 /* MPDragDropView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB72812099C83800946E67 /* MPDragDropView.m */; };
+		3ADB72922099C84800946E67 /* MPTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB728A2099C84800946E67 /* MPTask.m */; };
+		3ADB72962099D8B800946E67 /* Languages.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3ADB72952099D8B800946E67 /* Languages.plist */; };
+		3ADB72A2209C476200946E67 /* FDMainViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB72A1209C476200946E67 /* FDMainViewModel.m */; };
+		3ADB72A420A02B9F00946E67 /* LanguageBindFile.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3ADB72A320A02B9F00946E67 /* LanguageBindFile.plist */; };
+		82FBA32B1D654DF7007AE170 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 82FBA32A1D654DF7007AE170 /* AppDelegate.m */; };
+		82FBA32E1D654DF7007AE170 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 82FBA32D1D654DF7007AE170 /* main.m */; };
+		82FBA3331D654DF7007AE170 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82FBA3321D654DF7007AE170 /* Assets.xcassets */; };
+		82FBA3361D654DF7007AE170 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 82FBA3341D654DF7007AE170 /* Main.storyboard */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		3ADB72712099C78900946E67 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADB726A2099C78900946E67 /* XlsxReaderWriter.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 45B6E23A1A148F7500288A78;
+			remoteInfo = XlsxReaderWriter;
+		};
+		3ADB72732099C78900946E67 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADB726A2099C78900946E67 /* XlsxReaderWriter.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 45B6E2451A148F7500288A78;
+			remoteInfo = XlsxReaderWriterTests;
+		};
+		3ADB72752099C78900946E67 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADB726A2099C78900946E67 /* XlsxReaderWriter.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 22156D581C46B42500BB5779;
+			remoteInfo = "XlsxReaderWriter Mac";
+		};
+		3ADB72772099C7BF00946E67 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3ADB726A2099C78900946E67 /* XlsxReaderWriter.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 22156D571C46B42500BB5779;
+			remoteInfo = "XlsxReaderWriter Mac";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		82B408141DAD18190080EEA4 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		3A16877120A9404B0042230A /* FDSafetyFileManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDSafetyFileManager.h; sourceTree = "<group>"; };
+		3A16877220A9404B0042230A /* FDSafetyFileManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FDSafetyFileManager.m; sourceTree = "<group>"; };
+		3A16877820A969120042230A /* FDWriteFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDWriteFile.h; sourceTree = "<group>"; };
+		3A16877920A969120042230A /* FDWriteFile.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FDWriteFile.m; sourceTree = "<group>"; };
+		3A16877B20A96BBB0042230A /* FDReadFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDReadFile.h; sourceTree = "<group>"; };
+		3A16877C20A96BBB0042230A /* FDReadFile.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FDReadFile.m; sourceTree = "<group>"; };
+		3A16877E20A98FD00042230A /* FDXMLFileManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDXMLFileManager.h; sourceTree = "<group>"; };
+		3A16877F20A98FD00042230A /* FDXMLFileManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FDXMLFileManager.m; sourceTree = "<group>"; };
+		3A16878620AAC4D40042230A /* NSColor+Hexa.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+Hexa.m"; sourceTree = "<group>"; };
+		3A16878720AAC4D40042230A /* CustomSliderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomSliderCell.h; sourceTree = "<group>"; };
+		3A16878820AAC4D40042230A /* CustomSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomSlider.h; sourceTree = "<group>"; };
+		3A16878920AAC4D40042230A /* NSColor+Hexa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+Hexa.h"; sourceTree = "<group>"; };
+		3A16878A20AAC4D40042230A /* CustomSliderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomSliderCell.m; sourceTree = "<group>"; };
+		3A16878B20AAC4D40042230A /* CustomSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomSlider.m; sourceTree = "<group>"; };
+		3A16879120AACDA80042230A /* CXSliderRangeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CXSliderRangeView.h; sourceTree = "<group>"; };
+		3A16879220AACDA80042230A /* CXSliderRangeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CXSliderRangeView.m; sourceTree = "<group>"; };
+		3A16879420AACDC10042230A /* CXSliderRangeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CXSliderRangeView.xib; sourceTree = "<group>"; };
+		3A1687C220AAFD090042230A /* SCSelectionBorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCSelectionBorder.m; sourceTree = "<group>"; };
+		3A1687C320AAFD0A0042230A /* SCSelectionBorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSelectionBorder.h; sourceTree = "<group>"; };
+		3A1687C520AAFD860042230A /* FDImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDImageView.h; sourceTree = "<group>"; };
+		3A1687C620AAFD860042230A /* FDImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FDImageView.m; sourceTree = "<group>"; };
+		3A2C3BE420F8737A005A3BB1 /* FDMainExtendViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDMainExtendViewModel.h; sourceTree = "<group>"; };
+		3A2C3BE520F8737A005A3BB1 /* FDMainExtendViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FDMainExtendViewModel.m; sourceTree = "<group>"; };
+		3A2C3BF120FC8D82005A3BB1 /* XcodeTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XcodeTools.h; path = ../../../FloryDay/FloryDay/CoreCode/Utiles/Foundation/Macro/XcodeTools.h; sourceTree = "<group>"; };
+		3A3468FA21B6763C00EA6D85 /* FDCompareManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDCompareManager.h; sourceTree = "<group>"; };
+		3A3468FB21B6763C00EA6D85 /* FDCompareManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FDCompareManager.m; sourceTree = "<group>"; };
+		3A587EF51EEB3820009AB7B5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		3A64780B1EC98F40001895D5 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
+		3A872C7C20CA35D300C9D67E /* FDSecondVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDSecondVC.h; sourceTree = "<group>"; };
+		3A872C7D20CA35D300C9D67E /* FDSecondVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FDSecondVC.m; sourceTree = "<group>"; };
+		3A872CA620CA37B100C9D67E /* MyCustomSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCustomSegue.m; sourceTree = "<group>"; };
+		3A872CA720CA37B100C9D67E /* MyCustomSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCustomSegue.h; sourceTree = "<group>"; };
+		3A872CA820CA37B200C9D67E /* MyCustomAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCustomAnimator.h; sourceTree = "<group>"; };
+		3A872CA920CA37B200C9D67E /* MyCustomAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCustomAnimator.m; sourceTree = "<group>"; };
+		3A872CB020CA37FB00C9D67E /* FDLocalizeder-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FDLocalizeder-Bridging-Header.h"; sourceTree = "<group>"; };
+		3A872CB120CA37FD00C9D67E /* MyCustomSwiftAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCustomSwiftAnimator.swift; sourceTree = "<group>"; };
+		3A872CB220CA37FD00C9D67E /* MyCustomSwiftSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCustomSwiftSegue.swift; sourceTree = "<group>"; };
+		3AC89D6520C4D3F0007C3FEB /* FDPredicateManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDPredicateManager.h; sourceTree = "<group>"; };
+		3AC89D6620C4D3F0007C3FEB /* FDPredicateManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FDPredicateManager.m; sourceTree = "<group>"; };
+		3AD135F820A041250098664E /* FDProjectFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDProjectFileManager.h; sourceTree = "<group>"; };
+		3AD135F920A041250098664E /* FDFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFileManager.h; sourceTree = "<group>"; };
+		3AD135FA20A041250098664E /* FDDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDDataManager.h; sourceTree = "<group>"; };
+		3AD135FB20A041250098664E /* FDProjectFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDProjectFileManager.m; sourceTree = "<group>"; };
+		3AD135FC20A041250098664E /* FDFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFileManager.m; sourceTree = "<group>"; };
+		3AD135FD20A041250098664E /* FDDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDDataManager.m; sourceTree = "<group>"; };
+		3AD136A920A3FDFB0098664E /* CXPopUpButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CXPopUpButton.h; sourceTree = "<group>"; };
+		3AD136AA20A3FDFB0098664E /* CXPopUpButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CXPopUpButton.m; sourceTree = "<group>"; };
+		3AD136AD20A4345C0098664E /* AXStatusItemPopup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AXStatusItemPopup.m; sourceTree = "<group>"; };
+		3AD136AE20A4345D0098664E /* AXStatusItemPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AXStatusItemPopup.h; sourceTree = "<group>"; };
+		3AD136B020A43C300098664E /* FDLanguagePopoverViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDLanguagePopoverViewController.h; sourceTree = "<group>"; };
+		3AD136B120A43C300098664E /* FDLanguagePopoverViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FDLanguagePopoverViewController.m; sourceTree = "<group>"; };
+		3AD136BB20A444FC0098664E /* FDLanguagePopoverViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FDLanguagePopoverViewController.xib; sourceTree = "<group>"; };
+		3AD136C320A539690098664E /* FDMainDataViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDMainDataViewModel.h; sourceTree = "<group>"; };
+		3AD136C420A539690098664E /* FDMainDataViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FDMainDataViewModel.m; sourceTree = "<group>"; };
+		3AD136C820A57AA60098664E /* FDUndoManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDUndoManager.h; sourceTree = "<group>"; };
+		3AD136C920A57AA60098664E /* FDUndoManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FDUndoManager.m; sourceTree = "<group>"; };
+		3AD473501EC09DB7001EAD6A /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		3ADB72622099B14600946E67 /* FDViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDViewController.h; sourceTree = "<group>"; };
+		3ADB72632099B14700946E67 /* FDViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDViewController.m; sourceTree = "<group>"; };
+		3ADB726A2099C78900946E67 /* XlsxReaderWriter.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = XlsxReaderWriter.xcodeproj; path = XlsxReaderWriter/XlsxReaderWriter.xcodeproj; sourceTree = SOURCE_ROOT; };
+		3ADB727B2099C80100946E67 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		3ADB72802099C83800946E67 /* MPDragDropView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPDragDropView.h; sourceTree = "<group>"; };
+		3ADB72812099C83800946E67 /* MPDragDropView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPDragDropView.m; sourceTree = "<group>"; };
+		3ADB728A2099C84800946E67 /* MPTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPTask.m; sourceTree = "<group>"; };
+		3ADB728B2099C84800946E67 /* MPTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPTask.h; sourceTree = "<group>"; };
+		3ADB72952099D8B800946E67 /* Languages.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Languages.plist; sourceTree = "<group>"; };
+		3ADB72A0209C476200946E67 /* FDMainViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDMainViewModel.h; sourceTree = "<group>"; };
+		3ADB72A1209C476200946E67 /* FDMainViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FDMainViewModel.m; sourceTree = "<group>"; };
+		3ADB72A320A02B9F00946E67 /* LanguageBindFile.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = LanguageBindFile.plist; sourceTree = "<group>"; };
+		82FBA3261D654DF7007AE170 /* FDLocalizeder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FDLocalizeder.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		82FBA3291D654DF7007AE170 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		82FBA32A1D654DF7007AE170 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		82FBA32D1D654DF7007AE170 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		82FBA3321D654DF7007AE170 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		82FBA3351D654DF7007AE170 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		82FBA3371D654DF7007AE170 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		82FBA3941D65605D007AE170 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		82FBA42A1D656AB3007AE170 /* FDLocalizeder.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDLocalizeder.pch; sourceTree = "<group>"; };
+		82FBA42B1D656CA9007AE170 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		82FBA42D1D656CB0007AE170 /* libstdc++.6.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.tbd"; path = "usr/lib/libstdc++.6.tbd"; sourceTree = SDKROOT; };
+		82FBA42F1D656CB5007AE170 /* libz.1.2.5.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.2.5.tbd; path = usr/lib/libz.1.2.5.tbd; sourceTree = SDKROOT; };
+		82FBA4311D656CBB007AE170 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
+		82FBA43F1D66BE61007AE170 /* Python.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Python.framework; path = System/Library/Frameworks/Python.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		82FBA3231D654DF7007AE170 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3ADB727C2099C80100946E67 /* libz.tbd in Frameworks */,
+				3ADB727A2099C7F600946E67 /* XlsxReaderWriter.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3A16878520AAC4D40042230A /* CustomSlider */ = {
+			isa = PBXGroup;
+			children = (
+				3A16878720AAC4D40042230A /* CustomSliderCell.h */,
+				3A16878A20AAC4D40042230A /* CustomSliderCell.m */,
+				3A16878920AAC4D40042230A /* NSColor+Hexa.h */,
+				3A16878620AAC4D40042230A /* NSColor+Hexa.m */,
+				3A16878820AAC4D40042230A /* CustomSlider.h */,
+				3A16878B20AAC4D40042230A /* CustomSlider.m */,
+			);
+			path = CustomSlider;
+			sourceTree = "<group>";
+		};
+		3A1687C120AAFD000042230A /* SCSelectionBorder */ = {
+			isa = PBXGroup;
+			children = (
+				3A1687C320AAFD0A0042230A /* SCSelectionBorder.h */,
+				3A1687C220AAFD090042230A /* SCSelectionBorder.m */,
+			);
+			path = SCSelectionBorder;
+			sourceTree = "<group>";
+		};
+		3A872CA420CA37A700C9D67E /* ObjC segues and animators */ = {
+			isa = PBXGroup;
+			children = (
+				3A872CA820CA37B200C9D67E /* MyCustomAnimator.h */,
+				3A872CA920CA37B200C9D67E /* MyCustomAnimator.m */,
+				3A872CA720CA37B100C9D67E /* MyCustomSegue.h */,
+				3A872CA620CA37B100C9D67E /* MyCustomSegue.m */,
+			);
+			path = "ObjC segues and animators";
+			sourceTree = "<group>";
+		};
+		3A872CA520CA37A700C9D67E /* Swift segues and animators */ = {
+			isa = PBXGroup;
+			children = (
+				3A872CB120CA37FD00C9D67E /* MyCustomSwiftAnimator.swift */,
+				3A872CB220CA37FD00C9D67E /* MyCustomSwiftSegue.swift */,
+				3A872CB020CA37FB00C9D67E /* FDLocalizeder-Bridging-Header.h */,
+			);
+			path = "Swift segues and animators";
+			sourceTree = "<group>";
+		};
+		3AD135F720A041250098664E /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				3AD135F820A041250098664E /* FDProjectFileManager.h */,
+				3AD135FB20A041250098664E /* FDProjectFileManager.m */,
+				3AD135F920A041250098664E /* FDFileManager.h */,
+				3AD135FC20A041250098664E /* FDFileManager.m */,
+				3A16877E20A98FD00042230A /* FDXMLFileManager.h */,
+				3A16877F20A98FD00042230A /* FDXMLFileManager.m */,
+				3AD135FA20A041250098664E /* FDDataManager.h */,
+				3AD135FD20A041250098664E /* FDDataManager.m */,
+				3A3468FA21B6763C00EA6D85 /* FDCompareManager.h */,
+				3A3468FB21B6763C00EA6D85 /* FDCompareManager.m */,
+				3AC89D6520C4D3F0007C3FEB /* FDPredicateManager.h */,
+				3AC89D6620C4D3F0007C3FEB /* FDPredicateManager.m */,
+				3A16877120A9404B0042230A /* FDSafetyFileManager.h */,
+				3A16877220A9404B0042230A /* FDSafetyFileManager.m */,
+				3A16877820A969120042230A /* FDWriteFile.h */,
+				3A16877920A969120042230A /* FDWriteFile.m */,
+				3A16877B20A96BBB0042230A /* FDReadFile.h */,
+				3A16877C20A96BBB0042230A /* FDReadFile.m */,
+				3AD136C820A57AA60098664E /* FDUndoManager.h */,
+				3AD136C920A57AA60098664E /* FDUndoManager.m */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		3AD136A620A3FDE20098664E /* CXPopUpButton */ = {
+			isa = PBXGroup;
+			children = (
+				3AD136A920A3FDFB0098664E /* CXPopUpButton.h */,
+				3AD136AA20A3FDFB0098664E /* CXPopUpButton.m */,
+			);
+			path = CXPopUpButton;
+			sourceTree = "<group>";
+		};
+		3AD136AC20A434510098664E /* AXStatusItemPopup */ = {
+			isa = PBXGroup;
+			children = (
+				3AD136AE20A4345D0098664E /* AXStatusItemPopup.h */,
+				3AD136AD20A4345C0098664E /* AXStatusItemPopup.m */,
+			);
+			path = AXStatusItemPopup;
+			sourceTree = "<group>";
+		};
+		3ADB726B2099C78900946E67 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3ADB72722099C78900946E67 /* libXlsxReaderWriter.a */,
+				3ADB72742099C78900946E67 /* XlsxReaderWriterTests.xctest */,
+				3ADB72762099C78900946E67 /* XlsxReaderWriter.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3ADB727D2099C83800946E67 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3A1687C120AAFD000042230A /* SCSelectionBorder */,
+				3A16878520AAC4D40042230A /* CustomSlider */,
+				3AD136AC20A434510098664E /* AXStatusItemPopup */,
+				3AD136A620A3FDE20098664E /* CXPopUpButton */,
+				3ADB727F2099C83800946E67 /* MPDragDropView */,
+				3A1687C520AAFD860042230A /* FDImageView.h */,
+				3A1687C620AAFD860042230A /* FDImageView.m */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		3ADB727F2099C83800946E67 /* MPDragDropView */ = {
+			isa = PBXGroup;
+			children = (
+				3ADB72802099C83800946E67 /* MPDragDropView.h */,
+				3ADB72812099C83800946E67 /* MPDragDropView.m */,
+			);
+			path = MPDragDropView;
+			sourceTree = "<group>";
+		};
+		3ADB72852099C84800946E67 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				3A2C3BF120FC8D82005A3BB1 /* XcodeTools.h */,
+				3ADB72892099C84800946E67 /* MPTask */,
+			);
+			path = Tools;
+			sourceTree = "<group>";
+		};
+		3ADB72892099C84800946E67 /* MPTask */ = {
+			isa = PBXGroup;
+			children = (
+				3ADB728B2099C84800946E67 /* MPTask.h */,
+				3ADB728A2099C84800946E67 /* MPTask.m */,
+			);
+			path = MPTask;
+			sourceTree = "<group>";
+		};
+		82FBA31D1D654DF7007AE170 = {
+			isa = PBXGroup;
+			children = (
+				82FBA3281D654DF7007AE170 /* FDLocalizeder */,
+				82FBA3931D655EFB007AE170 /* Frameworks */,
+				82FBA3271D654DF7007AE170 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		82FBA3271D654DF7007AE170 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				82FBA3261D654DF7007AE170 /* FDLocalizeder.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		82FBA3281D654DF7007AE170 /* FDLocalizeder */ = {
+			isa = PBXGroup;
+			children = (
+				3ADB726A2099C78900946E67 /* XlsxReaderWriter.xcodeproj */,
+				82FBA3291D654DF7007AE170 /* AppDelegate.h */,
+				82FBA32A1D654DF7007AE170 /* AppDelegate.m */,
+				82FBA33D1D655B2B007AE170 /* Controllers */,
+				3ADB727D2099C83800946E67 /* Views */,
+				3AD135F720A041250098664E /* Manager */,
+				3ADB72852099C84800946E67 /* Tools */,
+				82FBA32C1D654DF7007AE170 /* Supporting Files */,
+			);
+			path = FDLocalizeder;
+			sourceTree = "<group>";
+		};
+		82FBA32C1D654DF7007AE170 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				82FBA42A1D656AB3007AE170 /* FDLocalizeder.pch */,
+				82FBA3321D654DF7007AE170 /* Assets.xcassets */,
+				82FBA32D1D654DF7007AE170 /* main.m */,
+				82FBA3341D654DF7007AE170 /* Main.storyboard */,
+				82FBA3371D654DF7007AE170 /* Info.plist */,
+				3ADB72952099D8B800946E67 /* Languages.plist */,
+				3ADB72A320A02B9F00946E67 /* LanguageBindFile.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		82FBA33D1D655B2B007AE170 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				3A872CA420CA37A700C9D67E /* ObjC segues and animators */,
+				3A872CA520CA37A700C9D67E /* Swift segues and animators */,
+				3ADB72622099B14600946E67 /* FDViewController.h */,
+				3ADB72632099B14700946E67 /* FDViewController.m */,
+				3A872C7C20CA35D300C9D67E /* FDSecondVC.h */,
+				3A872C7D20CA35D300C9D67E /* FDSecondVC.m */,
+				3ADB72A0209C476200946E67 /* FDMainViewModel.h */,
+				3ADB72A1209C476200946E67 /* FDMainViewModel.m */,
+				3A2C3BE420F8737A005A3BB1 /* FDMainExtendViewModel.h */,
+				3A2C3BE520F8737A005A3BB1 /* FDMainExtendViewModel.m */,
+				3AD136C320A539690098664E /* FDMainDataViewModel.h */,
+				3AD136C420A539690098664E /* FDMainDataViewModel.m */,
+				3AD136B020A43C300098664E /* FDLanguagePopoverViewController.h */,
+				3AD136B120A43C300098664E /* FDLanguagePopoverViewController.m */,
+				3AD136BB20A444FC0098664E /* FDLanguagePopoverViewController.xib */,
+				3A16879120AACDA80042230A /* CXSliderRangeView.h */,
+				3A16879220AACDA80042230A /* CXSliderRangeView.m */,
+				3A16879420AACDC10042230A /* CXSliderRangeView.xib */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		82FBA3931D655EFB007AE170 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3ADB727B2099C80100946E67 /* libz.tbd */,
+				3A587EF51EEB3820009AB7B5 /* QuartzCore.framework */,
+				3A64780B1EC98F40001895D5 /* Carbon.framework */,
+				3AD473501EC09DB7001EAD6A /* WebKit.framework */,
+				82FBA43F1D66BE61007AE170 /* Python.framework */,
+				82FBA4311D656CBB007AE170 /* libicucore.tbd */,
+				82FBA42F1D656CB5007AE170 /* libz.1.2.5.tbd */,
+				82FBA42D1D656CB0007AE170 /* libstdc++.6.tbd */,
+				82FBA42B1D656CA9007AE170 /* libsqlite3.0.tbd */,
+				82FBA3941D65605D007AE170 /* JavaScriptCore.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		82FBA3251D654DF7007AE170 /* FDLocalizeder */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 82FBA33A1D654DF7007AE170 /* Build configuration list for PBXNativeTarget "FDLocalizeder" */;
+			buildPhases = (
+				82FBA3221D654DF7007AE170 /* Sources */,
+				82FBA3231D654DF7007AE170 /* Frameworks */,
+				82FBA3241D654DF7007AE170 /* Resources */,
+				82B408141DAD18190080EEA4 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3ADB72782099C7BF00946E67 /* PBXTargetDependency */,
+			);
+			name = FDLocalizeder;
+			productName = FDLocalizeder;
+			productReference = 82FBA3261D654DF7007AE170 /* FDLocalizeder.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		82FBA31E1D654DF7007AE170 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0800;
+				ORGANIZATIONNAME = mob.com;
+				TargetAttributes = {
+					82FBA3251D654DF7007AE170 = {
+						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = X7L3X3EFBN;
+						LastSwiftMigration = 0920;
+						ProvisioningStyle = Manual;
+					};
+				};
+			};
+			buildConfigurationList = 82FBA3211D654DF7007AE170 /* Build configuration list for PBXProject "FDLocalizeder" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 82FBA31D1D654DF7007AE170;
+			productRefGroup = 82FBA3271D654DF7007AE170 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 3ADB726B2099C78900946E67 /* Products */;
+					ProjectRef = 3ADB726A2099C78900946E67 /* XlsxReaderWriter.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				82FBA3251D654DF7007AE170 /* FDLocalizeder */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		3ADB72722099C78900946E67 /* libXlsxReaderWriter.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libXlsxReaderWriter.a;
+			remoteRef = 3ADB72712099C78900946E67 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3ADB72742099C78900946E67 /* XlsxReaderWriterTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = XlsxReaderWriterTests.xctest;
+			remoteRef = 3ADB72732099C78900946E67 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3ADB72762099C78900946E67 /* XlsxReaderWriter.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = XlsxReaderWriter.framework;
+			remoteRef = 3ADB72752099C78900946E67 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		82FBA3241D654DF7007AE170 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				82FBA3331D654DF7007AE170 /* Assets.xcassets in Resources */,
+				3ADB72A420A02B9F00946E67 /* LanguageBindFile.plist in Resources */,
+				3AD136BC20A444FC0098664E /* FDLanguagePopoverViewController.xib in Resources */,
+				82FBA3361D654DF7007AE170 /* Main.storyboard in Resources */,
+				3A16879520AACDC10042230A /* CXSliderRangeView.xib in Resources */,
+				3ADB72962099D8B800946E67 /* Languages.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		82FBA3221D654DF7007AE170 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3A1687C720AAFD860042230A /* FDImageView.m in Sources */,
+				3A2C3BE620F8737B005A3BB1 /* FDMainExtendViewModel.m in Sources */,
+				3AC89D6720C4D3F0007C3FEB /* FDPredicateManager.m in Sources */,
+				3AD136B220A43C300098664E /* FDLanguagePopoverViewController.m in Sources */,
+				3A872CAA20CA37B200C9D67E /* MyCustomSegue.m in Sources */,
+				82FBA32E1D654DF7007AE170 /* main.m in Sources */,
+				3AD136C520A539690098664E /* FDMainDataViewModel.m in Sources */,
+				3A872CB320CA37FE00C9D67E /* MyCustomSwiftAnimator.swift in Sources */,
+				3AD136CA20A57AA60098664E /* FDUndoManager.m in Sources */,
+				3A872CB420CA37FE00C9D67E /* MyCustomSwiftSegue.swift in Sources */,
+				82FBA32B1D654DF7007AE170 /* AppDelegate.m in Sources */,
+				3ADB72922099C84800946E67 /* MPTask.m in Sources */,
+				3AD136AB20A3FDFB0098664E /* CXPopUpButton.m in Sources */,
+				3A1687C420AAFD0A0042230A /* SCSelectionBorder.m in Sources */,
+				3AD136AF20A4345D0098664E /* AXStatusItemPopup.m in Sources */,
+				3AD135FE20A041250098664E /* FDProjectFileManager.m in Sources */,
+				3A872CAB20CA37B200C9D67E /* MyCustomAnimator.m in Sources */,
+				3A16877320A9404B0042230A /* FDSafetyFileManager.m in Sources */,
+				3A16879020AAC4D40042230A /* CustomSlider.m in Sources */,
+				3AD1360020A041250098664E /* FDDataManager.m in Sources */,
+				3A16879320AACDA80042230A /* CXSliderRangeView.m in Sources */,
+				3A872C7E20CA35D300C9D67E /* FDSecondVC.m in Sources */,
+				3A16878020A98FD00042230A /* FDXMLFileManager.m in Sources */,
+				3ADB72832099C83900946E67 /* MPDragDropView.m in Sources */,
+				3ADB72A2209C476200946E67 /* FDMainViewModel.m in Sources */,
+				3A3468FC21B6763C00EA6D85 /* FDCompareManager.m in Sources */,
+				3A16877A20A969120042230A /* FDWriteFile.m in Sources */,
+				3A16878F20AAC4D40042230A /* CustomSliderCell.m in Sources */,
+				3ADB72642099B14700946E67 /* FDViewController.m in Sources */,
+				3A16878E20AAC4D40042230A /* NSColor+Hexa.m in Sources */,
+				3A16877D20A96BBB0042230A /* FDReadFile.m in Sources */,
+				3AD135FF20A041250098664E /* FDFileManager.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3ADB72782099C7BF00946E67 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "XlsxReaderWriter Mac";
+			targetProxy = 3ADB72772099C7BF00946E67 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		82FBA3341D654DF7007AE170 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				82FBA3351D654DF7007AE170 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		82FBA3381D654DF7007AE170 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		82FBA3391D654DF7007AE170 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		82FBA33B1D654DF7007AE170 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "$(PROJECT_TEMP_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = X7L3X3EFBN;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/FDLocalizeder/Libraries",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = FDLocalizeder/FDLocalizeder.pch;
+				INFOPLIST_FILE = FDLocalizeder/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACH_O_TYPE = mh_execute;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-all_load";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mob.FDLocalizeder;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "FDLocalizeder/Controllers/Swift segues and animators/FDLocalizeder-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/XlsxReaderWriter/**";
+			};
+			name = Debug;
+		};
+		82FBA33C1D654DF7007AE170 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "$(PROJECT_TEMP_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = X7L3X3EFBN;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/FDLocalizeder/Libraries",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = FDLocalizeder/FDLocalizeder.pch;
+				INFOPLIST_FILE = FDLocalizeder/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACH_O_TYPE = mh_execute;
+				OTHER_LDFLAGS = "-all_load";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mob.FDLocalizeder;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "FDLocalizeder/Controllers/Swift segues and animators/FDLocalizeder-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/XlsxReaderWriter/**";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		82FBA3211D654DF7007AE170 /* Build configuration list for PBXProject "FDLocalizeder" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				82FBA3381D654DF7007AE170 /* Debug */,
+				82FBA3391D654DF7007AE170 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		82FBA33A1D654DF7007AE170 /* Build configuration list for PBXNativeTarget "FDLocalizeder" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				82FBA33B1D654DF7007AE170 /* Debug */,
+				82FBA33C1D654DF7007AE170 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 82FBA31E1D654DF7007AE170 /* Project object */;
+}

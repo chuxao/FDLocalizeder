@@ -1,0 +1,564 @@
+//
+//  MPProjectListViewController.m
+//  MobPods
+//
+//  Created by ShengQiangLiu on 16/11/2.
+//  Copyright © 2016年 mob.com. All rights reserved.
+//
+
+#import "MPProjectListViewController.h"
+#import "MPProjectListCellView.h"
+#import "MPSpotlightQuery.h"
+#import "MPProgressHUD.h"
+#import "MPMainViewController.h"
+#import "AppDelegate.h"
+#import "MPAlertController.h"
+#import "MPVirtualController.h"
+#import "MPVirtualWindowController.h"
+#import "MPVirtualViewController.h"
+#import "MPAlert.h"
+#import "MPHotKeyManager.h"
+#import "MPUserNotification.h"
+
+
+@interface MPProjectListViewController () <NSTableViewDataSource, NSTableViewDelegate, MPSpotlightQueryDelegate,GlobalMonitorForEventDelegate,NSSearchFieldDelegate>
+@property (weak) IBOutlet NSView *headerView;
+@property (weak) IBOutlet NSTableView *projectListTableView;
+@property (weak) IBOutlet NSProgressIndicator *indicator;
+@property (weak) IBOutlet NSButton *nextBtn;
+
+@property (nonatomic, strong) NSString *selectedProjectPath;
+@property (nonatomic, strong) NSArray *sortedList;
+@property (nonatomic, strong) NSMutableArray *allProjectNames;
+
+@property (strong) MPVirtualWindowController *newsWindow;
+@property (strong) MPVirtualViewController *virtualVC;
+
+/**
+ tableView 所有数据备份（searchField使用）
+ */
+@property (nonatomic, strong) NSArray *arrSearchData;
+
+@property (weak) IBOutlet NSSearchField *searchField;
+
+@property (weak) IBOutlet NSProgressIndicator *activity;
+@property (weak) IBOutlet NSTextField *activityLable;
+
+@property (nonatomic, strong) MPMainViewController *mainVC;
+
+@end
+
+@implementation MPProjectListViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    [self setup];
+}
+
+- (void)viewDidAppear{
+    [super viewDidAppear];
+    
+    [self openMainVC];
+}
+
+/**
+ 通过覆盖视图的这个方法，可以强制视图坐标系远点为左上角
+ */
+- (BOOL)isFlipped{
+    return YES;
+}
+
+- (void)openMainVC{
+    
+    NSPasteboard *pb = [NSPasteboard generalPasteboard];
+    NSString *pboardstring = [pb stringForType:NSPasteboardTypeString];
+    
+    /************ 《》《》
+     MPUserNotification *notification = [MPUserNotification notification];
+     [notification notificationWithTitle:@"打开库通知" informativeText:pboardstring];
+     **************/
+    
+    
+    NSArray *arrSign = [pboardstring componentsSeparatedByString:@"###"];
+    NSString *strSign = arrSign.firstObject;
+    
+    if ([strSign isEqualToString:@"123456789"]) {
+        /**
+        [MPHotKeyManager sharedManager].windowID = [arrSign.lastObject integerValue];
+        [[MPHotKeyManager sharedManager] createVirtualNotification];
+        
+        [pb clearContents];
+         */
+    }
+}
+
+#pragma mark - Private
+- (void)setup
+{
+    // tableView
+    self.headerView.wantsLayer = YES;
+    //    self.headerView.layer.backgroundColor = [NSColor lightGrayColor].CGColor;
+    //    self.projectListTableView.selectionHighlightStyle = NSTableViewSelectionHighlightStyleSourceList;
+    self.projectListTableView.dataSource = self;
+    self.projectListTableView.delegate = self;
+    self.projectListTableView.wantsLayer = YES;
+    self.projectListTableView.headerView.wantsLayer = YES;
+    self.projectListTableView.headerView.layer.backgroundColor = [NSColor whiteColor].CGColor;
+    //    self.projectListTableView.usesAlternatingRowBackgroundColors = YES;
+    self.projectListTableView.doubleAction = @selector(doubleClickAction);
+    
+    // 指示器
+    self.indicator.style = NSProgressIndicatorSpinningStyle;
+    [self.indicator startAnimation:nil];
+    
+    // button
+    self.nextBtn.hidden = YES;
+    
+    
+    // Spotlight 搜索 （其实就是一个多线程，而不是搜索）
+    MPSpotlightQuery *query = [MPSpotlightQuery queryWithDelegate:self];
+    
+    NSLog(@"开始加载主界面数据");
+    
+    [query query:@".xcodeproj" withOptions:@[@"-name"]];
+    //    [query query:@".xcworkspace" withOptions:@[@"-name"]];
+    
+    //注册通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openMainVC:) name:@"openMainVC" object:nil];
+    // [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startActivity:) name:@"startActivity" object:nil];
+    // [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopActivity:) name:@"stopActivity" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backAction) name:@"backAction" object:nil];
+    
+    self.searchField.delegate = self;
+    // 此设置可让searchField代理只响应回车键
+    [[self.searchField cell] setSendsWholeSearchString:YES];
+}
+
+/**
+ 获取 Mac 上面安装的应用列表
+ 
+ @return 应用数组
+ */
+- (NSArray *)searchInstalledApplicationsOnMacOS
+{
+    // 查找已经安装的应用程序
+    NSArray *urls = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationDirectory inDomains:NSLocalDomainMask];
+    NSError *error = nil;
+    NSArray *properties = [NSArray arrayWithObjects: NSURLLocalizedNameKey,
+                           NSURLCreationDateKey, NSURLLocalizedTypeDescriptionKey, nil];
+    NSArray *array = [[NSFileManager defaultManager]
+                      contentsOfDirectoryAtURL:[urls objectAtIndex:0]
+                      includingPropertiesForKeys:properties
+                      options:(NSDirectoryEnumerationSkipsHiddenFiles)
+                      error:&error];
+    return array;
+}
+
+#pragma mark - NSTableViewDelegate
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
+{
+    return self.sortedList.count;
+}
+
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
+    MPProjectListCellView *cellView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
+    
+    NSString *projectPath = self.sortedList[row];
+    
+    NSMutableArray *pathComponents = [NSMutableArray arrayWithArray:[projectPath pathComponents]];
+    [pathComponents removeLastObject];
+    NSString *name = [projectPath lastPathComponent];
+    
+    [self.allProjectNames addObject:name];
+    
+    // 设置工程名称
+    cellView.name.stringValue = name;
+    
+    cellView.nextVC.tag = row;
+    
+    NSString *path = [pathComponents componentsJoinedByString:@"/"];
+    if (path.length)
+    {
+        if ([[path substringWithRange:NSMakeRange(0, 2)] isEqualToString:@"//"])
+        {
+            path = [path substringWithRange:NSMakeRange(1, path.length-1)];
+        }
+        // 设置工程路径
+        cellView.path.stringValue = path;
+    }
+    
+    
+    
+    // 设置工程 or 工作空间图标
+    if ([name hasSuffix:@".xcodeproj"])
+    {
+        cellView.icon.image = [NSImage imageNamed:@"xcode-project_Icon"];
+    }
+    else
+    {
+        cellView.icon.image = [NSImage imageNamed:@"workspace_Icon"];
+    }
+    
+    return cellView;
+}
+
+
+- (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row
+{
+    return 60;
+}
+
+- (void)tableViewSelectionDidChange:(NSNotification *)notification
+{
+    NSTableView *tableView = notification.object;
+    NSInteger row = [tableView selectedRow];
+    
+    if (row > -1)
+    {
+        self.selectedProjectPath = self.sortedList[row];
+        
+        self.nextBtn.hidden = NO;
+    }
+    
+}
+
+
+#pragma mark - MPSpotlightQueryDelegate
+- (void)spotlightQuery:(MPSpotlightQuery *)query didFinishWithResult:(NSArray *)results
+{
+    self.sortedList = results;
+    self.arrSearchData = results;
+    
+    [self.projectListTableView reloadData];
+    
+    [self.indicator stopAnimation:nil];
+    self.indicator.hidden = YES;
+}
+
+
+#pragma mark - Action
+- (void)backAction{
+    [self.mainVC.view removeFromSuperview];
+}
+
+- (void)doubleClickAction
+{
+    NSInteger row = [self.projectListTableView selectedRow];
+    
+    if (row > -1)
+    {
+        self.selectedProjectPath = self.sortedList[row];
+        
+        self.nextBtn.hidden = NO;
+        [self nextBtnClicked:nil];
+    }
+}
+
+- (void)searchAction:(NSString *)searchValue {
+    NSMutableArray *level2ChildNodes = [NSMutableArray new];//arrayWithArray:self.marrData];
+    if (searchValue.length)
+    {
+        // 过滤条件
+        NSPredicate *preicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[c] %@", searchValue];
+        
+        // 过滤后的数组
+        NSMutableArray *names = [NSMutableArray array];
+        [names addObjectsFromArray:[self.sortedList filteredArrayUsingPredicate:preicate]];
+        
+        self.sortedList = names.copy;
+        [self.allProjectNames removeAllObjects];
+        [self.projectListTableView reloadData];
+        
+        return;
+        
+        NSMutableArray *marrNames = [NSMutableArray new];
+        
+        // 比较全部工程，过滤掉不符合条件的工程
+        [names enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop)
+         {
+             NSString *name = obj;
+             
+             [self.sortedList enumerateObjectsUsingBlock:^(id  _Nonnull obj2, NSUInteger idx2, BOOL * _Nonnull stop2)
+              {
+                  if ([[obj2 lastPathComponent] isEqualToString:name])
+                  {
+                      [marrNames addObject:obj2];
+                  }
+              }];
+             
+         }];
+        
+        self.sortedList = marrNames.copy;
+        [self.allProjectNames removeAllObjects];
+        [self.projectListTableView reloadData];
+    }
+    else
+    {
+        self.sortedList = self.arrSearchData;
+        [self.allProjectNames removeAllObjects];
+        [self.projectListTableView reloadData];
+    }
+    
+    
+}
+
+
+- (IBAction)nextBtnClicked:(NSButton *)sender
+{
+    if (sender) self.selectedProjectPath = self.sortedList[sender.tag];
+    
+    [self openMainViewController];
+}
+
+- (void)presentMainCtrlOperation
+{
+    if (self.selectedProjectPath.length)
+    {
+        // 获取已经安装的应用列表
+        NSArray *applications = [self searchInstalledApplicationsOnMacOS];
+        
+        // 获取 Xcode 的名称
+        NSString *xcodeName = [self getXcodeNameByApplications:applications];
+        
+        if (xcodeName.length)
+        {
+            // 打开 Xcode 工程和调整到操作库界面
+            [self openXcodeWithProjPath:self.selectedProjectPath xcodeName:xcodeName];
+        }
+        else
+        {
+            NSAlert *alert = [[NSAlert alloc] init];
+            [alert setMessageText:@"Xcode 还没有安装，请先安装。"];
+            NSWindow *window = [NSApplication sharedApplication].keyWindow;
+            [alert beginSheetModalForWindow:window completionHandler:nil];
+        }
+    }
+}
+
+- (NSString *)getXcodeNameByApplications:(NSArray *)apps
+{
+    NSMutableArray *xcodeArray = [NSMutableArray array];
+    [apps enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop)
+     {
+         NSString *appName = [obj lastPathComponent];
+         if ([appName hasPrefix:@"Xcode"])
+         {
+             [xcodeArray addObject:appName];
+         }
+     }];
+    
+    for (NSString *name in xcodeArray) {
+        if ([name isEqualToString:@"Xcode"]) {
+            return name;
+        }
+    }
+    return xcodeArray.firstObject;
+}
+
+- (void)openMainVC:(NSNotification*)notification{
+    if ([MPSingleton shareInstanced].childVCs.count == 0) return;
+    
+    NSString *strType = notification.userInfo[@"type"];
+    NSString *filePath = notification.userInfo[@"filePath"];
+    
+    if ([strType isEqualToString:@"openVirtualWindow"]) {
+        
+        NSStoryboard *story = [NSStoryboard storyboardWithName:@"Main" bundle:nil];
+        MPVirtualViewController *virtualVC =  [story instantiateControllerWithIdentifier:@"MPVirtualViewController"];
+        self.virtualVC = virtualVC;
+        
+        _newsWindow = [[MPVirtualWindowController alloc] initWithWindowNibName:@"MPVirtualWindowController"];
+        _newsWindow.contentViewController = self.virtualVC;
+        [_newsWindow.window orderFront:nil];
+        [_newsWindow.window setLevel:NSStatusWindowLevel];
+        //        sleep(1);
+                [_newsWindow click];
+        return;
+    }
+    
+//    [self.view.window setLevel:NSStatusWindowLevel];
+    
+    // 没有获取到，弹出选择窗口
+    if ([strType isEqualToString:@"none"]) {
+        [self browseBtnClicked:nil];
+    }
+    
+    else if ([strType isEqualToString:@"xcworkspace"]){
+        // 暂时不兼容workspace
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert setMessageText:@"暂时不兼容workspace项目"];
+        
+        NSArray *arrayWindow = [NSApplication sharedApplication].windows;
+        NSWindow *window = arrayWindow[0];
+        [alert beginSheetModalForWindow:window completionHandler:nil];
+    
+        return;
+        
+        
+        NSStoryboard *story = [NSStoryboard storyboardWithName:@"Main" bundle:nil];
+        MPAlertController *alertVC =  [story instantiateControllerWithIdentifier:@"MPAlertController"];
+        
+        alertVC.alertInfo = filePath;
+        
+        // 回调
+        alertVC.confirmBlock = ^(){
+            self.selectedProjectPath = filePath;
+            [self openMainViewController];
+            [self.view.window setLevel:NSNormalWindowLevel];
+        };
+        
+        alertVC.chooseBlock = ^(){
+            [self browseBtnClicked:nil];
+        };
+        
+        
+        [self presentViewControllerAsModalWindow:alertVC];
+        
+        
+        [self.view.window setLevel:NSNormalWindowLevel];
+        
+    }
+    
+    else{
+        self.selectedProjectPath = filePath;
+        [self openMainViewController];
+//        [self.view.window setLevel:NSNormalWindowLevel];
+    }
+    
+    
+    
+}
+
+
+
+- (void)startActivity:(NSNotification *)notification{
+    NSLog(@"正在更新数据库0");
+    self.activity.hidden = NO;
+    [self.activity startAnimation:nil];
+    
+    self.activityLable.hidden = NO;
+}
+
+- (void)stopActivity:(NSNotification *)notification{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSLog(@"数据库更新完毕1");
+        [self.activity stopAnimation:nil];
+        
+        self.activity.hidden = YES;
+        self.activityLable.hidden = YES;
+    });
+}
+
+
+
+- (void)openXcodeWithProjPath:(NSString *)path xcodeName:(NSString *)name
+{
+    // 打开选择的工程
+    [[NSWorkspace sharedWorkspace] openFile:path withApplication:name andDeactivate:NO];
+    [self openMainViewController];
+}
+
+- (void)openMainViewController{
+    // 获取storyboard: 通过bundle根据storyboard的名字来获取我们的storyboard
+    NSStoryboard *story = [NSStoryboard storyboardWithName:@"Main" bundle:nil];
+    // 由storyboard 根据 MPMainViewController 的 storyBoardID 来获取我们要切换的视图
+    MPMainViewController *mainCtrl =  [story instantiateControllerWithIdentifier:@"MPMainViewController"];
+    mainCtrl.selectedPath = self.selectedProjectPath;
+    
+    if (self.openBlock) {
+        NSLog(@"ddddssss %@",self.selectedProjectPath);
+        self.openBlock(mainCtrl,self.selectedProjectPath);
+    }
+    
+    
+    
+    //    [self presentViewControllerAsModalWindow:mainCtrl];
+    //    [self presentViewControllerAsSheet:mainCtrl];
+    //        [self addChildViewController:mainCtrl];
+    //        self.view.window.contentView = mainCtrl.view;
+    //    [self.view addSubview:mainCtrl.view];
+    
+    
+    //    [self addChildViewController:mainCtrl];
+    
+    
+    
+    ////    [self presentViewController:mainCtrl animator:<#(nonnull id<NSViewControllerPresentationAnimator>)#>];
+    //    [NSViewController presentViewControllerAsSheet:];
+    //    self presentViewController:mainCtrl animator:<#(nonnull id<NSViewControllerPresentationAnimator>)#>
+}
+
+- (void)animatePresentationOfViewController:(NSViewController *)viewController fromViewController:(NSViewController *)fromViewController{
+    
+}
+
+/* Called to dismiss a previously shown view controller.
+ */
+- (void)animateDismissalOfViewController:(NSViewController *)viewController fromViewController:(NSViewController *)fromViewController{
+    
+}
+
+
+
+- (IBAction)browseBtnClicked:(NSButton *)sender
+{
+    NSOpenPanel *filePanel = [NSOpenPanel openPanel];
+    //    filePanel.canChooseFiles = YES;
+    //    filePanel.canChooseDirectories = YES;
+    //    filePanel.allowsMultipleSelection = NO;
+    filePanel.allowedFileTypes = @[@"xcodeproj"];
+    //    filePanel.allowsOtherFileTypes = NO;
+    
+    NSWindow *window = [[NSApplication sharedApplication] windows].firstObject;
+    [filePanel beginSheetModalForWindow:window completionHandler:^(NSInteger result)
+     {
+         if (result == NSFileHandlingPanelOKButton)
+         {
+             NSError *error = nil;
+             NSString *string = [NSString stringWithContentsOfURL:[filePanel URL] encoding:NSUTF8StringEncoding error:&error];
+             if (!error)
+             {
+                 NSLog(@"path = %@", string);
+                 
+                 self.selectedProjectPath = string;
+             }
+             else
+             {
+                 NSLog(@"%@", [error.userInfo objectForKey:@"NSFilePath"]);
+                 
+                 self.selectedProjectPath = [error.userInfo objectForKey:@"NSFilePath"];
+             }
+             
+             [self presentMainCtrlOperation];
+         }
+     }];
+}
+
+#pragma mark laze init
+- (NSMutableArray *)allProjectNames
+{
+    if (!_allProjectNames)
+    {
+        _allProjectNames = [NSMutableArray array];
+    }
+    return _allProjectNames;
+}
+
+- (MPMainViewController *)mainVC
+{
+    if (!_mainVC)
+    {
+        _mainVC = [MPMainViewController new];
+    }
+    return _mainVC;
+}
+
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+
+@end

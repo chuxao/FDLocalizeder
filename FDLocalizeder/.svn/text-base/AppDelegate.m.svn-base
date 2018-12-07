@@ -1,0 +1,121 @@
+//
+//  AppDelegate.m
+//  MobPods
+//
+//  Created by ShengQiangLiu on 16/8/18.
+//  Copyright © 2016年 mob.com. All rights reserved.
+//
+
+#import "AppDelegate.h"
+#import "MPDataManager.h"
+#import "MPTask.h"
+#import "MPMobPodsListManager.h"
+#import "MPHotKeyManager.h"
+#import "MPUserNotification.h"
+
+@interface AppDelegate ()<MPMobPodsListUpdateFinish>
+@property (weak) IBOutlet NSMenuItem *updateMobpodListMenu;
+
+@end
+
+@implementation AppDelegate
+
++ (instancetype)shareInstanced {
+    static dispatch_once_t onceToken;
+    static AppDelegate *appdele = nil;
+    dispatch_once(&onceToken, ^{
+        appdele = [[[self class] alloc] init];
+    });
+    return appdele;
+}
+
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{
+    self.window = [NSApplication sharedApplication].windows.firstObject;
+//    self.window.titlebarAppearsTransparent = YES;
+    self.window.movableByWindowBackground = YES;
+    self.window.titleVisibility =  NSWindowTitleHidden; 
+    
+    //hide Widgets
+//    [[self.window.contentView.superview.subviews[1] subviews].lastObject subviews][1].hidden = YES;
+//    [[self.window.contentView.superview.subviews[1] subviews].lastObject subviews][2].hidden = YES;
+    
+    
+    // 更新本地列表
+//    [[MPDataManager sharedManager] updateLocalData];
+    
+    // 鼠标事件监听
+    [[MPHotKeyManager sharedManager] addMouseGlobalMonitorEvents];
+    
+    // 注册热键
+    [[MPHotKeyManager sharedManager] registerHotKey];
+    
+    
+    [self openMainVCByMain];
+    
+}
+
+- (void)openMainVCByMain{
+    return;
+    NSString *windowID = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentWindowID"];
+    MPUserNotification *notification = [MPUserNotification notification];
+    [notification notificationWithTitle:windowID informativeText:nil];
+    
+}
+
+/**
+ *  点击 Dock 小图标触发事件
+ */
+-(BOOL)applicationShouldHandleReopen:(NSApplication *)theApplication hasVisibleWindows:(BOOL)flag
+{
+    [self.window orderFront:self];
+    
+    return YES;
+}
+
+- (void)applicationWillTerminate:(NSNotification *)aNotification
+{
+    // Insert code here to tear down your application
+}
+
+- (NSString*)convertToJSONData:(id)infoDict
+{
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:infoDict
+                                                       options:NSJSONWritingPrettyPrinted // Pass 0 if you don't care about the readability of the generated string
+                                                         error:&error];
+    
+    NSString *jsonString = @"";
+    
+    if (! jsonData)
+    {
+        NSLog(@"Got an error: %@", error);
+    }else
+    {
+        jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    }
+    
+    jsonString = [jsonString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];  //去除掉首尾的空白字符和换行字符
+    
+    [jsonString stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+    
+    return jsonString;
+}
+
+- (IBAction)updateMobPodsListAction:(id)sender {
+    [[MPMobPodsListManager sharedManager] updateCocoaPodsList];
+    [MPMobPodsListManager sharedManager].delegate = self;
+    self.updateMobpodListMenu.title = @"正在更新，可能需要一段时间，请稍后...";
+    [self.updateMobpodListMenu setTarget:nil];
+    [self.updateMobpodListMenu setAction:nil];
+    self.updateMobpodListMenu.enabled = NO;
+}
+
+- (void)mpMobPodsListUpdateFinish{
+    self.updateMobpodListMenu.title = @"UpdateMobPodsList";
+    [self.updateMobpodListMenu setTarget:self];
+    [self.updateMobpodListMenu setAction:@selector(updateMobPodsListAction:)];
+    self.updateMobpodListMenu.enabled = YES;
+}
+
+@end

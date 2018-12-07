@@ -1,0 +1,21 @@
+//
+//  MPUserNotification.h
+//  MobPods
+//
+//  Created by ShengQiangLiu on 16/11/9.
+//  Copyright © 2016年 mob.com. All rights reserved.
+//
+
+#import <AppKit/AppKit.h>
+
+@interface MPUserNotification : NSObject
+
+@property (nonatomic, copy) NSString *title;
+
+@property (nonatomic, copy) NSString *informativeText;
+
++ (instancetype)notification;
+
+- (void)notificationWithTitle:(NSString *)title informativeText:(NSString *)text;
+
+@end

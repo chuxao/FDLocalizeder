@@ -1,0 +1,89 @@
+//
+//  MPWebViewController.m
+//  MobPods
+//
+//  Created by chuxiao on 2017/5/8.
+//  Copyright © 2017年 mob.com. All rights reserved.
+//
+
+#import "MPWebViewController.h"
+#import <WebKit/WebKit.h>
+#import "MPTask.h"
+
+@interface MPWebViewController ()
+
+@property (weak) IBOutlet WebView *webView;
+@property (weak) IBOutlet NSTextField *lbTitle;
+
+/**
+ 加载指示器
+ */
+@property (weak) IBOutlet NSProgressIndicator *indicator;
+
+@end
+
+@implementation MPWebViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [[self.webView  mainFrame ] loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.strURL]]];
+    self.indicator.hidden = NO;
+    [self.indicator startAnimation:nil];
+}
+
+- (void)viewWillDisappear{
+    [super viewWillDisappear];
+    [self.indicator stopAnimation:nil];
+}
+
+- (IBAction)backAction:(id)sender {
+    [self.indicator stopAnimation:nil];
+    [self.presentingViewController dismissViewController:self];
+}
+
+
+//获取每次加载页面的request
+- (void)webView:(WebView *)webView decidePolicyForMIMEType:(NSString *)type
+        request:(NSURLRequest *)request
+          frame:(WebFrame *)frame
+decisionListener:(id<WebPolicyDecisionListener>)listener{
+    
+    NSLog(@"request=======%@",request);
+    
+}
+
+//获取加载页面的Title
+- (void)webView:(WebView *)sender didReceiveTitle:(NSString *)title forFrame:(WebFrame *)frame{
+    NSLog(@"title ===== %@",title);
+    self.lbTitle.stringValue = title;
+}
+
+//加载完成
+- (void)webView:(WebView *)sender didFinishLoadForFrame:(WebFrame *)frame{
+    NSLog(@"~~~~~加载完成~~~~~");
+    [self.indicator stopAnimation:nil];
+    self.indicator.hidden = YES;
+}
+
+//加载失败
+- (void)webView:(WebView *)sender didFailLoadWithError:(NSError *)error forFrame:(WebFrame *)frame{
+    NSLog(@"~~~~~加载失败~~~~~");
+}
+
+- (IBAction)openInBrowser:(id)sender {
+    [MPTask runTaskWithLanunchPath:CMD_LAUCH arguments:@[self.strURL] currentDirectoryPath:nil onSuccess:^(NSString *success) {
+
+    } onException:^(NSException *exception) {
+
+    }];
+}
+
+- (IBAction)closeAction:(id)sender {
+    [self.indicator stopAnimation:nil];
+//    [self.presentingViewController dismissViewController:self];
+    [self dismissViewController:self];
+}
+
+
+@end

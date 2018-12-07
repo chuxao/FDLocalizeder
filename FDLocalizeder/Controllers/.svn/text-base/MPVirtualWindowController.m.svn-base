@@ -1,0 +1,58 @@
+//
+//  MPVirtualWindowController.m
+//  MobPods
+//
+//  Created by chuxiao on 2017/6/1.
+//  Copyright © 2017年 mob.com. All rights reserved.
+//
+
+#import "MPVirtualWindowController.h"
+#import "MPHotKeyManager.h"
+
+@interface MPVirtualWindowController ()
+
+@end
+
+@implementation MPVirtualWindowController
+
+- (void)windowDidLoad {
+    [super windowDidLoad];
+    
+    // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
+    
+    //关闭当前窗口
+//    [self.window orderOut:nil];
+    
+    //注册通知
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(closeVirtualWindow:) name:@"closeVirtualWindow" object:nil];
+    
+}
+
+
+
+
+- (void)click{
+    CGEventRef event = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, CGPointMake(25, 50), kCGMouseButtonLeft);
+    CGEventPost(kCGSessionEventTap, event);
+    CFRelease(event);
+    
+    NSLog(@"被点击了！！！！！！！！！！！！！！！！！！");
+    sleep(1);
+    
+    
+    //创建通知
+//    NSNotification *notification =[NSNotification notificationWithName:@"virtualWindowIsOpen" object:nil userInfo:nil];
+//    [[NSNotificationCenter defaultCenter] postNotification:notification];
+    
+    
+    [[MPHotKeyManager sharedManager] virtualWindowIsOpen];
+//    sleep(3);
+//    //关闭当前窗口
+//    [self.window orderOut:nil];
+}
+
+
+- (void)closeVirtualWindow:(NSNotification*)notification{
+//    [self.window orderOut:nil];
+}
+@end

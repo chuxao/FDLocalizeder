@@ -1,0 +1,89 @@
+//
+//  MPCocoaPodsViewController.m
+//  MobPods
+//
+//  Created by ShengQiangLiu on 16/11/14.
+//  Copyright © 2016年 mob.com. All rights reserved.
+//
+
+#import "MPCocoaPodsViewController.h"
+#import "MPMobPodsListFile.h"
+#import "MPDataManager.h"
+
+@interface MPCocoaPodsViewController ()
+@property (weak) IBOutlet NSTextField *nameField;
+@property (weak) IBOutlet NSTextField *versionField;
+@property (weak) IBOutlet NSTextField *addressField;
+@property (weak) IBOutlet NSTextField *descriptionField;
+@property (weak) IBOutlet NSView *headerView;
+
+@end
+
+@implementation MPCocoaPodsViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do view setup here.
+    
+    self.headerView.wantsLayer = YES;
+    self.headerView.layer.backgroundColor = [NSColor grayColor].CGColor;
+    
+}
+
+- (IBAction)commitBtnClicked:(NSButton *)sender
+{
+    NSWindow *window = [NSApplication sharedApplication].keyWindow;
+    NSMutableDictionary *libInfoDict = [NSMutableDictionary dictionary];
+    if (!self.nameField.stringValue.length)
+    {
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert setMessageText:@"名称没有填写."];
+        [alert beginSheetModalForWindow:window completionHandler:nil];
+    }
+    else if (!self.versionField.stringValue.length)
+    {
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert setMessageText:@"版本没有填写."];
+        [alert beginSheetModalForWindow:window completionHandler:nil];
+    }
+    else if (!self.addressField.stringValue.length)
+    {
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert setMessageText:@"地址没有填写."];
+        [alert beginSheetModalForWindow:window completionHandler:nil];
+    }
+    else if (!self.descriptionField.stringValue.length)
+    {
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert setMessageText:@"描述没有填写."];
+        [alert beginSheetModalForWindow:window completionHandler:nil];
+    }
+    
+    [libInfoDict setObject:self.nameField.stringValue forKey:@"respositoryName"];
+    [libInfoDict setObject:self.descriptionField.stringValue forKey:@"description"];
+    [libInfoDict setObject:self.addressField.stringValue forKey:@"remotePath"];
+    [libInfoDict setObject:self.versionField.stringValue forKey:@"remoteVersion"];
+    [libInfoDict setObject:@"8b193e2b42e7e67bcc54918155a83d54aa1100a9" forKey:@"localVersion"];
+    
+    // 添加仓库信息到 Mobpodslist 列表
+    MPMobPodsListFile *file = [MPMobPodsListFile sharedInstance];
+    NSError *error;
+    [file writeToMobPodsListWithLibInfoDict:libInfoDict outputError:&error];
+    if (error) {
+        NSLog(@"写入 MobPodsList 文件错误：%@", error);
+    }
+    
+    // 提交更新到 git
+    [file updateToGit];
+
+    NSAlert *alert = [[NSAlert alloc] init];
+    [alert setMessageText:@"提交成功."];
+    [alert beginSheetModalForWindow:window completionHandler:^(NSModalResponse returnCode)
+     {
+        [self dismissController:sender];
+        MPDataManager *manager = [MPDataManager sharedManager];
+        [manager updateLocalData];
+    }];
+}
+
+@end

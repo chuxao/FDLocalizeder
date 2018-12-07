@@ -1,0 +1,391 @@
+//
+//  MPBaseWindowController.m
+//  MobPods
+//
+//  Created by chuxiao on 2017/6/2.
+//  Copyright © 2017年 mob.com. All rights reserved.
+//
+
+#import "MPBaseWindowController.h"
+#import "MPProjectListViewController.h"
+#import "MPMainViewController.h"
+#import "AppDelegate.h"
+#import "MPNavController.h"
+#import "MPBaseViewController.h"
+#import "MPNavView.h"
+#import "MPMoreVersionViewController.h"
+#import "MPHotKeyManager.h"
+#import "MPUserNotification.h"
+#import "MPDataManager.h"
+#import "MPDownloadObserver.h"
+
+@interface MPBaseWindowController ()<NSWindowDelegate,NSSearchFieldDelegate,NSTextFieldDelegate>
+@property (nonatomic, strong) MPBaseViewController *baseVC;
+@property (nonatomic, strong) NSView *projectView;
+@property (nonatomic, strong) NSTimer *timer;
+@property (nonatomic, assign) NSInteger windowID;
+@property (weak) IBOutlet NSSearchField *searchField;
+@property (weak) IBOutlet NSTextField *titleLabel;
+@property (weak) IBOutlet NSButton *backBtn;
+
+@end
+
+@implementation MPBaseWindowController
+
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        self = [[NSStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]] instantiateControllerWithIdentifier:NSStringFromClass([self class])];
+        [self.window setAnimationBehavior:NSWindowAnimationBehaviorDocumentWindow];
+        [self.window makeFirstResponder:nil];
+        
+    }
+    return self;
+}
+
+- (void)windowDidLoad {
+    [super windowDidLoad];
+    self.window.title = @"MobPods";
+    
+    [AppDelegate shareInstanced].window = self.window;
+    
+    self.baseVC = (MPBaseViewController *)self.contentViewController;
+    
+//    self.window.titlebarAppearsTransparent = YES;
+    
+    self.searchField.delegate = self;
+    
+    // 此设置可让searchField代理只响应回车键
+    [[self.searchField cell] setSendsWholeSearchString:YES];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(virtualClick) name:@"virtualClick" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openMainVC:) name:@"openMainVC" object:nil];
+
+    [self prepareUI];
+}
+
+
+//- (void)textDidEndEditing:(NSNotification *)notification;
+//{
+//    [super textDidEndEditing:notification];
+//    NSLog(@"END");
+//}
+//- (void)mouseDown:(NSEvent *)theEvent {
+//    NSLog(@"ddds");
+//    [self.searchField sendAction:@selector(searchFieldClickAction) to:self];
+//}
+
+
+#pragma mark ====  Notification
+
+- (void)openMainVC:(NSNotification*)notification{
+    if (self.baseVC.childViewControllers.count == 0) {
+        NSString *strType = notification.userInfo[@"type"];
+        NSString *filePath = notification.userInfo[@"filePath"];
+        
+        if ([strType isEqualToString:@"xcodeproj"]) {
+            NSStoryboard *story = [NSStoryboard storyboardWithName:@"Main" bundle:nil];
+            MPMainViewController *mainCtrl =  [story instantiateControllerWithIdentifier:@"MPMainViewController"];
+            mainCtrl.selectedPath = filePath;
+            mainCtrl.libSearchField = self.searchField;
+            
+            // 设置title
+            NSString *pathName = [filePath lastPathComponent];
+            NSString *postfix = [pathName componentsSeparatedByString:@"."].lastObject;
+            NSRange range = [pathName rangeOfString:postfix];
+            NSString *title = [pathName substringToIndex:range.location-1];
+            self.titleLabel.stringValue = [NSString stringWithFormat:@"%@",title];
+            
+            [self.baseVC addChildViewController:mainCtrl];
+            [self.baseVC.mainView addSubview:mainCtrl.view];
+            
+            self.baseVC.indicator.hidden = YES;
+            [self.baseVC.indicator stopAnimation:nil];
+        }
+        else if([strType isEqualToString:@"xcworkspace"]){
+            // 暂时不兼容workspace
+            NSAlert *alert = [NSAlert new];
+            alert.messageText = @"暂时不兼容workspace项目";
+            [alert beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode) {
+                [self backAction:nil];
+            }];
+            
+            return;
+        }
+    }
+    
+    self.baseVC.indicator.hidden = YES;
+    [self.baseVC.indicator stopAnimation:nil];
+    
+}
+
+- (void)closeMainVC {
+    [self backAction:nil];
+}
+
+#pragma mark NSControlSubclassNotifications
+
+- (void)controlTextDidBeginEditing:(NSNotification *)obj{
+    NSLog(@"begin");
+}
+
+- (void)controlTextDidEndEditing:(NSNotification *)obj{
+    NSLog(@"end");
+}
+
+- (void)controlTextDidChange:(NSNotification *)obj{
+    [self.timer invalidate];
+    NSLog(@"change %@",obj.userInfo);
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(searchAction) userInfo:nil repeats:NO];
+    
+}
+
+- (void)prepareUI {
+    self.titleLabel.stringValue = @"MobPods";
+    
+    NSString *windowID = [[NSUserDefaults standardUserDefaults] objectForKey:@"currentWindowID"];
+    self.windowID = [windowID integerValue];
+    
+//    MPUserNotification *notification = [MPUserNotification notification];
+//    [notification notificationWithTitle:windowID informativeText:nil];
+
+    
+    if ([windowID integerValue] > 0) {
+        self.baseVC.indicator.hidden = NO;
+        [self.baseVC.indicator startAnimation:nil];
+        
+        [self setupMainViewController];
+    }
+    else{
+        [self setupProjectViewController];
+    }
+    
+}
+
+- (void)setupProjectViewController {
+    NSStoryboard *story = [NSStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    self.backBtn.hidden = YES;
+    MPProjectListViewController *projectVC =  [story instantiateControllerWithIdentifier:@"MPProjectListViewController"];
+    [self.baseVC addChildViewController:projectVC];
+    [MPSingleton shareInstanced].childVCs = self.baseVC.childViewControllers;
+    
+    self.projectView = projectVC.view;
+
+    [self.baseVC.mainView addSubview:self.projectView];
+    projectVC.view.frame = CGRectMake(0, 0, projectVC.view.frame.size.width, projectVC.view.frame.size.height);
+    
+    __weak typeof(self)weakSelf = self;
+    projectVC.openBlock = ^(NSViewController *viewController, NSString *selectPath){
+        self.backBtn.hidden = NO;
+        // 设置title
+        NSString *pathName = [selectPath lastPathComponent];
+        NSString *postfix = [pathName componentsSeparatedByString:@"."].lastObject;
+        NSRange range = [pathName rangeOfString:postfix];
+        NSString *title = [pathName substringToIndex:range.location-1];
+
+        self.titleLabel.stringValue = [NSString stringWithFormat:@"%@",title];
+        
+        [weakSelf openMainViewController:viewController];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"currentWindowID"];
+    };
+    
+    if (![MPSingleton shareInstanced].isUpdate) {
+        // 更新本地列表
+        [[MPDataManager sharedManager] updateLocalData];
+    }
+    
+}
+
+- (void)setupMainViewController {
+    if (![MPSingleton shareInstanced].isUpdate) {
+        // 更新本地列表
+        [[MPDataManager sharedManager] updateLocalData];
+    }
+    [[MPHotKeyManager sharedManager] globalHotKeyClick];
+}
+
+
+// http://www.tanhao.me/pieces/702.html/  动画相关
+- (void)openMainViewController:(NSViewController *)viewController {
+//        self.window.titleVisibility = NSWindowTitleVisible;
+    [self backAction:nil];
+    
+    MPMainViewController *mainVC = (MPMainViewController *)viewController;
+    mainVC.libSearchField = self.searchField;
+    
+    [self resetSearchField];
+    
+    [self.baseVC addChildViewController:mainVC];
+    self.projectView.hidden = YES;
+    
+    [self.baseVC.mainView addSubview:mainVC.view];
+    
+    mainVC.moreVsrsionBlock = ^(CGPoint location, NSArray *allVersions) {
+ 
+        MPMainViewController *vc = (MPMainViewController *)[self currentViewController];
+        
+        NSStoryboard *story = [NSStoryboard storyboardWithName:@"Main" bundle:nil];
+        MPMoreVersionViewController *moreVC =  [story instantiateControllerWithIdentifier:@"MPMoreVersionViewController"];
+        moreVC.arrData = allVersions;
+        moreVC.selecteOtherVersionBlock = ^(NSDictionary *dic){
+            [vc chageOtherVersion:dic];
+        };
+        
+        NSRect frame = CGRectMake(location.x, location.y, 1, 1);
+        
+        [vc  presentViewController:moreVC
+            asPopoverRelativeToRect:frame
+                             ofView:vc.view
+                      preferredEdge:NSMinYEdge
+                           behavior:NSPopoverBehaviorTransient];
+    };
+}
+
+- (NSViewController *)currentViewController {
+    NSViewController *viewController = self.baseVC.childViewControllers.lastObject;
+    
+    return viewController;
+}
+
+- (NSArray <NSViewController *>*)childViewControllers {
+    NSArray *childViewControllers = self.baseVC.childViewControllers;
+    
+    return childViewControllers;
+}
+
+- (NSView *)currentView {
+    NSView *currentView = [self currentViewController].view;
+    
+    return currentView;
+}
+
+- (void)resetSearchField {
+    if (self.searchField.stringValue.length > 0) {
+        self.searchField.stringValue = @"";
+        [self searchAction];
+    }
+}
+
+#pragma mark textField Delegate
+- (BOOL)textShouldBeginEditing:(NSText *)textObject{
+    
+    
+    return YES;
+}
+
+#pragma mark - Action
+
+- (IBAction)backAction:(id)sender {
+    [self resetSearchField];
+    
+    NSViewController *vc = [self currentViewController];
+    if ([vc isKindOfClass:[MPMainViewController class]]) {
+        
+        if ([MPDownloadObserver sharedInstance].observerArray.count > 0) {
+            // 存在正在下载的情况
+            NSAlert *alert = [[NSAlert alloc] init];
+            [alert addButtonWithTitle:@"确定"];
+            [alert addButtonWithTitle:@"取消"];
+            [alert setMessageText:@"正在下载库，确定返回？"];
+            
+            [alert beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode){
+                if (returnCode ==  abs(NSModalResponseStop)){
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        // 返回project页面
+
+                        [vc.view removeFromSuperview];
+                        [vc removeFromParentViewController];
+                        if (sender) {
+                            self.projectView.hidden = NO;
+                            self.titleLabel.stringValue = @"MobPods";
+                            self.backBtn.hidden = YES;
+                        }
+                        if ([self childViewControllers] .count == 0) {
+
+                            [self setupProjectViewController];
+                        }
+                        
+                    });
+                    
+                }
+            }];
+        }
+        else {
+            
+            [vc.view removeFromSuperview];
+            [vc removeFromParentViewController];
+            if (sender) {
+                self.projectView.hidden = NO;
+                self.titleLabel.stringValue = @"MobPods";
+                self.backBtn.hidden = YES;
+            }
+            
+            if ([self childViewControllers] .count == 0) {
+                [self setupProjectViewController];
+            }
+        }
+    }
+
+}
+
+- (void)virtualClick {
+    [self.window setLevel:CGWindowLevelForKey(kCGMaximumWindowLevelKey)];
+    
+    sleep(1);
+    
+    NSRect  windowFrame = [self.window frame];
+    CGFloat srHeight = [NSScreen mainScreen].frame.size.height;
+    
+    CGPoint mousePoint = CGPointMake(windowFrame.origin.x + 200, srHeight - (windowFrame.origin.y + windowFrame.size.height) + 15);
+    
+    //    [self.window setLevel:NSStatusWindowLevel];
+    
+    
+    CGEventRef eventMouseDown = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, mousePoint, kCGMouseButtonLeft);
+    CGEventPost(kCGSessionEventTap, eventMouseDown);
+    CFRelease(eventMouseDown);
+    
+    CGEventRef eventMouseUp = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseUp, mousePoint, kCGMouseButtonLeft);
+    CGEventPost(kCGSessionEventTap, eventMouseUp);
+    CFRelease(eventMouseUp);
+    
+    sleep(3);
+}
+
+- (IBAction)searchAction:(id)sender {
+    
+    // 立即触发定时器
+    [self.timer fire];
+}
+
+// NSCtrol 通知过来的searchAction
+- (void)searchAction{
+    NSLog(@"%@",self.searchField.stringValue);
+    
+    NSViewController *viewController = [self currentViewController];
+    
+    if ([viewController isKindOfClass:[MPProjectListViewController class]]) {
+        
+        [(MPProjectListViewController *)viewController searchAction:self.searchField.stringValue];
+    }
+    else if ([viewController isKindOfClass:[MPMainViewController class]]) {
+        
+        [(MPMainViewController *)viewController searchFieldAction:self.searchField.stringValue];
+    }
+}
+
+- (void)searchFieldClickAction:(NSGestureRecognizer *)gesture {
+    NSLog(@"ddf");
+}
+@end
+
+
+
+
+
+
+
+
+

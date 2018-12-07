@@ -1,0 +1,26 @@
+//
+//  AppDelegate.h
+//  MobPods
+//
+//  Created by ShengQiangLiu on 16/8/18.
+//  Copyright © 2016年 mob.com. All rights reserved.
+//
+
+#import <Cocoa/Cocoa.h>
+
+@protocol GlobalMonitorForEventDelegate <NSObject>
+
+- (void)openMainViewControllerWithPath:(NSString *)path;
+
+@end
+
+@interface AppDelegate : NSObject <NSApplicationDelegate>
+@property (nonatomic, strong) NSWindow *window;
+@property (nonatomic, assign) id<GlobalMonitorForEventDelegate> delegate;
+
+@property (nonatomic, assign) NSInteger windowID;
+
++ (instancetype)shareInstanced;
+
+@end
+

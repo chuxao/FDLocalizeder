@@ -1,0 +1,99 @@
+//
+//  MPVirtualViewController.m
+//  MobPods
+//
+//  Created by chuxiao on 2017/6/1.
+//  Copyright © 2017年 mob.com. All rights reserved.
+//
+
+#import "MPVirtualViewController.h"
+#import "MPHotKeyManager.h"
+
+@interface MPVirtualViewController ()
+@property (nonatomic, strong) NSEvent *event;
+@property (nonatomic, assign) BOOL isClick;
+@end
+
+@implementation MPVirtualViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do view setup here.
+    //注册通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(closeVirtualWindow:) name:@"closeVirtualWindow" object:nil];
+    
+    _event = [NSEvent addLocalMonitorForEventsMatchingMask:NSEventMaskLeftMouseDown handler:^NSEvent * _Nullable(NSEvent * _Nonnull event) {
+        
+        if (!self.isClick) {
+            self.isClick = YES;
+            dispatch_time_t time=dispatch_time(DISPATCH_TIME_NOW, 500*NSEC_PER_MSEC);
+            dispatch_after(time, dispatch_get_main_queue(), ^{
+                NSLog(@"开始打开窗口");
+                [[MPHotKeyManager sharedManager] virtualWindowIsOpen];
+                
+//                [NSEvent removeMonitor:event];
+                
+            });
+            
+//            [self.view.window orderOut:nil];
+        }else{
+            [self.view.window orderOut:nil];
+        }
+        
+        return event;
+    }];
+}
+
+- (void)viewDidAppear{
+//    [super viewDidAppear];
+////    sleep(1);
+//    dispatch_time_t time=dispatch_time(DISPATCH_TIME_NOW, 1*NSEC_PER_SEC);
+//    dispatch_after(time, dispatch_get_main_queue(), ^{
+//        [self click];
+//    });
+}
+
+- (void)click{
+    
+    
+//    for (int i = 0; i < 10; i ++) {
+        CGEventRef eventMouseDown = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, CGPointMake(25, 50), kCGMouseButtonLeft);
+        CGEventPost(kCGSessionEventTap, eventMouseDown);
+        CFRelease(eventMouseDown);
+    
+    CGEventRef eventMouseUp = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseUp, CGPointMake(25, 50), kCGMouseButtonLeft);
+    CGEventPost(kCGSessionEventTap, eventMouseUp);
+    CFRelease(eventMouseUp);
+//    }
+    
+    
+    
+    
+    NSLog(@"被点击了！！！！！！！！！！！！！！！！！！");
+//    sleep(1);
+    
+    
+    //创建通知
+    //    NSNotification *notification =[NSNotification notificationWithName:@"virtualWindowIsOpen" object:nil userInfo:nil];
+    //    [[NSNotificationCenter defaultCenter] postNotification:notification];
+    
+    
+//    [[MPHotKeyManager sharedManager] virtualWindowIsOpen];
+    //    sleep(3);
+    //    //关闭当前窗口
+    //    [self.window orderOut:nil];
+    
+//    dispatch_time_t time=dispatch_time(DISPATCH_TIME_NOW, 3*NSEC_PER_SEC);
+//    dispatch_after(time, dispatch_get_main_queue(), ^{
+//        [self.view.window orderOut:nil];
+//    });
+}
+
+- (IBAction)btnClick:(id)sender {
+}
+
+- (void)closeVirtualWindow:(NSNotification*)notification{
+        [self.view.window orderOut:nil];
+}
+
+@end

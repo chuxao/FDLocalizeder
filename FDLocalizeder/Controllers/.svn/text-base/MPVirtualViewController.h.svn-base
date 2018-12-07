@@ -1,0 +1,13 @@
+//
+//  MPVirtualViewController.h
+//  MobPods
+//
+//  Created by chuxiao on 2017/6/1.
+//  Copyright © 2017年 mob.com. All rights reserved.
+//
+
+#import <Cocoa/Cocoa.h>
+
+@interface MPVirtualViewController : NSViewController
+
+@end

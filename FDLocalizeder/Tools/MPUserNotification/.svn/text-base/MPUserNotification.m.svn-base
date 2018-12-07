@@ -1,0 +1,71 @@
+//
+//  MPUserNotification.m
+//  MobPods
+//
+//  Created by ShengQiangLiu on 16/11/9.
+//  Copyright © 2016年 mob.com. All rights reserved.
+//
+
+#import "MPUserNotification.h"
+
+@interface MPUserNotification () <NSUserNotificationCenterDelegate>
+
+@property (nonatomic, strong) NSUserNotification *notification;
+
+@end
+
+@implementation MPUserNotification
+
++ (instancetype)notification
+{
+    static MPUserNotification *notification = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+       notification = [[MPUserNotification alloc] init];
+    });
+    return notification;
+}
+
+- (void)notificationWithTitle:(NSString *)title informativeText:(NSString *)text
+{
+    self.notification.title = title;
+    self.notification.informativeText = text;
+    self.notification.userInfo = @{@"messageID":@(1000)};
+    self.notification.deliveryDate = [NSDate dateWithTimeIntervalSinceNow:1];
+    self.notification.deliveryRepeatInterval.second = 0;
+    [[NSUserNotificationCenter defaultUserNotificationCenter] scheduleNotification:self.notification];
+}
+
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.notification = [[NSUserNotification alloc] init];
+        [NSUserNotificationCenter defaultUserNotificationCenter].delegate = self;
+    }
+    return self;
+}
+
+#pragma mark - NSUserNotificationCenterDelegate
+
+- (void)userNotificationCenter:(NSUserNotificationCenter *)center didDeliverNotification:(NSUserNotification *)notification
+{
+    NSLog(@"消息投放到队列完成的回调, %@", notification);
+}
+
+- (void)userNotificationCenter:(NSUserNotificationCenter *)center didActivateNotification:(NSUserNotification *)notification
+{
+    NSLog(@"用户点击消息推送的面板后，可以唤醒最小化隐藏的App，或者用来根据消息来刷新当前页面内容，%@", notification);
+    NSWindow *window = [NSApplication sharedApplication].windows.firstObject;
+    [window orderFront:self];
+}
+
+- (BOOL)userNotificationCenter:(NSUserNotificationCenter *)center shouldPresentNotification:(NSUserNotification *)notification
+{
+    // 是否允许通知消息弹出，这里可以根据消息内容做过滤，允许显示推送返回 YES，否则返回 NO
+    return YES;
+}
+
+
+@end

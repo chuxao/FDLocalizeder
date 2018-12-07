@@ -1,0 +1,1836 @@
+//
+//  ViewController.m
+//  MobPods
+//
+//  Created by ShengQiangLiu on 16/8/18.
+//  Copyright © 2016年 mob.com. All rights reserved.
+//
+
+#import "MPMainViewController.h"
+#import <MOBFoundation/MOBFJson.h>
+#import "MPFileManager.h"
+#import "MPLibsListModel.h"
+#import <Python/Python.h>
+#import "MPProgressHUD.h"
+#import "AppDelegate.h"
+#import "MPDataManager.h"
+#import "MPDownloadObserver.h"
+#import "MPAlert.h"
+#import "MPMainViewCellView.h"
+#import "MPLibModel.h"
+#import "MPUpdateService.h"
+#import "MPTask.h"
+#import "MPWebViewController.h"
+#import "MPPodValidate.h"
+#import "ITSearchField.h"
+#import "MPDataTool.h"
+#import "MPPythonModule.h"
+#import "MPUserNotification.h"
+
+typedef NS_ENUM(NSInteger, GetDataType) {
+    GetDataTypeNone     = -1,
+    GetDataTypeDefault  = 0,
+    GetDataTypeSearch   = 1
+};
+
+typedef NS_ENUM(NSInteger, AddFrameworkType) {
+    AddFrameworkTypeNormal      = 0,
+    AddFrameworkTypeUpdate      = 1,
+    AddFrameworkTypeDependency  = 2
+};
+
+
+@interface MPMainViewController ()<NSSearchFieldDelegate,NSControlTextEditingDelegate,ITSearchFieldDelegate>
+
+/**
+ tableView 所有数据
+ */
+@property (nonatomic, strong) NSMutableArray <MPLibModel *>*marrData;
+
+/**
+ tableView 所有已经集成的库数据
+ */
+@property (nonatomic, strong) NSMutableArray <MPLibModel *>*marrExistData;
+
+/**
+ tableView 所有数据备份（searchField使用）
+ */
+@property (nonatomic, strong) NSArray *arrSearchData;
+
+/**
+ 分页查询page
+ */
+@property (nonatomic, assign) NSInteger page;
+
+/**
+ 分页查询page_search
+ */
+@property (nonatomic, assign) NSInteger page_search;
+
+/**
+ tableView 已集成三方库个数（添加时候用，避免重复获取）
+ */
+@property (nonatomic, assign) NSInteger existLibsCount;
+
+/**
+ lib检查远程更新服务
+ */
+@property (nonatomic, strong) MPUpdateService *updateService;
+
+/**
+ 文件管理器
+ */
+@property (nonatomic, strong) MPFileManager *fileManager;
+
+/**
+ 数据管理器
+ */
+@property (strong, nonatomic) MPDataManager *dataManager;
+
+/**
+ *  所有库的名称
+ */
+@property (nonatomic, strong) NSMutableArray *allLibNames;
+
+/**
+ *  保存全部库的model数组，用于过滤使用
+ */
+@property (nonatomic, strong) NSMutableArray *level2ModelArray;
+
+/**
+ *  选中的库模型
+ */
+@property (nonatomic, strong) MPLibModel *selectedModel;
+
+/**
+ *  选中的index
+ */
+@property (nonatomic, assign) NSInteger selectedRow;
+
+/**
+ *  选中的cell
+ */
+@property (nonatomic, strong) MPMainViewCellView *selectedCellView;
+
+/**
+ *  选中的cell的所有版本
+ */
+//@property (nonatomic, strong) NSArray *selectedAllVersion;
+
+/**
+ *  依赖库数组
+ */
+@property (nonatomic, copy) NSArray *dependencyInfo;
+
+/**
+ 下载监视器
+ */
+@property (nonatomic, strong) MPDownloadObserver *downloadObserver;
+
+/**
+ 是否正在加载更多数据
+ */
+@property (nonatomic, assign) BOOL isLoadingMore;
+
+/**
+ 应用程序主窗口
+ */
+@property (nonatomic, strong) NSWindow *window;
+
+/**
+ 键盘监听
+ */
+@property (nonatomic, strong) NSEvent *event;
+
+@property (weak) IBOutlet NSView *headerView;
+
+@property (weak) IBOutlet NSTextField *titleLable;
+
+@property (weak) IBOutlet NSPopUpButton *targetsBtn;
+
+/**
+ 当前Target
+ */
+@property (nonatomic, copy) NSString *target;
+
+/**
+ arrSearchData所保存的Target,是对原有target的缓存
+ 
+ 场景：当一个target在搜索状态时切换了其他target，清空搜索的时候出现的问题
+ */
+@property (nonatomic, copy) NSString *searchDataTarget;
+
+/**
+ 加载指示器
+ */
+@property (weak) IBOutlet NSProgressIndicator *indicator;
+
+/**
+ 线程组
+ */
+@property (nonatomic, strong) dispatch_group_t dispatchGroup;
+
+/**
+ 正在添加库或者删除库
+ */
+@property (nonatomic, assign) BOOL isWorking;
+
+/**
+ 正在进行添加删除操作的数量
+ */
+@property (nonatomic, assign) __block NSInteger workingCount;
+
+@property (weak) IBOutlet NSButton *backUpButton;
+
+@end
+
+@implementation MPMainViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    
+    [self setData];
+}
+
+- (void)setData {
+    // 初始化 Python 模块
+    if (self.selectedPath){
+        [self initPython];
+        // 获得所有targets
+        [self getTargetInfo];
+    }else{
+        self.targetsBtn.hidden = YES;
+    }
+    
+    
+    // 设置子视图
+    [self setupSubviews];
+    
+    // 初始化数据
+    [self initDataSource];
+    
+}
+
+- (void)viewDidAppear{
+    [super viewDidAppear];
+//    [self.view.window setLevel:kCGPopUpMenuWindowLevel];
+}
+
+
+#pragma mark - init Python
+
+/**
+ 初始化Python
+ */
+- (void)initPython
+{
+    const char **argv = [self getArray];
+    [self.fileManager lauchPython:1 argv:argv];
+}
+
+/**
+ 获取初始化Python的参数值
+
+ @return 路径数组
+ */
+- (const char **)getArray
+{
+    const char **array = (const char **)malloc((self.selectedPath.length + 1) * sizeof(char*));
+    array[0] = strdup([self.selectedPath  UTF8String]);
+    array[1] = strdup([self.selectedPath  UTF8String]);
+    return array;
+}
+
+#pragma mark - Data Source
+
+- (void)initDataSource
+{
+    // root1
+    if (self.selectedPath)
+        [self getExistsLibsList:GetDataTypeDefault];
+    
+    // root2
+    [self getAllLibsList:GetDataTypeDefault];
+
+    self.dispatchGroup = dispatch_group_create();
+    dispatch_group_notify(self.dispatchGroup, dispatch_get_main_queue(), ^{
+        self.isWorking = NO;
+        
+        NSLog(@"完成了!!!!!!!!");
+    });
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(popButtonVillAppear:) name:NSPopUpButtonWillPopUpNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopCloneMobpodslistFile) name:@"stopCloneMobpodslistFile" object:nil];
+}
+
+
+/**
+ 获取所有数据
+
+ @param type 获取数据场景类型
+ */
+- (void) getAllDataWithType:(GetDataType)type {
+    [self getExistsLibsList:type];
+    [self getAllLibsList:type];
+}
+
+/**
+ 获取所有targets
+ */
+- (void) getTargetInfo {
+    
+    NSDictionary *dic =  [self getTargetNames];
+    NSLog(@"%@aaaaaaaa", dic);
+    
+    NSArray *arrTargets = dic[@"targetNames"];
+    
+    [self.targetsBtn removeAllItems];
+    
+    for (int i = 0; i < arrTargets.count; i ++) {
+        [self.targetsBtn addItemWithTitle:arrTargets[i]];
+    }
+    
+    self.targetsBtn.hidden = NO;
+    
+    // 设置默认target
+    NSArray *items = self.targetsBtn.itemTitles;
+    NSInteger index = self.targetsBtn.indexOfSelectedItem;
+    NSString *target = items[index];
+    
+    self.target = target;
+}
+
+/**
+ *  获取所有target name
+ *
+ *  @return
+ */
+- (NSDictionary *)getTargetNames
+{
+    MPPythonModule *module = [MPPythonModule sharedInstance];
+    
+    if (module.currentProjectPath.length)
+    {
+        NSString *result = [module pyCallWithFunctionKey:@"ocGetTargetNames"
+                                                    Args:self.selectedPath];
+        
+        return [MOBFJson objectFromJSONString:result];
+    }
+    else
+    {
+        return @{};
+    }
+}
+
+/**
+ 获取依赖库信息
+ 
+ 由于采用了自动获取依赖库的方式，此方法封存
+ */
+- (void)getDependencyInfo {
+    self.dependencyInfo = nil;
+    
+    // 选中某一个库
+    if (self.selectedModel.libInfo)
+    {
+        NSDictionary *dicLibInfo = [self getAddLibInfo:self.selectedModel.libInfo];
+        
+        // 获取依赖信息
+        NSArray *resultArray = [self.fileManager getDependencyInfoWithLibInfo:dicLibInfo];
+        NSLog(@"ddddddfffffssssss %@",resultArray);
+        if (resultArray.count)
+        {
+            self.dependencyInfo = resultArray;
+        }
+    }
+}
+
+/**
+ 设置target
+ 
+ @param target target名称
+ */
+- (void)setDataAccessor:(NSString *)target {
+    
+    MPPythonModule *module = [MPPythonModule sharedInstance];
+    
+    NSDictionary *info = @{@"target":target,
+                           @"path":self.selectedPath
+                           };
+    
+    
+    [module pyCallWithFunctionKey:@"ocTarget"
+                             Args:[MOBFJson jsonStringFromObject:info]];
+    
+}
+
+/**
+ *  获取已经导入的库列表
+ */
+- (void)getExistsLibsList:(GetDataType)getDataType
+{
+    // root1
+    NSArray *existsLibsList = [self.fileManager getExistsLibsList:self.target];
+    
+    NSMutableArray *level1Array = [NSMutableArray arrayWithCapacity:existsLibsList.count];
+    [existsLibsList enumerateObjectsUsingBlock:^(id _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop)
+     {
+         MPLibModel *model = [MPLibModel libWithDict:obj];
+         model.isAppend = YES;
+         model.isDownload = YES;
+         model.libInfo = obj;
+         [level1Array addObject:model];
+         
+     }];
+    
+    if ((getDataType == GetDataTypeNone && self.libSearchField.stringValue.length > 0) ||
+        getDataType == GetDataTypeSearch) {
+        
+        if ([level1Array isKindOfClass:[NSMutableArray class]] && level1Array.count > 0) {
+            NSArray *array = [self predicateSearchWithArray:level1Array];
+            level1Array = array.mutableCopy;
+        }
+        
+    }
+    
+    [self.marrData removeAllObjects];
+    [self.marrData addObjectsFromArray:level1Array];
+    
+    // 拉去库的远程更新
+    [self gettingLibsOriginUpdate];
+    
+    [self.marrExistData removeAllObjects];
+    [self.marrExistData addObjectsFromArray:level1Array];
+    
+    _existLibsCount = level1Array.count;
+}
+
+/**
+ 获取所有库前n条列表
+ @param getDataType
+ */
+- (void)getAllLibsList:(GetDataType)getDataType
+{
+    
+    NSArray *arrData;
+    
+    // 获取到的所有array
+    __block NSMutableArray <MPLibModel *>*level2Array = [NSMutableArray array];
+    
+    /**
+     search状态下
+     */
+    if (getDataType == GetDataTypeSearch) {
+        const NSInteger count = 100;
+        
+        arrData = [[MPDataManager sharedManager] queryWithCondition:self.libSearchField.stringValue index:self.page_search*count count:count];
+        if (arrData.count == 0) {
+            return;
+        }
+        self.page_search ++;
+    }
+    
+    /**
+     默认状态下
+     */
+    else if (getDataType == GetDataTypeDefault){
+        // index 的逻辑处理
+        const NSInteger count = 200;
+        
+        arrData = [[MPDataManager sharedManager] queryWithIndex:self.page*count count:count];
+        if (arrData.count == 0) {
+            if (self.indicator.isHidden == NO && ![MPSingleton shareInstanced].isUpdate) {
+//                [self.indicator stopAnimation:nil];
+//                self.indicator.hidden = YES;
+            }
+            
+            return;
+        }
+        self.page ++;
+        
+    }
+    
+    /**
+     其他状态
+     */
+    else if (getDataType == GetDataTypeNone) {
+        NSInteger count;
+        
+        if (self.libSearchField.stringValue.length == 0) {
+            count = 200;
+            arrData = [[MPDataManager sharedManager] queryWithIndex:0 count:self.page*count];
+        }
+        else{
+            count = 100;
+            arrData = [[MPDataManager sharedManager] queryWithCondition:self.libSearchField.stringValue index:0 count:self.page_search*count];
+        }
+    }
+    
+    /**
+     将获取到的Dictionary数组转换为模型数组
+     */
+    [arrData enumerateObjectsUsingBlock:^(id _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop)
+     {
+         MPLibModel *model = [MPLibModel libWithDict:obj];
+         model.isAppend = NO;
+         model.libInfo = obj;
+
+         // 检查库是否已经存在，如果不存在要先下载
+         NSFileManager *fileManager = [NSFileManager defaultManager];
+         NSString *path = FrameworkPathVersion(model.libInfo);
+         
+         NSInteger fileSize = [[fileManager attributesOfItemAtPath:path error:nil] fileSize];
+
+         if (![fileManager fileExistsAtPath:path] && fileSize <= 0){
+             model.isDownload = NO;
+         }else{
+             model.isDownload = YES;
+         }
+         [level2Array addObject:model];
+         
+         // 保存所有的 Lib 名称
+//         [self.allLibNames addObject:model.respositoryName];
+     }];
+    
+    
+    /**
+     去掉exist库
+     */
+    NSArray *arrExist = self.marrExistData;
+    [arrExist enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        MPLibModel *modelExist = obj;
+        level2Array = [self predicateDeleteWithArray:level2Array :modelExist.respositoryName].mutableCopy;
+    }];
+    
+    /**
+     修改正在加载的库状态
+     */
+    
+    NSLog(@"downloadobserver  %@",self.downloadObserver.observerArray);
+    [self.downloadObserver.observerTitle enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSLog(@"修改状态");
+        NSArray *array = [self predicateGetWithArray:level2Array :obj];
+        if ([array isKindOfClass:[NSArray class]] && array.count > 0) {
+            NSInteger index = [level2Array indexOfObject:array[0]];
+        
+            NSLog(@"存在正在下载的 %@ %lu",obj,index);
+            
+            MPLibModel *model = [level2Array objectAtIndex:index];
+            model.downloading = YES;
+        }
+        
+    }];
+    
+    [self.marrData addObjectsFromArray:level2Array];
+
+    if (getDataType == GetDataTypeDefault) {
+        // 保存所有数据到marrData
+        self.arrSearchData = self.marrData.copy;
+        self.searchDataTarget = self.target;
+    }
+
+    [self.libsTableView reloadData];
+    if (self.indicator.isHidden == NO && ![MPSingleton shareInstanced].isUpdate) {
+        [self.indicator stopAnimation:nil];
+        self.indicator.hidden = YES;
+    }
+    self.isLoadingMore = NO;
+    
+    NSLog(@"load 1");
+}
+
+#pragma mark - setup UI
+
+- (void)setupSubviews
+{
+    // 设置title
+    NSString *pathName = [self.selectedPath lastPathComponent];
+    NSString *postfix = [pathName componentsSeparatedByString:@"."].lastObject;
+    NSRange range = [pathName rangeOfString:postfix];
+    NSString *title = [pathName substringToIndex:range.location-1];
+    self.titleLable.stringValue = [NSString stringWithFormat:@"%@",title];
+    
+    self.view.layer.backgroundColor = [NSColor whiteColor].CGColor;
+    self.backUpButton.hidden = YES;
+    
+    self.libsOutlineView.dataSource = self;
+    self.libsOutlineView.delegate = self;
+    
+    self.relatedTableView.dataSource = self;
+    self.relatedTableView.delegate = self;
+    
+    self.libsTableView.dataSource = self;
+    self.libsTableView.delegate = self;
+    self.libsTableView.wantsLayer = YES;
+    
+    // 表格选中样式
+    self.libsTableView.selectionHighlightStyle = NSTableViewSelectionHighlightStyleNone;
+    // 背景颜色交替
+//    self.libsTableView.usesAlternatingRowBackgroundColors = YES;
+    // 表格网络线
+    self.libsTableView.gridStyleMask = NSTableViewSolidHorizontalGridLineMask | NSTableViewSolidVerticalGridLineMask;
+    
+    // 其他控件
+    self.targetsBtn.tag = -100;
+    
+    // 指示器
+    self.indicator.hidden = NO;
+    [self.indicator startAnimation:nil];
+}
+
+
+// 对已添加的第三方库做远程更新检查
+- (void)gettingLibsOriginUpdate{
+//    dispatch_queue_t fetchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+//    dispatch_async(fetchQueue, ^{
+        __block BOOL isNeedReload = NO;    // 是否需要更新，如果不需要则不刷新，降低性能消耗
+    
+        [self.marrData enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            MPLibModel *model = obj;
+            if (model.isAppend) {
+                
+                /**
+                 产品需求改变，加上这一步：查看是否为最新版本，不是则算作存在更新
+                 */
+                NSArray *arrAllVersions = [[MPDataManager sharedManager] queryWithName:model.respositoryName];
+                
+                if (arrAllVersions.count>0 && ![model.remoteVersion isEqualToString:arrAllVersions[0][@"remoteVersion"]]) {
+                    // 存在更新
+                    isNeedReload = YES;
+                    model.isUpdate = YES;
+                }
+                
+                /**
+                 *  由于需求变动，该逻辑封存
+                if (! isNeedReload) {
+                    // 检查库是否有远程更新
+                    [self.updateService compareOriginLibChangeWithLibInfo:model.libInfo path:self.selectedPath onSuccess:^(bool isHasUpdate) {
+                        if (model.isUpdate != isHasUpdate) {
+                            isNeedReload = YES;
+                        }
+                        
+                        model.isUpdate = isHasUpdate;
+                        
+                    } onException:^(NSException *exception) {
+                        
+                    }];
+                }
+                 */
+                
+            }else{
+                
+            }
+        }];
+//        dispatch_async(dispatch_get_main_queue(), ^{
+////            if (isNeedReload)
+////            [self.libsTableView reloadData];
+//        });
+//        
+//    });
+}
+
+
+#pragma mark - NSTableViewDataSource
+
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
+{
+    return self.marrData.count;
+}
+
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
+    static NSInteger aaa = 0;
+    aaa ++;
+    
+    MPLibModel *model = self.marrData[row];
+    model.btnTag = row;
+    
+    NSString *strIdt=[tableColumn identifier];
+    MPMainViewCellView *cellView = [tableView makeViewWithIdentifier:strIdt owner:self];
+    
+    if (!cellView)
+        cellView = [[MPMainViewCellView alloc]initWithFrame:CGRectMake(0, 0, tableColumn.width, 84)];
+    
+    [cellView setDataWithLibInfo:model];
+    
+//    if (row >= self.marrData.count - 1  &&  !self.isSearching && !self.isLoadingMore) {
+//        self.isLoadingMore = YES;
+//        [self getAllLibsListWithArray:];
+//    }
+    
+    return cellView;
+}
+
+
+//这个方法虽然不返回什么东西，但是必须实现，不实现可能会出问题－比如行视图显示不出来等。（10.11貌似不实现也可以，可是10.10及以下还是不行的）
+- (nullable id)tableView:(NSTableView *)tableView objectValueForTableColumn:(nullable NSTableColumn *)tableColumn row:(NSInteger)row
+{
+    // 进行分页加载
+    if (row == self.marrData.count-1) {
+        if (self.libSearchField.stringValue.length > 0) {
+            [self getAllLibsList:GetDataTypeSearch];
+        }
+        else if(self.isLoadingMore == NO){
+            self.isLoadingMore = YES;
+            [self getAllLibsList:GetDataTypeDefault];
+            NSLog(@"开始分页加载！");
+        }
+        
+    }
+    
+//    return [[self.marrData objectAtIndex:row] objectForKey:[tableColumn identifier]];
+    
+    return nil;
+}
+
+#pragma mark - NSTableViewDelegate
+- (void)tableViewSelectionDidChange:(NSNotification *)notification
+{
+//    NSTableView *tableView = notification.object;
+//    NSInteger row = [tableView selectedRow];
+    
+}
+
+- (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row
+{
+    return 84;
+}
+
+#pragma mark - ===================== Action
+
+- (IBAction)fileAction:(NSButton *)sender {
+    MPLibModel *model = self.marrData[sender.tag];
+    self.selectedModel = model;
+    [self fileBtnDidClicked];
+}
+
+- (IBAction)addAction:(NSButton *)sender {
+    
+    [self _setBackupFile];
+    
+//    dispatch_group_async(_dispatchGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    
+        self.isWorking = YES;
+//        self.workingCount ++;
+    
+        MPLibModel *model = self.marrData[sender.tag];
+        
+        // 由于是分段进行显示的，所有很有可能arrSearchData里没有所选取的这个model
+        if ([self.arrSearchData containsObject:model]) {
+            self.selectedRow = [self.arrSearchData indexOfObject:model];
+        }else{
+            self.selectedRow = -1;
+        }
+        
+        self.selectedModel = model;
+        
+        [self addBtnDidClicked:sender];
+//    });
+    
+}
+
+- (IBAction)deleteLibAction:(NSButton *)sender {
+    
+//    dispatch_group_async(_dispatchGroup, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        self.isWorking = YES;
+        
+        MPLibModel *model = self.marrData[sender.tag];
+        self.selectedModel = model;
+        [self deleteBtnDidClicked];
+//    });
+    
+}
+
+
+/**
+ 检查是否被依赖
+
+ @return YES：被依赖  NO：没有被依赖
+ */
+- (BOOL)checkIsDenpendend {
+    NSMutableArray *marrDenpendy = [NSMutableArray new];
+    
+    [self.marrExistData enumerateObjectsUsingBlock:^(MPLibModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSString *dependencyStr = obj.libInfo[@"dependency"];
+        
+        NSArray *array = [dependencyStr componentsSeparatedByString:@","];
+        if (array.count > 0) [marrDenpendy addObjectsFromArray:array];
+    }];
+    
+    if ([marrDenpendy containsObject:self.selectedModel.respositoryName]) {
+        return YES;
+    }
+    
+    return NO;
+}
+
+- (IBAction)moreVersionAction:(NSPopUpButton *)sender {
+    self.selectedRow = sender.tag;
+    self.selectedCellView = (MPMainViewCellView *)sender.superview;
+    
+    MPLibModel *model = self.marrData[sender.tag];
+    NSString *version = [[sender titleOfSelectedItem] stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@ - ",model.respositoryName] withString:@""];
+
+    // 替换数据源
+    NSDictionary *dicSelect = [[MPDataManager sharedManager] queryWithName:model.respositoryName version:version].firstObject;
+    
+    model.ID = dicSelect[@"id"];
+    model.localVersion = dicSelect[@"localVersion"];
+    model.remoteVersion = dicSelect[@"remoteVersion"];
+    model.descript = dicSelect[@"description"];
+    model.libInfo = dicSelect;
+    
+    /*
+     // 下面这种是以下拉UI的方式展示多版本的
+    NSArray *arrAllVersions = [[MPDataManager sharedManager] queryWithName:model.respositoryName];
+    
+    
+    NSRect  windowFrame = [self.view.window frame];
+    CGPoint initialLocation = [NSEvent mouseLocation];
+    
+    initialLocation.x -= windowFrame.origin.x;
+    initialLocation.y -= windowFrame.origin.y;
+    
+    if (self.moreVsrsionBlock) {
+        self.moreVsrsionBlock(initialLocation,arrAllVersions);
+    }
+     */
+}
+
+- (IBAction)downloadAction:(NSButton *)sender {
+    MPLibModel *model = self.marrData[sender.tag];
+    self.selectedModel = model;
+
+    if (model.isAppend) {   // 已集成
+        [self updateBtnDidClicked];
+    }
+}
+
+- (IBAction)settingAction:(NSButton *)sender {
+    
+}
+
+- (IBAction)docAction:(NSButton *)sender {
+    MPLibModel *model = self.marrData[sender.tag];
+    self.selectedModel = model;
+    
+    [self docBtnDidClicked];
+}
+
+- (IBAction)openProjectAction:(NSButton *)sender {
+    [self openProjectByXcode];
+}
+
+
+- (IBAction)backAction:(id)sender {
+    if (self.backBlock) {
+        self.backBlock();
+    }
+    return;
+    
+//    [NSEvent removeMonitor:_event];
+//    [self.presentingViewController dismissViewController:self];
+}
+
+
+/**
+ 选择target事件
+
+ @param sender popBtn按钮
+ */
+- (IBAction)selectTargetAction:(id)sender {
+    NSArray *items = self.targetsBtn.itemTitles;
+    NSInteger index = self.targetsBtn.indexOfSelectedItem;
+    
+    NSString *target = items[index];
+    
+    self.target = target;
+
+    [self getAllDataWithType:GetDataTypeNone];
+}
+
+
+/**
+ 搜索库
+
+ @param sender 搜索框
+ */
+- (void)searchFieldAction:(NSString *)searchValue
+{
+    NSLog(@"asoidsoigds");
+    // 清空search_page
+    self.page_search = 0;
+    
+    if (searchValue.length)
+    {
+//        // 过滤条件
+//        NSPredicate *preicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[c] %@", self.searchField.stringValue];
+
+        [self.marrData removeAllObjects];
+        [self getAllDataWithType:GetDataTypeSearch];
+    }
+    else
+    {
+        // 过滤后的数据设置回数据模型
+//        if ([self.searchDataTarget isEqualToString:self.target]) {
+//            [self.marrData removeAllObjects];
+//            [self.marrData addObjectsFromArray:self.arrSearchData];
+//            
+//            [self.downloadObserver.observerTitle enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//                NSLog(@"修改状态");
+//                NSArray *array = [self predicateGetWithArray:self.marrData :obj];
+//                if ([array isKindOfClass:[NSArray class]] && array.count > 0) {
+//                    NSInteger index = [self.marrData indexOfObject:array[0]];
+//                    
+//                    NSLog(@"存在正在下载的 %@ %lu",obj,index);
+//                    
+//                    MPLibModel *model = [self.marrData objectAtIndex:index];
+//                    model.downloading = YES;
+//                }
+//                
+//            }];
+//            
+//            [self.libsTableView reloadData];
+//        }else{
+            self.page = 0;
+            [self getAllDataWithType:GetDataTypeDefault];
+//        }
+        
+    }
+
+}
+
+- (IBAction)backupAction:(id)sender {
+    
+    NSLog(@"%@",self.selectedPath);
+    if (self.workingCount)
+    {
+        return;
+    }
+    
+    self.backUpButton.hidden = YES;
+    
+    NSFileManager *manager = [NSFileManager defaultManager];
+    NSString *dicPath = [self.selectedPath stringByReplacingOccurrencesOfString:[self.selectedPath lastPathComponent] withString:@""];
+    NSString *mobPodsPath = [dicPath stringByAppendingPathComponent:@"__MobPods"];
+    NSString *mobPodsTempPath = [mobPodsPath stringByAppendingPathComponent:@"__MobPodsTemp"];
+    
+    NSString *projectName = [self.selectedPath lastPathComponent];
+    
+    
+    NSArray *arguments = @[@"-R",
+                           [mobPodsTempPath stringByAppendingPathComponent:projectName],
+                           dicPath
+                           ];
+
+    [MPTask runTaskWithLanunchPath:CMD_CP arguments:arguments currentDirectoryPath:nil onSuccess:^(NSString *captureString) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [manager removeItemAtPath:[mobPodsTempPath stringByAppendingPathComponent:projectName] error:nil];
+        });
+        
+    } onException:^(NSException *exception) {
+        NSLog(@"复制失败 %@",exception);
+    }];
+    
+//    NSString *dbPath = [mobPodsPath stringByAppendingPathComponent:@"mobpods.db"];
+    NSString *tempDBPath = [mobPodsTempPath stringByAppendingPathComponent:@"mobpods.db"];
+    if ([manager fileExistsAtPath:tempDBPath])
+    {
+        NSArray *arguments2 = @[@"-R",
+                                tempDBPath,
+                                mobPodsPath];
+        [MPTask runTaskWithLanunchPath:CMD_CP arguments:arguments2 currentDirectoryPath:nil onSuccess:^(NSString *captureString) {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self getAllDataWithType:GetDataTypeNone];
+                [manager removeItemAtPath:tempDBPath error:nil];
+                NSLog(@"回退成功");
+            });
+            
+        } onException:^(NSException *exception) {
+            NSLog(@"复制失败 %@",exception);
+        }];
+    }
+    
+}
+
+- (void)_setBackupFile
+{
+    if (self.workingCount)
+    {
+        return;
+    }
+    
+    NSLog(@"   ®add");
+    self.backUpButton.hidden = NO;
+    
+    NSFileManager *manager = [NSFileManager defaultManager];
+    NSString *dicPath = [self.selectedPath stringByReplacingOccurrencesOfString:[self.selectedPath lastPathComponent] withString:@""];
+    NSString *mobPodsPath = [dicPath stringByAppendingPathComponent:@"__MobPods"];
+    NSString *mobPodsTempPath = [mobPodsPath stringByAppendingPathComponent:@"__MobPodsTemp"];
+    
+    BOOL success = NO;
+    
+    if (![manager fileExistsAtPath:mobPodsPath])
+    {
+        success = [manager createDirectoryAtPath:mobPodsPath withIntermediateDirectories:YES attributes:nil error:nil];
+        if (success)
+        {
+            success = [manager createDirectoryAtPath:mobPodsTempPath withIntermediateDirectories:YES attributes:nil error:nil];
+        }
+    }
+    else
+    {
+        if (![manager fileExistsAtPath:mobPodsTempPath])
+        {
+            success = [manager createDirectoryAtPath:mobPodsTempPath withIntermediateDirectories:YES attributes:nil error:nil];
+        }
+        else
+        {
+            [manager removeItemAtPath:mobPodsTempPath error:nil];
+            
+            success = [manager createDirectoryAtPath:mobPodsTempPath withIntermediateDirectories:YES attributes:nil error:nil];
+        }
+    }
+    
+    if (success)
+    {
+        
+//        self.selectedPath
+        
+        BOOL success = NO;
+        
+        NSArray *arguments = @[@"-R",
+                               self.selectedPath,
+                               mobPodsTempPath];
+        __weak typeof(self) weakSelf = self;
+        [MPTask runTaskWithLanunchPath:CMD_CP arguments:arguments currentDirectoryPath:nil onSuccess:^(NSString *captureString) {
+            
+        } onException:^(NSException *exception) {
+            NSLog(@"复制失败 %@",exception);
+        }];
+        
+        NSString *dbPath = [mobPodsPath stringByAppendingPathComponent:@"mobpods.db"];
+        if ([manager fileExistsAtPath:dbPath])
+        {
+            NSArray *arguments2 = @[@"-R",
+                                    dbPath,
+                                    mobPodsTempPath];
+            [MPTask runTaskWithLanunchPath:CMD_CP arguments:arguments2 currentDirectoryPath:nil onSuccess:^(NSString *captureString) {
+                
+            } onException:^(NSException *exception) {
+                NSLog(@"复制失败 %@",exception);
+            }];
+        }
+        
+    }
+}
+
+- (void)_setBackUp
+{
+//    if (self.workingCount == 0)
+//    {
+//        [self removeFile:MobPods_List_Path];
+//        NSArray *arguments = @[@"-R",
+//                               self.tempPath,
+//                               MobPods_List_Path];
+//        __weak typeof(self) weakSelf = self;
+//        [MPTask runTaskWithLanunchPath:CMD_CP arguments:arguments currentDirectoryPath:nil onSuccess:^(NSString *captureString) {
+//            [weakSelf removeFile:self.tempPath];
+//        } onException:^(NSException *exception) {
+//            NSLog(@"复制失败 %@",exception);
+//        }];
+//    }
+}
+
+#pragma mark 谓词
+
+- (NSArray *)predicateSearchWithArray:(NSArray <MPLibModel *>*)array {
+    NSPredicate *preicate = [NSPredicate predicateWithFormat:@"SELF.respositoryName CONTAINS[cd] %@ OR SELF.descript CONTAINS[cd] %@", self.libSearchField.stringValue, self.libSearchField.stringValue];
+
+    return  [self predicateWithArray:array predicate:preicate];
+}
+
+- (NSArray *)predicateDeleteWithArray:(NSArray <MPLibModel *>*)array :(NSString *)condition{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.respositoryName != %@",condition];
+    
+    return  [self predicateWithArray:array predicate:predicate];
+}
+
+- (NSArray *)predicateGetWithArray:(NSArray <MPLibModel *>*)array :(NSString *)condition{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.respositoryName == %@",condition];
+    
+    return  [self predicateWithArray:array predicate:predicate];
+}
+
+
+- (NSArray *)predicateWithArray:(NSArray *)array predicate:(NSPredicate *)predicate{
+    NSMutableArray *addLib = [NSMutableArray array];
+    [addLib addObjectsFromArray:[array filteredArrayUsingPredicate:predicate]];
+    
+    return addLib.copy;
+}
+
+/**
+    监听键盘回车
+ 
+    @commandSelector 键盘控制键
+    insertNewline 换行
+ */
+//- (BOOL)control:(NSControl *)control textView:(NSTextView *)textView doCommandBySelector:(SEL)commandSelector{
+//
+//    // 回车键
+//    if (commandSelector == @selector(insertNewline:)) {
+//
+//        return YES;
+//    }
+//    return NO;
+//}
+
+
+
+/**
+ 更新按钮点击
+
+ @param sender 更新按钮
+ */
+- (void)updateBtnDidClicked
+{
+    if ([self.selectedModel.libInfo isKindOfClass:[NSDictionary class]])
+    {
+        [self _setBackupFile];
+        
+        NSArray *arrAllVersions = [[MPDataManager sharedManager] queryWithName:self.selectedModel.respositoryName];
+        NSMutableDictionary *lastVersion = arrAllVersions[0];
+        
+        // ! [self.selectedModel.remoteVersion isEqualToString:lastVersion[@"remoteVersion"]]
+        if (1) {
+            lastVersion[@"lastVersion"] = self.selectedModel.remoteVersion;
+            lastVersion[@"lastLocalPath"] = FrameworkPathVersion(self.selectedModel.libInfo);
+            lastVersion[@"lastConfigPath"] = [NSString stringWithFormat:@"%@/%@/config.mobpods",MOBPODS_PREFIX_PATH, FrameworkNameVersion(self.selectedModel.libInfo)];
+            
+            // 存在高版本
+            MPLibModel *model = [MPLibModel libWithDict:lastVersion];
+            model.isAppend = YES;
+            model.libInfo = lastVersion;
+            self.selectedModel = model;
+            
+            [self addFramework:nil addType:AddFrameworkTypeUpdate];
+            return;
+            
+//            [self deleteBtnDidClicked];
+//            
+//            MPLibModel *model = self.marrData[self.marrExistData.count];
+//            model.remoteVersion = arrAllVersions[0][@"remoteVersion"];
+//            model.libInfo = arrAllVersions[0];
+//        
+//            self.selectedRow = self.marrExistData.count;
+//            self.selectedModel = model;
+//            
+//            [self getDependencyInfo];
+//            
+//            [self addBtnDidClicked:nil];
+//            
+//            return;
+        }
+        
+        return;
+        // 先判断本地仓库是否是最新版本
+        [self.dataManager libUpdateTaskOperationWithLibInfo:self.selectedModel.libInfo
+                                                  onSuccess:^(NSString *captureString) {
+                                                      if ([captureString hasSuffix:@"up-to-date."]) {
+                                                          [[MPAlert alert] alertForWindow:self.window message:@"已经是最新版本。" information:nil];
+                                                      }
+                                                      else
+                                                      {
+                                                          if (self.selectedModel.isAppend) {    // 如果lib有集成，更新已集成的lib
+                                                              NSDictionary *resultInfo = [self.fileManager updateLibsWithLibInfo:self.selectedModel.libInfo];
+                                                              [[MPAlert alert] alertForWindow:self.window message:[resultInfo objectForKey:@"msg"] information:nil];
+                                                          }
+                                                          else{
+                                                              [[MPAlert alert] alertForWindow:self.window message:@"更新完毕" information:nil];
+                                                          }
+                                                      }
+                                                      
+                                                      [self upDataListTxt];
+                                                  }
+                                                onException:^(NSException *exception) {
+                                                    [[MPAlert alert] alertForWindow:self.window message:@"版本更新出现异常。" information:exception.reason];
+                                                }];
+    }
+    else
+    {
+        [[MPAlert alert] alertForWindow:self.window message:@"没有选中要更新的仓库。" information:nil];
+    }
+}
+
+/**
+ 添加按钮点击
+
+ @param sender 添加按钮
+ */
+- (void)addBtnDidClicked:(NSButton *)sender
+{
+    // 1.检查是否正在下载
+    self.downloadObserver = [MPDownloadObserver sharedInstance];
+    __block BOOL isDownload = NO;
+    [self.downloadObserver.observerArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        if ([obj isKindOfClass:[NSString class]] && [obj isEqualToString:self.selectedModel.libInfo[@"respositoryName"]])
+        {
+//            [[MPAlert alert] alertForWindow:self.window message:@"该库正在下载中。" information:nil];
+            
+            isDownload = YES;
+        }
+    }];
+    
+    if (isDownload) {
+        return;
+    }
+    
+    [self addFramework:sender addType:AddFrameworkTypeNormal];
+
+}
+
+
+- (IBAction)configBtnDidClicked:(NSButton *)sender
+{
+    
+    
+}
+
+- (void)docBtnDidClicked
+{
+    if (!self.selectedModel.remotePath) return;
+    
+    NSStoryboard *story = [NSStoryboard storyboardWithName:@"Main" bundle:nil];
+    MPWebViewController *webVC =  [story instantiateControllerWithIdentifier:@"MPWebViewController"];
+    webVC.strURL = self.selectedModel.remotePath;
+    [self presentViewControllerAsSheet:webVC];
+    
+    
+    //    [MPTask runTaskWithLanunchPath:CMD_LAUCH arguments:@[self.selectedModel.remotePath] currentDirectoryPath:nil onSuccess:^(NSString *success) {
+    //        
+    //    } onException:^(NSException *exception) {
+    //        
+    //    }];
+}
+
+- (void)fileBtnDidClicked{
+    NSString *pathName = [self.selectedPath componentsSeparatedByString:@"/"].lastObject;
+    NSRange range = [self.selectedPath rangeOfString:pathName];
+    NSString *dirPath = [self.selectedPath substringToIndex:range.location-1];
+    NSString *currentPath = [dirPath stringByAppendingPathComponent:[NSString stringWithFormat:@"__MobPods/%@",FrameworkNameVersion_Model(self.selectedModel)]];
+    
+    [MPTask runTaskWithLanunchPath:CMD_LAUCH arguments:@[currentPath] currentDirectoryPath:nil onSuccess:^(NSString *success) {
+        
+    } onException:^(NSException *exception) {
+        
+    }];
+}
+
+/**
+ *  删除按钮点击
+ *
+ *  @param sender
+ */
+- (void)deleteBtnDidClicked
+{
+    
+    BOOL result = [self checkIsDenpendend];
+
+    NSAlert *alert = [[NSAlert alloc] init];
+    [alert addButtonWithTitle:@"确定"];
+    [alert addButtonWithTitle:@"取消"];
+    
+    if (result) [alert setMessageText:@"该库被其他库依赖，确定删除该库？"];
+    else        [alert setMessageText:@"是否删除该框架？"];
+
+    [alert beginSheetModalForWindow:self.window completionHandler:^(NSModalResponse returnCode)
+    {
+        if (returnCode ==  abs(NSModalResponseStop))
+        {
+            [self _setBackupFile];
+            
+            if ([self.selectedModel.libInfo isKindOfClass:[NSDictionary class]])
+            {
+                NSDictionary *dicLibInfo = [self getAddLibInfo:self.selectedModel.libInfo];
+                [self.fileManager deleteLibsWithLibInfo:dicLibInfo];
+                
+                // 删除成功提示
+//                NSAlert *msgAlert = [[NSAlert alloc] init];
+//                [msgAlert setMessageText:[resultInfo objectForKey:@"msg"]];
+//                [msgAlert beginSheetModalForWindow:self.window completionHandler:nil];
+
+                /**
+                 *  重新获取已经导入库列表，并刷新界面
+                 */
+                [self getAllDataWithType:GetDataTypeNone];
+                
+                return ;
+                NSInteger index = [self.marrData indexOfObject:self.selectedModel];
+                self.selectedModel.isUpdate = NO;
+                self.selectedModel.isAppend = NO;
+                
+                [self->_marrData replaceObjectAtIndex:index withObject:self.selectedModel];
+                [self->_marrData exchangeObjectAtIndex:index withObjectAtIndex:self-> _existLibsCount-1];
+                self->_existLibsCount --;
+                [self.libsTableView reloadData];
+        
+            }
+            else
+            {
+                NSAlert *msgAlert = [[NSAlert alloc] init];
+                [msgAlert setMessageText:@"没有选中要删除的仓库。"];
+                [msgAlert beginSheetModalForWindow:self.window completionHandler:nil];
+            }
+        }
+    }];
+    
+
+}
+
+
+#pragma mark ===================== 动作关联方法
+
+/**
+ *  判断依赖库是否导入
+ *
+ *  @param name 依赖库名称
+ *
+ *  @return 是否导入
+ */
+/**
+- (BOOL)dependencyLibIsExistsWithRespositoryName:(NSString *)name
+{
+    NSArray *existsLibs = [self.fileManager getExistsLibsList:self.target];
+    __block BOOL isExists = NO;
+    [existsLibs enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop)
+     {
+         NSString *respositoryName = [obj objectForKey:@"respositoryName"];
+         
+         if ([respositoryName isEqualToString:name])
+         {
+             NSLog(@"%@", obj);
+             isExists = YES;
+         }
+         
+     }];
+    return isExists;
+}
+ */
+
+
+// TODO: 添加三方库
+- (void)addFramework:(NSButton *)sender addType:(AddFrameworkType)type{
+    
+    // 获取包含依赖库所有要导入的库
+    // 这里不需要判断是否库已添加,因为在Python添加库的时候会做相应判断
+    NSMutableArray *marrLibInfo = @[].mutableCopy;
+    if (type != AddFrameworkTypeDependency) {
+        [marrLibInfo addObject:[self getAddLibInfo:self.selectedModel.libInfo]];
+    }
+    
+    if (self.dependencyInfo.count > 0) {
+        [self.dependencyInfo enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSArray *arr = [[MPDataManager sharedManager] queryWithName:obj[@"name"] version:obj[@"ver"]];
+            
+            if([arr isKindOfClass:[NSArray class]] && arr.count > 0) {
+                NSDictionary *dic = [self getAddLibInfo:arr[0]];
+            
+                [marrLibInfo addObject:dic];
+            }
+        }];
+    }
+    
+    // 清空dependencyInfo，防止误用
+    self.dependencyInfo = @[];
+    NSLog(@"marrLibInfo = %@",marrLibInfo);
+    
+    // 遍历要导入的库
+    for (NSDictionary *libInfo in marrLibInfo) {
+        
+        _workingCount ++;
+        
+        // 2.检查库是否已经存在，如果不存在要先下载
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSString *path = FrameworkPathVersion(libInfo);
+        
+        NSLog(@"path = %@ -----",path);
+        
+        NSInteger fileSize = [[fileManager attributesOfItemAtPath:path error:nil] fileSize];
+        
+        if (![fileManager fileExistsAtPath:path] && fileSize <= 0)
+        {
+            if (sender){
+                MPMainViewCellView *cellView = (MPMainViewCellView *)sender.superview;
+                cellView.add.hidden = YES;
+                cellView.indicator.hidden = NO;
+                [cellView.indicator startAnimation:nil];
+            }
+            
+            // TODO: 选择了下载时要添加下载进度展示
+            [self.downloadObserver.observerArray addObject:FrameworkNameVersion(libInfo)];
+            [self.downloadObserver.observerTitle addObject:libInfo[@"respositoryName"]];
+            
+            NSLog(@"下载库 --- %@",libInfo[@"respositoryName"]);
+            dispatch_queue_t downloadQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+            dispatch_async(downloadQueue, ^{
+                [self.dataManager libDownloadTaskOperationWithLibInfo:libInfo success:^{
+
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        NSLog(@"下载后开始添加");
+                        if (type == AddFrameworkTypeUpdate)
+                            [self updateFundation:libInfo];
+                        else
+                            [self importFundation:libInfo :YES];
+                        
+                        
+                    });
+                    
+                } failure:^(NSException *exception) {
+                    if (sender){
+                        MPMainViewCellView *cellView = (MPMainViewCellView *)sender.superview;
+                        cellView.add.hidden = NO;
+                        cellView.indicator.hidden = YES;
+                        [cellView.indicator stopAnimation:nil];
+                    }else{
+                        [self getAllDataWithType:GetDataTypeNone];
+                    }
+                }];
+            });
+            
+        }
+        
+        // 3.库已存在，开始导入
+        else if ([libInfo isKindOfClass:[NSDictionary class]])
+        {
+            // 检查是否有config文件，没有则添加
+            NSString *configPath = [NSString stringWithFormat:@"%@/%@/config.mobpods",MOBPODS_PREFIX_PATH, FrameworkNameVersion(libInfo)];
+            if (![fileManager fileExistsAtPath:configPath]) {
+                
+                NSString *path = [NSString stringWithFormat:@"%@/%@/",MOBPODS_PREFIX_PATH,FrameworkNameVersion(libInfo)];
+                NSString *podspecName = [NSString stringWithFormat:@"%@.podspec",libInfo[@"respositoryName"]];
+                
+                [[MPFileManager sharedManager] createConfigMobpodsFileWithConfigPath:path configName:podspecName success:^{
+                    
+                    if (type == AddFrameworkTypeUpdate)
+                        [self updateFundation:libInfo];
+                    else
+                        [self importFundation:libInfo :NO];
+                    
+                } failure:^{
+                    
+                    self.workingCount --;
+                    
+                    NSAlert *alert = [[NSAlert alloc] init];
+                    [alert setMessageText:@"添加失败,可能库不存在"];
+                    [alert beginSheetModalForWindow:self.window completionHandler:nil];
+                    
+                    if (sender){
+                        MPMainViewCellView *cellView = (MPMainViewCellView *)sender.superview;
+                        cellView.add.hidden = NO;
+                        cellView.indicator.hidden = YES;
+                        [cellView.indicator stopAnimation:nil];
+                    }else{
+                        [self getAllDataWithType:GetDataTypeNone];
+                    }
+                    
+                    return;
+                }];
+            }
+            
+            else{
+                if (type == AddFrameworkTypeUpdate)
+                    [self updateFundation:libInfo];
+                else
+                    [self importFundation:libInfo :NO];
+            }
+            
+        }
+        else
+        {
+            NSAlert *alert = [[NSAlert alloc] init];
+            [alert setMessageText:@"没有选中要添加的仓库。"];
+            [alert beginSheetModalForWindow:self.window completionHandler:nil];
+            
+        }
+    }
+
+    _existLibsCount++;
+}
+
+
+/**
+ 获取导入三方库需要的dictionary
+
+ @param libInfo (MPLibModel *)model.libInfo
+ @return
+ */
+- (NSDictionary *)getAddLibInfo:(NSDictionary *)libInfo {
+    NSMutableDictionary *mdicLibInfo = libInfo.mutableCopy;
+    mdicLibInfo[@"target"] = self.target;
+    mdicLibInfo[@"configPath"] = [NSString stringWithFormat:@"%@/%@/config.mobpods",MOBPODS_PREFIX_PATH, FrameworkNameVersion(libInfo)];
+    mdicLibInfo[@"localPath"] = FrameworkPathVersion(libInfo);
+    
+    return mdicLibInfo.copy;
+}
+
+- (void)importFundation:(NSDictionary *)libInfo :(BOOL)needGetAllLibs{
+    
+    NSLog(@"开始导入#####！！！");
+    // 先进行清空搜索操作
+//    self.page_search = 0;
+//    self.page = 0;
+//    
+//    self.libSearchField.stringValue = @"";
+    
+    // 过滤后的数据设置回数据模型
+//    [self.marrData removeAllObjects];
+//    [self.marrData addObjectsFromArray:self.arrSearchData];
+    
+    // 导入选中库(python***)
+    // 导入库   mdicLibInfo[@"configPath"] = self.selectedModel.localPath
+    NSDictionary *resultInfo;
+    @synchronized (self) {
+         resultInfo = [self.fileManager addLibsWithLibInfo:libInfo];
+    }
+
+    NSLog(@"resultInfo = %@",resultInfo);
+    
+    if ([resultInfo[@"success"] isEqualToString:@"yes"] &&
+        [resultInfo[@"msg"] isEqualToString:@"存在依赖库."])
+    {
+        NSArray *arrDependencies = resultInfo[@"dependencies"];
+        self.dependencyInfo = arrDependencies;
+        [self addFramework:nil addType:AddFrameworkTypeDependency];
+    }
+    
+    if ([resultInfo[@"success"] isEqualToString:@"no"] &&
+        [resultInfo[@"msg"] isEqualToString:@"该框架已经导入."])
+    {
+        /**
+         此处作容错处理
+         
+         场景：库已添加但只生成Repositories列表，没有生成project列表的情况
+         处理方式:通过update的方式，删除旧的，添加“新”的
+         */
+        [self updateBtnDidClicked];
+        
+        _workingCount --;
+        return;
+    }
+    
+    if ([resultInfo[@"success"] isEqualToString:@"no"] &&
+        [resultInfo[@"msg"] isEqualToString:@"config文件不存在."]) {
+        NSAlert *alert = [NSAlert new];
+        alert.messageText = @"配置文件不存在";
+        [alert beginSheetModalForWindow:self.view.window completionHandler:nil];
+        
+        _workingCount --;
+        return;
+    }
+    
+    // 是否需要编译，提示相应信息
+    __block BOOL isBuild = NO;
+    [resultInfo enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop)
+     {
+         if ([key isEqualToString:@"isBuild"])
+         {
+             isBuild = YES;
+         }
+     }];
+    
+    if (isBuild == NO)
+    {
+        
+        // 导入成功提示
+//        MPUserNotification *notifi = [MPUserNotification new];
+//        [notifi notificationWithTitle:[resultInfo objectForKey:@"msg"] informativeText:nil];
+    }
+    
+    
+    
+    // 监听是否编译完毕，刷新界面
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(buildProjIsSuccessNotification:)
+//                                                 name:@"buildProjIsSuccess"
+//                                               object:nil];
+    
+    
+    _workingCount --;
+    [self getAllDataWithType:GetDataTypeNone];
+    
+}
+
+- (void)updateFundation:(NSDictionary *)libInfo{
+    NSDictionary *resultInfo = [self.fileManager updateLibsWithLibInfo:libInfo];
+    
+    // 是否需要编译，提示相应信息
+    __block BOOL isBuild = NO;
+    [resultInfo enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop)
+     {
+         if ([key isEqualToString:@"isBuild"])
+         {
+             isBuild = YES;
+         }
+     }];
+    
+    if (isBuild == NO)
+    {
+
+    }
+    
+    // 监听是否编译完毕，刷新界面
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(buildProjIsSuccessNotification:)
+//                                                 name:@"buildProjIsSuccess"
+//                                               object:nil];
+    
+    [self getAllDataWithType:GetDataTypeNone];
+}
+
+/**
+ *  编译完毕之后处理
+ *
+ *  @param notification 接受对象
+ */
+- (void)buildProjIsSuccessNotification:(NSNotification *)notification
+{
+    
+    /**
+     *  重新获取已经导入库列表，并刷新界面
+     */
+    self.page = 0;
+    [self getAllDataWithType:GetDataTypeDefault];
+    
+    NSLog(@"load 2");
+}
+
+- (BOOL)performKeyEquivalent:(NSEvent *)event{
+//    NSString *characters = [event charactersIgnoringModifiers];
+    
+    return NO;
+}
+
+
+#pragma mark ===================== Notification
+
+- (void)popButtonVillAppear:(NSNotification *)notification{
+    
+//    NSProgressIndicator *pr = [[NSProgressIndicator alloc] initWithFrame:NSMakeRect(0, 0, 100, 100)];
+//    [self.view addSubview:pr];
+//
+//    NSTextField *tf = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 0, 500, 500)];
+//    [self.view addSubview:tf positioned:NSWindowAbove relativeTo:nil];
+    
+    NSLog(@"_____________ %@",self.view.subviews);
+    
+    NSPopUpButton *popBtn = notification.object;
+    if (popBtn.tag == -100) return;
+    
+    if (popBtn.numberOfItems > 1) return;
+    
+    self.selectedRow = popBtn.tag;
+    self.selectedCellView = (MPMainViewCellView *)popBtn.superview;
+    
+    MPLibModel *model = self.marrData[self.selectedRow];
+    NSArray *arrAllVersions = [[MPDataManager sharedManager] queryWithName:model.respositoryName];
+
+    for (int i = 0; i < arrAllVersions.count; i ++) {
+        [popBtn addItemWithTitle:[NSString stringWithFormat:@"%@ - %@",model.respositoryName,arrAllVersions[i][@"remoteVersion"]]];
+    }
+    
+    [popBtn selectItemAtIndex:0];
+}
+
+- (void)closeMainVC:(NSNotification*)notification{
+    [self.presentingViewController dismissViewController:self];
+}
+
+- (void)stopCloneMobpodslistFile{
+    [self getAllDataWithType:GetDataTypeDefault];
+    [self.indicator stopAnimation:nil]; // 其实调用上一句就有实现这个方法，这里只是强调一下,也可以不调用
+    self.indicator.hidden = YES;
+}
+
+- (void)openProjectByXcode{
+    // 获取已经安装的应用列表
+    NSArray *applications = [self searchInstalledApplicationsOnMacOS];
+    
+    // 获取 Xcode 的名称
+    NSString *xcodeName = [self getXcodeNameByApplications:applications];
+    
+    if (xcodeName.length)
+    {
+        // 打开选择的工程
+        [[NSWorkspace sharedWorkspace] openFile:self.selectedPath withApplication:xcodeName andDeactivate:NO];
+    }
+    else
+    {
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert setMessageText:@"Xcode 还没有安装，请先安装。"];
+        NSWindow *window = [NSApplication sharedApplication].keyWindow;
+        [alert beginSheetModalForWindow:window completionHandler:nil];
+    }
+}
+
+/**
+ 获取 Mac 上面安装的应用列表
+ 
+ @return 应用数组
+ */
+- (NSArray *)searchInstalledApplicationsOnMacOS
+{
+    // 查找已经安装的应用程序
+    NSArray *urls = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationDirectory inDomains:NSLocalDomainMask];
+    NSError *error = nil;
+    NSArray *properties = [NSArray arrayWithObjects: NSURLLocalizedNameKey,
+                           NSURLCreationDateKey, NSURLLocalizedTypeDescriptionKey, nil];
+    NSArray *array = [[NSFileManager defaultManager]
+                      contentsOfDirectoryAtURL:[urls objectAtIndex:0]
+                      includingPropertiesForKeys:properties
+                      options:(NSDirectoryEnumerationSkipsHiddenFiles)
+                      error:&error];
+    return array;
+}
+
+- (NSString *)getXcodeNameByApplications:(NSArray *)apps
+{
+    NSMutableArray *xcodeArray = [NSMutableArray array];
+    [apps enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop)
+     {
+         NSString *appName = [obj lastPathComponent];
+         if ([appName hasPrefix:@"Xcode"])
+         {
+             [xcodeArray addObject:appName];
+         }
+     }];
+    
+    for (NSString *name in xcodeArray) {
+        if ([name isEqualToString:@"Xcode"]) {
+            return name;
+        }
+    }
+    return xcodeArray.firstObject;
+}
+
+
+/**
+    上传更新的本地listTxt文件
+ */
+- (void)upDataListTxt{
+    
+}
+
+- (void)chageOtherVersion:(NSDictionary *)dic{
+    MPLibModel *model = [MPLibModel libWithDict:dic];
+    model.isAppend = NO;
+    model.remotePath = dic[@"remotePath"];
+    model.libInfo = dic;
+    
+    [self.marrData replaceObjectAtIndex:self.selectedRow withObject:model];
+    
+    self.selectedCellView.backBtn.title = [NSString stringWithFormat:@"%@ - v%@",model.respositoryName,model.remoteVersion];
+    self.selectedCellView.descript.stringValue = model.descript;
+}
+
+#pragma mark - 懒加载
+- (NSMutableArray *)marrData{
+    if (!_marrData) {
+        _marrData = [NSMutableArray array];
+    }
+    return _marrData;
+}
+
+- (NSMutableArray *)marrExistData{
+    if (!_marrExistData) {
+        _marrExistData = [NSMutableArray array];
+    }
+    return _marrExistData;
+}
+
+- (MPUpdateService *)updateService{
+    if (!_updateService) {
+        _updateService = [MPUpdateService new];
+    }
+    return _updateService;
+}
+
+- (MPFileManager *)fileManager
+{
+    if (!_fileManager)
+    {
+        _fileManager = [MPFileManager sharedManager];
+    }
+    return _fileManager;
+}
+
+- (MPDataManager *)dataManager
+{
+    if (!_dataManager)
+    {
+        _dataManager = [MPDataManager sharedManager];
+    }
+    return _dataManager;
+}
+
+- (NSMutableArray *)allLibNames
+{
+    if (!_allLibNames)
+    {
+        _allLibNames = [NSMutableArray array];
+    }
+    return _allLibNames;
+}
+
+- (NSWindow *)window
+{
+    if (!_window)
+    {
+        _window = [NSApplication sharedApplication].keyWindow;
+    }
+    return _window;
+}
+
+
+
+- (void)searchFieldDidExpand:(ITSearchField *)searchField {
+    NSLog(@"expanded");
+}
+
+- (void)searchFieldDidCollapse:(ITSearchField *)searchField {
+    NSLog(@"collapsed");
+}
+
+- (BOOL)searchFieldShouldCollapse:(ITSearchField *)searchField {
+    return YES;
+}
+
+- (BOOL)searchFieldShouldExpand:(ITSearchField *)searchField {
+    return YES;
+}
+
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
+    return NSTerminateCancel;
+}
+
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {
+    return YES;
+}
+
+- (void)controlTextDidEndEditing:(NSNotification *)obj {
+    
+}
+
+- (void)controlTextDidBeginEditing:(NSNotification *)obj {
+    
+}
+
+
+
+
+@end

@@ -1,0 +1,19 @@
+//
+//  MPProjectListViewController.h
+//  MobPods
+//
+//  Created by ShengQiangLiu on 16/11/2.
+//  Copyright © 2016年 mob.com. All rights reserved.
+//
+
+#import <Cocoa/Cocoa.h>
+
+@interface MPProjectListViewController : NSViewController
+
+@property (nonatomic, copy) openMainVC openBlock;
+
+- (void)searchAction:(NSString *)searchValue;
+
+@property (nonatomic, assign) NSString *strWindowID;
+
+@end
