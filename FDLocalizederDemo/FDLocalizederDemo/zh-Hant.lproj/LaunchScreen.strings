@@ -1,0 +1,5 @@
+
+"FDLocalizeder_Excel模板" = "说明：\n\n第一列code不能为空，第一排语言标识不能为空。\n\n语言标识可以通过项目里的Languages.plist和LanguageBindFile.plist进行配置";
+"This is a code" = "从肩膀的最高点一直量到衣服的下摆。一定要光着脚，双脚并拢站直。";
+"这是一个code(不能为空)" = "这是一个code";
+"app_note_explaination1" = "แผนภูมิขนาดนี้ใช้เพื่อการอ้างอิงเท่านั้น";

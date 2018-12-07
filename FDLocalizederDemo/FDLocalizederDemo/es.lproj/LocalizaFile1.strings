@@ -1,0 +1,18 @@
+/* 
+  LocalizaFile1.strings
+  FDLocalizederDemo
+
+  Created by chuxiao on 2018/12/7.
+  Copyright © 2018年 chuxiao. All rights reserved.
+*/
+
+/**
+ 这是一个注释
+
+ ***也可以通过双斜杠(//)添加注释***
+ ***也可以不添加注释***
+ */
+"FDLocalizeder_Excel模板" = "Longitud";
+"This is a code" = "Mida desde el punto más alto de su hombro hasta el dobladillo del vestido. Asegúrese de medir con los pies descalzos y estar de pie con los pies juntos.";
+"这是一个code(不能为空)" = "Nota:";
+"app_note_explaination1" = "La tabla de tamaños solo sirve de referencia.";
