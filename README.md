@@ -1,6 +1,7 @@
 # FDLocalizeder
 Localization language automatic import tool.
 
+[<font color=#00ffff size=36>安装包下载点击这里</font>](https://github.com/chuxiaojiajia/FDLocalizeder/raw/master/.installer/FDLocalizeder.dmg)
 
 ## FDLocalizeder 使用说明
 
