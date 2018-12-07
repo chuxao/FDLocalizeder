@@ -1,24 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" systemVersion="17A277" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="SM9-nl-kKv"/>
+                        <viewControllerLayoutGuide type="bottom" id="6nu-TZ-Xiv"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="当前语言是：" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HO6-bc-kNe">
+                                <rect key="frame" x="60" y="150" width="255" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="y3u-8N-qjJ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O0r-dA-iF1">
+                                <rect key="frame" x="60" y="195" width="255" height="33"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="33" id="VFm-Ml-gpx"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="59j-uM-5jF">
+                                <rect key="frame" x="60" y="262" width="255" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="Mfo-Vh-Uik"/>
+                                </constraints>
+                                <string key="text">第一条本地化文本：
+(无本地化则使用系统默认语言)</string>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="12"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hh0-iW-3Fe">
+                                <rect key="frame" x="60" y="330" width="255" height="151"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="151" id="SoB-WT-Bwm"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FDLocalizederTest" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QPI-WY-QiC">
+                                <rect key="frame" x="60" y="70" width="255" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="lvZ-zq-VSd"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <constraints>
+                            <constraint firstItem="HO6-bc-kNe" firstAttribute="top" secondItem="SM9-nl-kKv" secondAttribute="bottom" constant="130" id="3gL-v1-xEE"/>
+                            <constraint firstItem="Hh0-iW-3Fe" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="44" id="BG3-EC-epl"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Hh0-iW-3Fe" secondAttribute="trailing" constant="44" id="ELZ-CX-2Er"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="O0r-dA-iF1" secondAttribute="trailing" constant="44" id="H6s-cD-KrV"/>
+                            <constraint firstItem="QPI-WY-QiC" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="44" id="LIU-GJ-nhL"/>
+                            <constraint firstItem="Hh0-iW-3Fe" firstAttribute="top" secondItem="59j-uM-5jF" secondAttribute="bottom" constant="24" id="Qu8-u1-NRh"/>
+                            <constraint firstItem="QPI-WY-QiC" firstAttribute="top" secondItem="SM9-nl-kKv" secondAttribute="bottom" constant="50" id="d9f-es-gaf"/>
+                            <constraint firstItem="HO6-bc-kNe" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="44" id="fSM-JJ-APL"/>
+                            <constraint firstItem="59j-uM-5jF" firstAttribute="top" secondItem="O0r-dA-iF1" secondAttribute="bottom" constant="34" id="gdL-Aa-vb6"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="QPI-WY-QiC" secondAttribute="trailing" constant="44" id="lP1-l4-jrr"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="HO6-bc-kNe" secondAttribute="trailing" constant="44" id="lSD-Zu-7by"/>
+                            <constraint firstItem="59j-uM-5jF" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="44" id="teU-aF-KWr"/>
+                            <constraint firstItem="O0r-dA-iF1" firstAttribute="top" secondItem="HO6-bc-kNe" secondAttribute="bottom" constant="24" id="xEG-8b-i7Q"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="59j-uM-5jF" secondAttribute="trailing" constant="44" id="xGF-er-FKd"/>
+                            <constraint firstItem="O0r-dA-iF1" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="44" id="xr5-ZH-RjW"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="label1" destination="O0r-dA-iF1" id="RY0-e8-4PS"/>
+                        <outlet property="label2" destination="Hh0-iW-3Fe" id="Rjv-z1-QAg"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="32.799999999999997" y="82.3088455772114"/>
         </scene>
     </scenes>
 </document>
