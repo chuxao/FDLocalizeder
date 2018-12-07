@@ -18,9 +18,7 @@ Localization language automatic import tool.
 
 4. 点击添加按钮`Click on ad`进行添加操作。
 
-<img src="https://raw.githubusercontent.com/chuxiaojiajia/FDLocalizeder/master/.source/EAEC404C98DAECC6BB54A64924C24610.png" width="600" alt="主页面"/>
-
-<img src="https://raw.githubusercontent.com/chuxiaojiajia/FDLocalizeder/master/.source/983181C537C9F20E92365765A37D7EF6.png" width="600" alt=""/>
+<img src="https://raw.githubusercontent.com/chuxiaojiajia/FDLocalizeder/master/.source/EAEC404C98DAECC6BB54A64924C24610.jpeg" width="600" alt="主页面"/>
 
 <br>
 
