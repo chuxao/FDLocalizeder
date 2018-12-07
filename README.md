@@ -63,7 +63,7 @@ Excel文档请保持如下格式：
 
 在`LanguzgeBindFile.plist`里将`Excel`所出现的国家名都添加到对应的列表中，使用的时候只要国家名在这里出现过，都可以识别。
 
-![](https://upload-images.jianshu.io/upload_images/3101550-8279e9d744ff28e1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/600)
+<img src="https://raw.githubusercontent.com/chuxiaojiajia/FDLocalizeder/master/.source/3101550-8279e9d744ff28e1.png" width="375" alt=""/>
 
 <br>
 <br>
