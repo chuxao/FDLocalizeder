@@ -60,6 +60,14 @@ Excel文档请保持如下格式：
 
 <img src="https://raw.githubusercontent.com/chuxiaojiajia/FDLocalizeder/master/.source/3101550-8279e9d744ff28e1.png" width="600" alt=""/>
 
+#### 测试结果
+
+<img src="https://raw.githubusercontent.com/chuxiaojiajia/FDLocalizeder/master/.source/EBE063B8-002E-4B22-BA79-912F3D555B6C.png" width="800" alt=""/>
+
+<br>
+
+如有其它问题请提issue。
+
 <br>
 <br>
 <br>
