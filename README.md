@@ -18,10 +18,9 @@ Localization language automatic import tool.
 
 4. 点击添加按钮`Click on ad`进行添加操作。
 
-![主页](https://raw.githubusercontent.com/chuxiaojiajia/FDLocalizeder/master/.source/EAEC404C98DAECC6BB54A64924C24610.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/600)
+<img src="https://raw.githubusercontent.com/chuxiaojiajia/FDLocalizeder/master/.source/EAEC404C98DAECC6BB54A64924C24610.png" width="600" alt="主页面"/>
 
-![](https://raw.githubusercontent.com/chuxiaojiajia/FDLocalizeder/master/.source/983181C537C9F20E92365765A37D7EF6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/600)
-
+<img src="https://raw.githubusercontent.com/chuxiaojiajia/FDLocalizeder/master/.source/983181C537C9F20E92365765A37D7EF6.png" width="600" alt=""/>
 
 <br>
 
@@ -41,8 +40,7 @@ Localization language automatic import tool.
 
 6. 如果你不需要进行区域性添加，请取消掉勾选框，并`Confirm`。
 
-![](https://raw.githubusercontent.com/chuxiaojiajia/FDLocalizeder/master/.source/073331641B4BD2FC98D852E60121D341.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/600)
-
+<img src="https://raw.githubusercontent.com/chuxiaojiajia/FDLocalizeder/master/.source/073331641B4BD2FC98D852E60121D341.png" width="600" alt=""/>
 
 <br>
 
@@ -52,8 +50,7 @@ Localization language automatic import tool.
 
 Excel文档请保持如下格式：
 
-![FDLocalizeder_Excel模板](https://raw.githubusercontent.com/chuxiaojiajia/FDLocalizeder/master/.source/F1350746-FC3C-459F-AE0C-8D6CED517678.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/600)
-
+<img src="https://raw.githubusercontent.com/chuxiaojiajia/FDLocalizeder/master/.source/F1350746-FC3C-459F-AE0C-8D6CED517678.png" width="600" alt="FDLocalizeder_Excel模板"/>
 
 <br>
 
@@ -63,7 +60,7 @@ Excel文档请保持如下格式：
 
 在`LanguzgeBindFile.plist`里将`Excel`所出现的国家名都添加到对应的列表中，使用的时候只要国家名在这里出现过，都可以识别。
 
-![](https://upload-images.jianshu.io/upload_images/3101550-8279e9d744ff28e1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/600)
+<img src="https://raw.githubusercontent.com/chuxiaojiajia/FDLocalizeder/master/.source/3101550-8279e9d744ff28e1.png" width="600" alt=""/>
 
 <br>
 <br>
