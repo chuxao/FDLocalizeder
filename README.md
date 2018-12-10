@@ -49,7 +49,7 @@ Localization language automatic import tool.
 
 Excel文档请保持如下格式：
 
-<img src="https://raw.githubusercontent.com/chuxiaojiajia/FDLocalizeder/master/.source/F1350746-FC3C-459F-AE0C-8D6CED517678.png" width="600" alt="FDLocalizeder_Excel模板"/>
+<img src="https://raw.githubusercontent.com/chuxiaojiajia/FDLocalizeder/master/.source/F1350746-FC3C-459F-AE0C-8D6CED517678.png" width="700" alt="FDLocalizeder_Excel模板"/>
 
 <br>
 
