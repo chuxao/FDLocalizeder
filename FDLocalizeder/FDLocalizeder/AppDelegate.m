@@ -23,6 +23,9 @@
     // Insert code here to tear down your application
 }
 
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender{
+    return YES;//YES-窗口程序两者都关闭，NO-只关闭窗口；
+}
 
 @end
 
