@@ -255,7 +255,7 @@
     NSString *s2 = [s1 stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
     NSString *s3 = [s2 stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
     NSString *s4 = [s3 stringByReplacingOccurrencesOfString:@"\'" withString:@"\\\'"];
-    NSString *s5 = [s4 stringByReplacingOccurrencesOfString:@"%" withString:@"%%"];
+    NSString *s5 = [s4 stringByReplacingOccurrencesOfString:@"%" withString:@"\%"];
     return s5;
 }
 
