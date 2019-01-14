@@ -101,7 +101,7 @@
     NSMutableArray *allKeys_2 = allKeys.mutableCopy;
     for (NSNumber *key in arrLocations) {
         [marrResult addObject:mdic[key]];
-        [allKeys_2 removeObject:key];
+        [allKeys_2 removeObject:mdic[key]];
     }
     
     [marrResult addObjectsFromArray:allKeys_2.copy];

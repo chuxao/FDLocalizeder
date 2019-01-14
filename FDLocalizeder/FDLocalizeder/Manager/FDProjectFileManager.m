@@ -49,7 +49,7 @@
     }
     
 //    NSLog(@"basePath = %@",basePath);
-    
+    [self.languagesPathsArray removeAllObjects];
     [self getFiles:basePath];
     
     result(self.localizeNames.copy, self.languagesPathsArray.copy);
