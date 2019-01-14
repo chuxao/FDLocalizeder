@@ -33,7 +33,21 @@
 
 - (void)getLocalizesWithPath:(NSString *)path result:(void(^)())result
 {
-    NSString *basePath = [path stringByDeletingLastPathComponent];
+    BOOL isDir = NO;
+    
+    NSString *basePath = path;
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory: &isDir]
+        && isDir) {
+
+        if (!isDir) {
+            basePath = [path stringByDeletingLastPathComponent];
+        }
+    }
+    else {
+        basePath = [path stringByDeletingLastPathComponent];
+    }
+    
 //    NSLog(@"basePath = %@",basePath);
     
     [self getFiles:basePath];

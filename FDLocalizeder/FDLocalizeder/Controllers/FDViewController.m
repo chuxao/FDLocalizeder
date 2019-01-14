@@ -111,8 +111,8 @@
     
     NSOpenPanel *filePanel = [NSOpenPanel openPanel];
     //    filePanel.canChooseFiles = YES;
-    //    filePanel.canChooseDirectories = YES;
-    //    filePanel.allowsMultipleSelection = NO;
+    filePanel.canChooseDirectories = YES;
+    filePanel.allowsMultipleSelection = YES;
     filePanel.allowedFileTypes = @[@"xcodeproj",@"xlsx"];
     //    filePanel.allowsOtherFileTypes = NO;
     
@@ -244,7 +244,28 @@
 
 - (void)_setUIWithFilePath:(NSString *)filePath
 {
-    if ([filePath hasSuffix:@".xcodeproj"]) {
+    if (!filePath) {
+        return;
+    }
+    
+    BOOL isDir = NO;
+    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath isDirectory: &isDir]
+        && isDir) {
+        
+        if (isDir) {
+            self.popButtonBackView.hidden = NO;
+            
+            self.icon_1.image = [NSImage imageNamed:@"Finder1"];
+            
+            self.mainVM.selectedProjectPath = filePath;
+            
+            [self _setPopButton];
+            
+            self.tipText.string = [NSString stringWithFormat:@"║xcodeproj║: %@\n\n%@", filePath, self.tipText.string];
+        }
+    }
+    
+    else if ([filePath hasSuffix:@".xcodeproj"]) {
         self.popButtonBackView.hidden = NO;
         
         self.icon_1.image = [NSImage imageNamed:@"xcode-project_Icon"];

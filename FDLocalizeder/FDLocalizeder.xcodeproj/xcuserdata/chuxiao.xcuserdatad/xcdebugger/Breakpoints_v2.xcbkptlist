@@ -2044,11 +2044,11 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Controllers/FDMainViewModel.m"
-            timestampString = "565857737.656103"
+            timestampString = "569142019.477003"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "206"
@@ -2057,14 +2057,14 @@
             landmarkType = "7">
             <Locations>
                <Location
-                  shouldBeEnabled = "No"
+                  shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "-[FDMainViewModel dataFactoryWithLanguages:language:codes:values:]"
                   moduleName = "FDLocalizeder"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/chuxiao/Documents/Develop/VOVA/FDLocalizeder/FDLocalizeder/Controllers/FDMainViewModel.m"
-                  timestampString = "565703780.509938"
+                  urlString = "file:///Users/chuxiao/Documents/Develop/Other/FDLocalizeder/FDLocalizeder/FDLocalizeder/Controllers/FDMainViewModel.m"
+                  timestampString = "569149891.691361"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "206"
@@ -2072,14 +2072,14 @@
                   offsetFromSymbolStart = "1039">
                </Location>
                <Location
-                  shouldBeEnabled = "No"
+                  shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "-[FDMainViewModel dataFactoryWithLanguages:language:codes:values:]"
                   moduleName = "FDLocalizeder"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/chuxiao/Documents/Develop/VOVA/FDLocalizeder/FDLocalizeder/Controllers/FDMainViewModel.m"
-                  timestampString = "565703780.511886"
+                  urlString = "file:///Users/chuxiao/Documents/Develop/Other/FDLocalizeder/FDLocalizeder/FDLocalizeder/Controllers/FDMainViewModel.m"
+                  timestampString = "569149891.694429"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "206"
@@ -2108,11 +2108,11 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Controllers/FDMainViewModel.m"
-            timestampString = "565857737.656531"
+            timestampString = "569142019.477479"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "116"
@@ -2128,7 +2128,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Manager/FDFileManager.m"
-            timestampString = "565709880.0318249"
+            timestampString = "569153746.709235"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "246"
@@ -2144,7 +2144,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Manager/FDXMLFileManager.m"
-            timestampString = "565709729.958266"
+            timestampString = "569144367.931162"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "75"
@@ -2215,6 +2215,102 @@
                   offsetFromSymbolStart = "1336">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FDLocalizeder/Controllers/FDMainViewModel.m"
+            timestampString = "569142019.4778351"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "94"
+            endingLineNumber = "94"
+            landmarkName = "-parseFileWithValues:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FDLocalizeder/Controllers/FDMainExtendViewModel.m"
+            timestampString = "569149756.964166"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "34"
+            endingLineNumber = "34"
+            landmarkName = "-compareValuesWithFilePath:codes:values:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FDLocalizeder/Controllers/FDMainExtendViewModel.m"
+            timestampString = "569149756.965012"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "77"
+            endingLineNumber = "77"
+            landmarkName = "-_parseLocalfileToArray:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FDLocalizeder/Manager/FDProjectFileManager.m"
+            timestampString = "569153746.709538"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
+            landmarkName = "-getFiles:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FDLocalizeder/Controllers/FDViewController.m"
+            timestampString = "569153746.70962"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "247"
+            endingLineNumber = "247"
+            landmarkName = "-_setUIWithFilePath:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FDLocalizeder/Views/MPDragDropView/MPDragDropView.m"
+            timestampString = "569153746.709673"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
+            landmarkName = "-prepareForDragOperation:"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

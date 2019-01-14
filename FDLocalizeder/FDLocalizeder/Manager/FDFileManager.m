@@ -18,7 +18,7 @@ NSInteger Code_Horizontal = 2;
 
 
 char MaxRight = 'Z';
-NSInteger MaxBotton = 200;
+NSInteger MaxBotton = 1000;
 
 
 @interface FDFileManager()
