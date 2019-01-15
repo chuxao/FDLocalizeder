@@ -121,6 +121,11 @@
                 
                 NSString *path = [NSString stringWithFormat:@"%@/%@.strings",localLanguagePath, currentlocalizeName];
                 
+                BOOL isDir;
+                if (![[NSFileManager defaultManager] fileExistsAtPath:path isDirectory: &isDir]) {
+                    continue;
+                }
+                
                 NSDictionary *dic = [self.mainExtendVM compareValuesWithFilePath:path codes:codes values:values];
 
                 codes = dic[@"codes"];

@@ -37,7 +37,10 @@
     
     NSString *basePath = path;
     
-    if ([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory: &isDir]
+    if ([path hasSuffix:@".xcodeproj"]) {
+        basePath = [path stringByDeletingLastPathComponent];
+    }
+    else if ([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory: &isDir]
         && isDir) {
 
         if (!isDir) {

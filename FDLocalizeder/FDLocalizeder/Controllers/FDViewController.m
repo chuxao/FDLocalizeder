@@ -248,24 +248,7 @@
         return;
     }
     
-    BOOL isDir = NO;
-    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath isDirectory: &isDir]
-        && isDir) {
-        
-        if (isDir) {
-            self.popButtonBackView.hidden = NO;
-            
-            self.icon_1.image = [NSImage imageNamed:@"Finder1"];
-            
-            self.mainVM.selectedProjectPath = filePath;
-            
-            [self _setPopButton];
-            
-            self.tipText.string = [NSString stringWithFormat:@"║xcodeproj║: %@\n\n%@", filePath, self.tipText.string];
-        }
-    }
-    
-    else if ([filePath hasSuffix:@".xcodeproj"]) {
+    if ([filePath hasSuffix:@".xcodeproj"]) {
         self.popButtonBackView.hidden = NO;
         
         self.icon_1.image = [NSImage imageNamed:@"xcode-project_Icon"];
@@ -275,6 +258,23 @@
         [self _setPopButton];
         
         self.tipText.string = [NSString stringWithFormat:@"║xcodeproj║: %@\n\n%@", filePath, self.tipText.string];
+    } else {
+        BOOL isDir = NO;
+        if ([[NSFileManager defaultManager] fileExistsAtPath:filePath isDirectory: &isDir]
+            && isDir) {
+            
+            if (isDir) {
+                self.popButtonBackView.hidden = NO;
+                
+                self.icon_1.image = [NSImage imageNamed:@"Finder1"];
+                
+                self.mainVM.selectedProjectPath = filePath;
+                
+                [self _setPopButton];
+                
+                self.tipText.string = [NSString stringWithFormat:@"║xcodeproj║: %@\n\n%@", filePath, self.tipText.string];
+            }
+        }
     }
     
     if ([filePath hasSuffix:@".xlsx"]) {
