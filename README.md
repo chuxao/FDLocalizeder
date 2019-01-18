@@ -1,7 +1,13 @@
 # FDLocalizeder
 Localization language automatic import tool.
 
-### [⛳️ 安装包下载点击这里 ⛳️](https://github.com/chuxiaojiajia/FDLocalizeder/raw/master/.installer/FDLocalizeder.dmg "点击下载")
+### [⛳️ 安装包下载点击这里 ⛳️](https://github.com/chuxiaojiajia/FDLocalizeder/raw/master/.package/FDLocalizeder.dmg "点击下载")
+
+## 【更新】
+* 支持本地化更新功能，相同code会覆盖
+* 支持文件夹添加识别功能
+* 非法语言路径过滤
+* 语言比较、语言比较添加更加完善
 
 ## FDLocalizeder 使用说明
 
@@ -17,7 +23,7 @@ Localization language automatic import tool.
 
 3. 你可以对所添加的本地化内容作注释说明；
 
-4. 点击添加按钮`Click on ad`进行添加操作。
+4. 点击添加按钮`Click on add`进行添加操作。
 
 <img src="https://raw.githubusercontent.com/chuxiaojiajia/FDLocalizeder/master/.source/EAEC404C98DAECC6BB54A64924C24610.jpeg" width="600" alt="主页面"/>
 
