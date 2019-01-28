@@ -65,13 +65,14 @@
             [[path lastPathComponent] hasSuffix:@".xcodeproj"]) {
             [marrList addObject:path];
         }
-        
-        BOOL isDir = NO;
-        if ([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory: &isDir]
-            && isDir) {
-            
-            if (isDir) {
-                [marrList addObject:path];
+        else {
+            BOOL isDir = NO;
+            if ([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory: &isDir]
+                && isDir) {
+                
+                if (isDir) {
+                    [marrList addObject:path];
+                }
             }
         }
     }

@@ -1888,7 +1888,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Manager/FDDataManager.m"
-            timestampString = "565857737.634271"
+            timestampString = "569232583.536648"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "189"
@@ -1904,7 +1904,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Manager/FDDataManager.m"
-            timestampString = "565857737.648093"
+            timestampString = "569232583.536816"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "236"
@@ -1920,7 +1920,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Manager/FDDataManager.m"
-            timestampString = "565857737.648633"
+            timestampString = "569232583.536909"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "239"
@@ -1936,7 +1936,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Manager/FDDataManager.m"
-            timestampString = "565857737.649298"
+            timestampString = "569232583.536989"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "75"
@@ -2000,7 +2000,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Manager/FDDataManager.m"
-            timestampString = "565857737.654238"
+            timestampString = "569232583.537178"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "229"
@@ -2016,7 +2016,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Manager/FDDataManager.m"
-            timestampString = "565857737.655305"
+            timestampString = "569232583.537251"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "86"
@@ -2032,7 +2032,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Manager/FDDataManager.m"
-            timestampString = "565857737.655748"
+            timestampString = "569232583.537326"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "44"
@@ -2048,11 +2048,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Controllers/FDMainViewModel.m"
-            timestampString = "569142019.477003"
+            timestampString = "569830358.109544"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "206"
-            endingLineNumber = "206"
+            startingLineNumber = "211"
+            endingLineNumber = "211"
             landmarkName = "-dataFactoryWithLanguages:language:codes:values:"
             landmarkType = "7">
             <Locations>
@@ -2064,11 +2064,11 @@
                   moduleName = "FDLocalizeder"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/chuxiao/Documents/Develop/Other/FDLocalizeder/FDLocalizeder/FDLocalizeder/Controllers/FDMainViewModel.m"
-                  timestampString = "569159838.521"
+                  timestampString = "569830358.803995"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "206"
-                  endingLineNumber = "206"
+                  startingLineNumber = "211"
+                  endingLineNumber = "211"
                   offsetFromSymbolStart = "1039">
                </Location>
                <Location
@@ -2079,11 +2079,11 @@
                   moduleName = "FDLocalizeder"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/chuxiao/Documents/Develop/Other/FDLocalizeder/FDLocalizeder/FDLocalizeder/Controllers/FDMainViewModel.m"
-                  timestampString = "569159838.5234261"
+                  timestampString = "569830358.806398"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "206"
-                  endingLineNumber = "206"
+                  startingLineNumber = "211"
+                  endingLineNumber = "211"
                   offsetFromSymbolStart = "1070">
                </Location>
             </Locations>
@@ -2096,7 +2096,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Manager/FDDataManager.m"
-            timestampString = "565857737.656201"
+            timestampString = "569232583.53745"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "178"
@@ -2112,7 +2112,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Controllers/FDMainViewModel.m"
-            timestampString = "569142019.477479"
+            timestampString = "569830358.109733"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "116"
@@ -2128,7 +2128,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Manager/FDFileManager.m"
-            timestampString = "569159837.914248"
+            timestampString = "569238067.9842089"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "246"
@@ -2160,7 +2160,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Manager/FDDataManager.m"
-            timestampString = "565857737.656675"
+            timestampString = "569232583.5378619"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "249"
@@ -2176,7 +2176,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Manager/FDDataManager.m"
-            timestampString = "565857737.657177"
+            timestampString = "569232583.5379519"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "70"
@@ -2224,7 +2224,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Controllers/FDMainViewModel.m"
-            timestampString = "569142019.4778351"
+            timestampString = "569830358.110023"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "94"
@@ -2240,7 +2240,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Controllers/FDMainExtendViewModel.m"
-            timestampString = "569159837.9144551"
+            timestampString = "569818925.151154"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "34"
@@ -2256,7 +2256,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Controllers/FDMainExtendViewModel.m"
-            timestampString = "569159837.914894"
+            timestampString = "569818925.152886"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "77"
@@ -2272,11 +2272,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Manager/FDProjectFileManager.m"
-            timestampString = "569159837.915253"
+            timestampString = "569830358.1101919"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
             landmarkName = "-getFiles:"
             landmarkType = "7">
          </BreakpointContent>
@@ -2288,7 +2288,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Controllers/FDViewController.m"
-            timestampString = "569159837.915333"
+            timestampString = "569238067.985625"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "247"
@@ -2304,11 +2304,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Views/MPDragDropView/MPDragDropView.m"
-            timestampString = "569159837.915422"
+            timestampString = "569820433.131676"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
             landmarkName = "-prepareForDragOperation:"
             landmarkType = "7">
          </BreakpointContent>
@@ -2320,7 +2320,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Controllers/FDMainExtendViewModel.m"
-            timestampString = "569159837.915486"
+            timestampString = "569818925.1534671"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "36"
@@ -2335,24 +2335,8 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FDLocalizeder/Controllers/FDViewController.m"
-            timestampString = "569159837.915786"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "260"
-            endingLineNumber = "260"
-            landmarkName = "-_setUIWithFilePath:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Controllers/FDMainViewModel.m"
-            timestampString = "569159122.654498"
+            timestampString = "569830358.110756"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "122"
@@ -2368,7 +2352,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Controllers/FDViewController.m"
-            timestampString = "569159837.915893"
+            timestampString = "569238067.986554"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "296"
@@ -2384,7 +2368,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Controllers/FDViewController.m"
-            timestampString = "569159837.915954"
+            timestampString = "569238067.986604"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "299"
@@ -2400,7 +2384,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Manager/FDProjectFileManager.m"
-            timestampString = "569159837.916013"
+            timestampString = "569830358.110855"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "38"
@@ -2416,7 +2400,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Controllers/FDMainExtendViewModel.m"
-            timestampString = "569159837.916069"
+            timestampString = "569818925.154258"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "109"
@@ -2432,12 +2416,188 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FDLocalizeder/Controllers/FDMainExtendViewModel.m"
-            timestampString = "569159837.916378"
+            timestampString = "569818925.154873"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "102"
             endingLineNumber = "102"
             landmarkName = "-_parseLocalfileToArray:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FDLocalizeder/Controllers/FDViewController.m"
+            timestampString = "569238067.986829"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "303"
+            endingLineNumber = "303"
+            landmarkName = "-_setPopButton"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FDLocalizeder/Controllers/FDMainViewModel.m"
+            timestampString = "569830358.1112339"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "134"
+            endingLineNumber = "134"
+            landmarkName = "-parseFileWithLanguage:codes:values:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FDLocalizeder/Controllers/FDMainViewModel.m"
+            timestampString = "569830358.11129"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "438"
+            endingLineNumber = "438"
+            landmarkName = "-compareLocalization"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FDLocalizeder/Controllers/FDMainViewModel.m"
+            timestampString = "569830358.111344"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "466"
+            endingLineNumber = "466"
+            landmarkName = "-compareLocalization"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[FDMainViewModel compareLocalization]"
+                  moduleName = "FDLocalizeder"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/chuxiao/Documents/Develop/Other/FDLocalizeder/FDLocalizeder/FDLocalizeder/Controllers/FDMainViewModel.m"
+                  timestampString = "569819990.93843"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "459"
+                  endingLineNumber = "459"
+                  offsetFromSymbolStart = "1433">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[FDMainViewModel compareLocalization]"
+                  moduleName = "FDLocalizeder"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/chuxiao/Documents/Develop/Other/FDLocalizeder/FDLocalizeder/FDLocalizeder/Controllers/FDMainViewModel.m"
+                  timestampString = "569819990.940472"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "459"
+                  endingLineNumber = "459"
+                  offsetFromSymbolStart = "1441">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FDLocalizeder/Controllers/FDMainViewModel.m"
+            timestampString = "569830358.111413"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "487"
+            endingLineNumber = "487"
+            landmarkName = "-compareLocalization"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FDLocalizeder/Controllers/FDMainExtendViewModel.m"
+            timestampString = "569821012.5918289"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
+            landmarkName = "-compareValuesWithFilePath_1:filePath_2:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FDLocalizeder/Controllers/FDMainExtendViewModel.m"
+            timestampString = "569821037.42663"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "96"
+            endingLineNumber = "96"
+            landmarkName = "-_parseLocalfileToArray:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FDLocalizeder/Controllers/FDMainExtendViewModel.m"
+            timestampString = "569821796.473514"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "64"
+            endingLineNumber = "64"
+            landmarkName = "-compareValuesWithFilePath_1:filePath_2:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FDLocalizeder/Manager/FDProjectFileManager.m"
+            timestampString = "569830358.111541"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
+            landmarkName = "-getLocalizesWithPath:result:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
