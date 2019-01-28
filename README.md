@@ -1,3 +1,5 @@
+![](https://raw.githubusercontent.com/chuxiaojiajia/FDLocalizeder/master/.source/logo.png)
+
 # FDLocalizeder
 Localization language automatic import tool.
 
