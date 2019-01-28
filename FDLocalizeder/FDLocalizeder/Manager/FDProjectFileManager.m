@@ -78,13 +78,17 @@
             
             if ([[path lastPathComponent] hasSuffix:@".lproj"]) {
                 
-                [self.languagesPathsArray addObject:path];
-
+                BOOL hasStringFile = NO;
                 for (NSString * str in dirArray) {
                     
                     if ([str hasSuffix:@".strings"]) {
                         [self.localizeNames addObject:[str componentsSeparatedByString:@"."][0]];
+                        hasStringFile = YES;
                     }
+                }
+                
+                if (hasStringFile) {
+                    [self.languagesPathsArray addObject:path];
                 }
             }
             else

@@ -445,10 +445,24 @@
     
     NSMutableString *tipString = [NSMutableString string];
     
-    basePath = self.marrLanguagePaths.firstObject;
-    basePath = [basePath stringByDeletingLastPathComponent];
-    basePath = [NSString stringWithFormat:@"%@/%@.lproj/%@.strings",basePath, baseLanguage, currentlocalizeName];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
     
+    /**
+     basePath 的确认
+     */
+    for (NSString *lanPath in self.marrLanguagePaths) {
+        basePath = lanPath;
+        basePath = [basePath stringByDeletingLastPathComponent];
+        basePath = [NSString stringWithFormat:@"%@/%@.lproj/%@.strings",basePath, baseLanguage, currentlocalizeName];
+    
+        if ([fileManager fileExistsAtPath:basePath isDirectory:nil]) {
+            break;
+        }
+    }
+    
+    /**
+     selectPath 的确认
+     */
     for (NSString *localLanguagePath in self.marrLanguagePaths) {
         NSString *lan = [self _getLanguageFromLanguagePath:localLanguagePath];
         
@@ -461,6 +475,10 @@
         else if ([lan isEqualToString:currentLanguage]) {
             selectPath = [NSString stringWithFormat:@"%@/%@.strings",localLanguagePath, currentlocalizeName];
             selectLanguage = lan;
+        }
+        
+        if (![fileManager fileExistsAtPath:selectPath isDirectory:nil]) {
+            continue;
         }
         
         if (basePath && selectPath) {
