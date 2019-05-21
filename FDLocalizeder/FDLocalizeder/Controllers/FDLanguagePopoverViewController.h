@@ -23,6 +23,9 @@
 
 @property (assign, nonatomic) BOOL compare;
 @property (assign, nonatomic) BOOL compareToAdd;
+@property (nonatomic, assign) BOOL textSorting;
+@property (nonatomic, assign) BOOL deleteLocalize;
+
 @property (copy,   nonatomic) NSString *baseLanguage;
 
 @end
@@ -37,5 +40,6 @@
 @property (copy, nonatomic) void (^documentWrappingBlcok)();
 @property (copy, nonatomic) void (^closeBlock)();
 @property (copy, nonatomic) void (^compareBlock)(FDLanguagePersonalizeModel *personalizeModel);
+@property (nonatomic, copy) void (^exportToExcelBLock)();
 
 @end

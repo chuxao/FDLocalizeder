@@ -32,19 +32,10 @@ NSInteger MaxBotton = 1000;
 
 @implementation FDFileManager
 
-
-//+ (void)parsFile:(id)obj path:(NSString *)path
-//{
-//    [self parsFile:obj path:path rowLength:0];
-//
-//}
-
-
 /**
  全文档获取
+ Document wrapping
 
- @param obj <#obj description#>
- @param path <#path description#>
  */
 + (void)parsFile:(id)obj path:(NSString *)path
 {
@@ -83,7 +74,9 @@ NSInteger MaxBotton = 1000;
                         if ([content containsString:@"\n"]) {
                             content = [content stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
                             
-                            [xmlManager writeRowWithContent:content :flag :row];
+                            [xmlManager writeRowWithContent:content :flag :row :nil :^{
+                                
+                            }];
                         }
                     
 //                    });
@@ -123,21 +116,10 @@ NSInteger MaxBotton = 1000;
 }
 
 
-//
-//+ (void)parsFile2:(id)obj path:(NSString *)path rowLength:(NSInteger)rowLength
-//{
-//
-//}
-
-
 /**
  获取一行数据
+ 备份
 
- @param obj <#obj description#>
- @param path <#path description#>
- @param left <#left description#>
- @param right <#right description#>
- @param isLimit <#isLimit description#>
  */
 + (void)parsLanguages:(id)obj
                  path:(NSString *)path
@@ -169,16 +151,77 @@ NSInteger MaxBotton = 1000;
     }];
 }
 
-
 /**
  获取一列数据
+ export
+ 
+ */
++ (void)parsCodesWithPath:(NSString *)path
+                      top:(NSInteger)top
+                   bottom:(NSInteger)bottom
+                    limit:(BOOL)isLimit
+                  success:(void(^)(NSArray <NSString*>*))success
+{
+    FDFileManager *fileManager = [[self alloc] init];
+    
+    NSInteger row_top = isLimit? (Code_Horizontal>top? Code_Horizontal:top) : Code_Horizontal;
+    NSInteger row_bottom = isLimit? (bottom>MaxBotton? MaxBotton:bottom) : MaxBotton;
+    
+    [fileManager storeFileWithPath:path toPath:fileManager.localFile success:^(NSString *doc) {
+        
+        FDXMLFileManager *xmlManager = [[FDXMLFileManager alloc] initWithFilePath:doc];
 
- @param obj <#obj description#>
- @param path <#path description#>
- @param horizontal <#horizontal description#>
- @param horizontalIndex <#horizontalIndex description#>
- @param vertical <#vertical description#>
- @param verticalIndex <#verticalIndex description#>
+        NSArray *codes = [xmlManager parsFileVertical:Code_Vertical top:row_top bottom:row_bottom limit:isLimit];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            if (success) {
+                success(codes);
+            }
+        });
+        
+        [fileManager.fileManager removeItemAtPath:fileManager.localFile error:nil];
+    } onException:^(NSException *exception) {
+        
+    }];
+}
+
++ (void)parsCodesAndLanguagesWithPath:(NSString *)path
+                                 left:(char)left
+                                right:(char)right
+                                  top:(NSInteger)top
+                               bottom:(NSInteger)bottom
+                                limit:(BOOL)isLimit
+                              success:(void(^)(NSArray <NSString*>*, NSArray <NSString*>*))success
+{
+    FDFileManager *fileManager = [[self alloc] init];
+    
+    char row_left = isLimit? (Code_Vertical>left? Code_Vertical:left) : Code_Vertical;
+    char row_right = isLimit? (right>MaxRight? MaxRight:right) : MaxRight;
+    NSInteger row_top = isLimit? (Code_Horizontal>top? Code_Horizontal:top) : Code_Horizontal;
+    NSInteger row_bottom = isLimit? (bottom>MaxBotton? MaxBotton:bottom) : MaxBotton;
+    
+    [fileManager storeFileWithPath:path toPath:fileManager.localFile success:^(NSString *doc) {
+        
+        FDXMLFileManager *xmlManager = [[FDXMLFileManager alloc] initWithFilePath:doc];
+        
+        NSArray *languages = [xmlManager parsFilehorizontal:Language_Horizontal left:row_left right:row_right limit:isLimit];
+        NSArray *codes = [xmlManager parsFileVertical:Code_Vertical top:row_top bottom:row_bottom limit:isLimit];
+        
+        if (success) {
+            
+            success(codes, languages);
+        }
+        
+        [fileManager.fileManager removeItemAtPath:fileManager.localFile error:nil];
+    } onException:^(NSException *exception) {
+        
+    }];
+}
+
+/**
+ 获取多列数据
+
  */
 + (void)parsFile:(id)obj
             path:(NSString *)path
@@ -280,7 +323,9 @@ NSInteger MaxBotton = 1000;
         FDXMLFileManager *xmlManager = [[FDXMLFileManager alloc] initWithFilePath:doc];
         
         NSArray *codes = [xmlManager parsFileVertical:column top:top bottom:bottom limit:YES];
-        success(codes);
+        if (success) {
+            success(codes);
+        }
         
         [fileManager.fileManager removeItemAtPath:fileManager.localFile error:nil];
         
@@ -297,6 +342,114 @@ NSInteger MaxBotton = 1000;
            right:(NSString *)right
 {
     
+}
+
++ (void)exportDataToExcel:(id)obj
+        localizeExcelPath:(NSString *)localizeExcelPath
+     localizeContentPaths:(NSArray *)localizeContentPaths
+                languages:(NSArray *)languages
+                    codes:(NSArray <NSString *>*_Nullable)codes
+{
+    if (!codes || !codes.count) {
+        NSDictionary *dicContent = [NSDictionary dictionaryWithContentsOfFile:localizeContentPaths.firstObject];
+        codes = [dicContent allKeys];
+    }
+    
+    FDFileManager *fileManager = [[self alloc] init];
+    fileManager.delegate = obj;
+    
+    [fileManager storeFileWithPath:localizeExcelPath toPath:fileManager.localFile success:^(NSString *doc) {
+    
+        FDXMLFileManager *xmlManager = [[FDXMLFileManager alloc] initWithFilePath:doc];
+        NSString *sheetName = @"FDLocalizederExportSheet";
+//        [xmlManager createSecondWorksheetName:sheetName];
+        sheetName = nil;
+//        localizeContentPaths
+        
+//        NSDictionary *dicContent = [NSDictionary dictionaryWithContentsOfFile:localizeContentPath];
+        
+        __block NSInteger count = 0;
+        NSInteger allcount = codes.count + languages.count + codes.count * languages.count;
+        
+        [codes enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+
+            [xmlManager writeRowWithContent:obj :'A' :idx+2 :sheetName :^{
+                
+            }];
+            
+            {
+                count ++;
+                if ([fileManager.delegate respondsToSelector:@selector(outputCount:allcount:type:flag:userInfo:)]) {
+                    [fileManager.delegate outputCount:count allcount:allcount type:0 flag:0 userInfo:nil];
+                }
+            }
+            
+        }];
+        
+        dispatch_queue_t concurrentQueue = dispatch_queue_create("com.FDLocalizederExport.syncQueue", DISPATCH_QUEUE_CONCURRENT);
+        
+//        dispatch_barrier_async(concurrentQueue, ^{
+            [localizeContentPaths enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                
+                char flag = 66 + idx;
+                [xmlManager writeRowWithContent:languages[idx] :flag :1 :sheetName :^{
+                    
+                }];
+                {
+                    count ++;
+                    if ([fileManager.delegate respondsToSelector:@selector(outputCount:allcount:type:flag:userInfo:)]) {
+                        [fileManager.delegate outputCount:count allcount:allcount type:0 flag:0 userInfo:nil];
+                    }
+                }
+                
+                
+                NSDictionary *dicContent = [NSDictionary dictionaryWithContentsOfFile:obj];
+                
+                [codes enumerateObjectsUsingBlock:^(NSString * _Nonnull obj2, NSUInteger idx2, BOOL * _Nonnull stop2) {
+                    NSString *value = dicContent[obj2];
+                    [xmlManager writeRowWithContent:value :flag :idx2+2 :sheetName :nil];
+                    {
+                        count ++;
+                        if ([fileManager.delegate respondsToSelector:@selector(outputCount:allcount:type:flag:userInfo:)]) {
+                            [fileManager.delegate outputCount:count allcount:allcount type:0 flag:0 userInfo:nil];
+                        }
+                    }
+                    
+                }];
+
+            }];
+//        });
+        
+//        dispatch_async(concurrentQueue, ^{
+        
+            //                });
+            
+            //                NSString *desktopPath = [NSSearchPathForDirectoriesInDomains(NSDesktopDirectory, NSUserDomainMask, NO)objectAtIndex:0];
+//            NSString *bundel = [[NSBundle mainBundle] resourcePath];
+//
+//            NSString *desktopPath = [[bundel substringToIndex:[bundel rangeOfString:@"Library"].location] stringByAppendingFormat:@"Desktop"];
+        
+//            [fileManager storeFileWithPath:doc toPath:desktopPath success:^(NSString *doc2) {
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if ([fileManager.delegate respondsToSelector:@selector(outputCount:allcount:type:flag:userInfo:)]) {
+                [fileManager.delegate outputCount:0 allcount:0 type:0 flag:1 userInfo:@{@"filePath" : doc ,@"folderPath" : fileManager.localFile}];
+            }
+        });
+        
+                [xmlManager save];
+                // 循环结束后删除临时文件
+//                [fileManager.fileManager removeItemAtPath:fileManager.localFile error:nil];
+//            } onException:^(NSException *exception) {
+//
+//            }];
+//        });
+
+    } onException:^(NSException *exception) {
+
+
+        NSLog(@"XXXXXX  %@",exception);
+    }];
 }
 
 

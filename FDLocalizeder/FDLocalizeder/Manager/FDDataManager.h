@@ -40,4 +40,9 @@
 
 - (void)truncateFileWithPath:(NSString *)path;
 
+- (void)deleteTextQueue:(NSString *)filePath
+                  codes:(NSArray *)codes
+            codeComment:(NSString *)codeComment
+                 result:(void(^)(BOOL result))result;
+
 @end

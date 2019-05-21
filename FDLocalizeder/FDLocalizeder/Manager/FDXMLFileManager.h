@@ -39,7 +39,11 @@
 
 - (void)writeRowWithContent:(NSString *)content
                            :(char)charIndex
-                           :(NSInteger)intIndex;
+                           :(NSInteger)intIndex
+                           :(NSString *)worksheetName
+                           :(void(^)())success;
+
+- (void)createSecondWorksheetName:(NSString *)worksheetName;
 
 - (void)save;
 @end

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A0ACADF22896C9C00F3CDEC /* NSString+Tool.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A0ACADE22896C9C00F3CDEC /* NSString+Tool.m */; };
+		3A0ACAE2228A716400F3CDEC /* CXConsoleViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A0ACAE1228A716400F3CDEC /* CXConsoleViewModel.m */; };
 		3A16877320A9404B0042230A /* FDSafetyFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A16877220A9404B0042230A /* FDSafetyFileManager.m */; };
 		3A16877A20A969120042230A /* FDWriteFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A16877920A969120042230A /* FDWriteFile.m */; };
 		3A16877D20A96BBB0042230A /* FDReadFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A16877C20A96BBB0042230A /* FDReadFile.m */; };
@@ -20,6 +22,8 @@
 		3A1687C720AAFD860042230A /* FDImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1687C620AAFD860042230A /* FDImageView.m */; };
 		3A2C3BE620F8737B005A3BB1 /* FDMainExtendViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C3BE520F8737A005A3BB1 /* FDMainExtendViewModel.m */; };
 		3A3468FC21B6763C00EA6D85 /* FDCompareManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3468FB21B6763C00EA6D85 /* FDCompareManager.m */; };
+		3A86B55122856FE800FFF22F /* CXSpecialCharacterConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A86B55022856FE800FFF22F /* CXSpecialCharacterConversion.m */; };
+		3A86B5562286B5EA00FFF22F /* CXRegexHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A86B5552286B5EA00FFF22F /* CXRegexHelper.m */; };
 		3A872C7E20CA35D300C9D67E /* FDSecondVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A872C7D20CA35D300C9D67E /* FDSecondVC.m */; };
 		3A872CAA20CA37B200C9D67E /* MyCustomSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A872CA620CA37B100C9D67E /* MyCustomSegue.m */; };
 		3A872CAB20CA37B200C9D67E /* MyCustomAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A872CA920CA37B200C9D67E /* MyCustomAnimator.m */; };
@@ -94,6 +98,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3A0ACADD22896C9C00F3CDEC /* NSString+Tool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Tool.h"; sourceTree = "<group>"; };
+		3A0ACADE22896C9C00F3CDEC /* NSString+Tool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Tool.m"; sourceTree = "<group>"; };
+		3A0ACAE0228A716400F3CDEC /* CXConsoleViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CXConsoleViewModel.h; sourceTree = "<group>"; };
+		3A0ACAE1228A716400F3CDEC /* CXConsoleViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CXConsoleViewModel.m; sourceTree = "<group>"; };
 		3A16877120A9404B0042230A /* FDSafetyFileManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDSafetyFileManager.h; sourceTree = "<group>"; };
 		3A16877220A9404B0042230A /* FDSafetyFileManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FDSafetyFileManager.m; sourceTree = "<group>"; };
 		3A16877820A969120042230A /* FDWriteFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDWriteFile.h; sourceTree = "<group>"; };
@@ -117,11 +125,14 @@
 		3A1687C620AAFD860042230A /* FDImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FDImageView.m; sourceTree = "<group>"; };
 		3A2C3BE420F8737A005A3BB1 /* FDMainExtendViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDMainExtendViewModel.h; sourceTree = "<group>"; };
 		3A2C3BE520F8737A005A3BB1 /* FDMainExtendViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FDMainExtendViewModel.m; sourceTree = "<group>"; };
-		3A2C3BF120FC8D82005A3BB1 /* XcodeTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XcodeTools.h; path = ../../../FloryDay/FloryDay/CoreCode/Utiles/Foundation/Macro/XcodeTools.h; sourceTree = "<group>"; };
 		3A3468FA21B6763C00EA6D85 /* FDCompareManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDCompareManager.h; sourceTree = "<group>"; };
 		3A3468FB21B6763C00EA6D85 /* FDCompareManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FDCompareManager.m; sourceTree = "<group>"; };
 		3A587EF51EEB3820009AB7B5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		3A64780B1EC98F40001895D5 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
+		3A86B54F22856FE800FFF22F /* CXSpecialCharacterConversion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CXSpecialCharacterConversion.h; sourceTree = "<group>"; };
+		3A86B55022856FE800FFF22F /* CXSpecialCharacterConversion.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CXSpecialCharacterConversion.m; sourceTree = "<group>"; };
+		3A86B5542286B5EA00FFF22F /* CXRegexHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CXRegexHelper.h; sourceTree = "<group>"; };
+		3A86B5552286B5EA00FFF22F /* CXRegexHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CXRegexHelper.m; sourceTree = "<group>"; };
 		3A872C7C20CA35D300C9D67E /* FDSecondVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDSecondVC.h; sourceTree = "<group>"; };
 		3A872C7D20CA35D300C9D67E /* FDSecondVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FDSecondVC.m; sourceTree = "<group>"; };
 		3A872CA620CA37B100C9D67E /* MyCustomSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCustomSegue.m; sourceTree = "<group>"; };
@@ -258,6 +269,10 @@
 				3A16877C20A96BBB0042230A /* FDReadFile.m */,
 				3AD136C820A57AA60098664E /* FDUndoManager.h */,
 				3AD136C920A57AA60098664E /* FDUndoManager.m */,
+				3A86B54F22856FE800FFF22F /* CXSpecialCharacterConversion.h */,
+				3A86B55022856FE800FFF22F /* CXSpecialCharacterConversion.m */,
+				3A86B5542286B5EA00FFF22F /* CXRegexHelper.h */,
+				3A86B5552286B5EA00FFF22F /* CXRegexHelper.m */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -316,7 +331,8 @@
 		3ADB72852099C84800946E67 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
-				3A2C3BF120FC8D82005A3BB1 /* XcodeTools.h */,
+				3A0ACADD22896C9C00F3CDEC /* NSString+Tool.h */,
+				3A0ACADE22896C9C00F3CDEC /* NSString+Tool.m */,
 				3ADB72892099C84800946E67 /* MPTask */,
 			);
 			path = Tools;
@@ -388,12 +404,14 @@
 				3A872C7D20CA35D300C9D67E /* FDSecondVC.m */,
 				3ADB72A0209C476200946E67 /* FDMainViewModel.h */,
 				3ADB72A1209C476200946E67 /* FDMainViewModel.m */,
+				3A0ACAE0228A716400F3CDEC /* CXConsoleViewModel.h */,
+				3A0ACAE1228A716400F3CDEC /* CXConsoleViewModel.m */,
 				3A2C3BE420F8737A005A3BB1 /* FDMainExtendViewModel.h */,
 				3A2C3BE520F8737A005A3BB1 /* FDMainExtendViewModel.m */,
 				3AD136C320A539690098664E /* FDMainDataViewModel.h */,
 				3AD136C420A539690098664E /* FDMainDataViewModel.m */,
-				3AD136B020A43C300098664E /* FDLanguagePopoverViewController.h */,
 				3AD136B120A43C300098664E /* FDLanguagePopoverViewController.m */,
+				3AD136B020A43C300098664E /* FDLanguagePopoverViewController.h */,
 				3AD136BB20A444FC0098664E /* FDLanguagePopoverViewController.xib */,
 				3A16879120AACDA80042230A /* CXSliderRangeView.h */,
 				3A16879220AACDA80042230A /* CXSliderRangeView.m */,
@@ -463,6 +481,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -528,6 +547,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A1687C720AAFD860042230A /* FDImageView.m in Sources */,
+				3A86B55122856FE800FFF22F /* CXSpecialCharacterConversion.m in Sources */,
 				3A2C3BE620F8737B005A3BB1 /* FDMainExtendViewModel.m in Sources */,
 				3AC89D6720C4D3F0007C3FEB /* FDPredicateManager.m in Sources */,
 				3AD136B220A43C300098664E /* FDLanguagePopoverViewController.m in Sources */,
@@ -539,6 +559,7 @@
 				3A872CB420CA37FE00C9D67E /* MyCustomSwiftSegue.swift in Sources */,
 				82FBA32B1D654DF7007AE170 /* AppDelegate.m in Sources */,
 				3ADB72922099C84800946E67 /* MPTask.m in Sources */,
+				3A0ACAE2228A716400F3CDEC /* CXConsoleViewModel.m in Sources */,
 				3AD136AB20A3FDFB0098664E /* CXPopUpButton.m in Sources */,
 				3A1687C420AAFD0A0042230A /* SCSelectionBorder.m in Sources */,
 				3AD136AF20A4345D0098664E /* AXStatusItemPopup.m in Sources */,
@@ -547,6 +568,7 @@
 				3A16877320A9404B0042230A /* FDSafetyFileManager.m in Sources */,
 				3A16879020AAC4D40042230A /* CustomSlider.m in Sources */,
 				3AD1360020A041250098664E /* FDDataManager.m in Sources */,
+				3A0ACADF22896C9C00F3CDEC /* NSString+Tool.m in Sources */,
 				3A16879320AACDA80042230A /* CXSliderRangeView.m in Sources */,
 				3A872C7E20CA35D300C9D67E /* FDSecondVC.m in Sources */,
 				3A16878020A98FD00042230A /* FDXMLFileManager.m in Sources */,
@@ -558,6 +580,7 @@
 				3ADB72642099B14700946E67 /* FDViewController.m in Sources */,
 				3A16878E20AAC4D40042230A /* NSColor+Hexa.m in Sources */,
 				3A16877D20A96BBB0042230A /* FDReadFile.m in Sources */,
+				3A86B5562286B5EA00FFF22F /* CXRegexHelper.m in Sources */,
 				3AD135FF20A041250098664E /* FDFileManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -699,7 +722,7 @@
 				SUPPORTED_PLATFORMS = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = "FDLocalizeder/Controllers/Swift segues and animators/FDLocalizeder-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/XlsxReaderWriter/**";
 			};
 			name = Debug;
@@ -732,7 +755,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = "FDLocalizeder/Controllers/Swift segues and animators/FDLocalizeder-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/XlsxReaderWriter/**";
 			};
 			name = Release;

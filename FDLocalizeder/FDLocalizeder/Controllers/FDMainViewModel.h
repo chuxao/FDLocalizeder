@@ -61,6 +61,11 @@
 - (void)documentWrapping;
 
 /**
+ 导出至Excel
+ */
+- (void)exportToExcel;
+
+/**
  添加部分语言时进行数据排除
 
  @param values 被排除的values

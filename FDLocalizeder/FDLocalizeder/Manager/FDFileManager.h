@@ -11,20 +11,35 @@
 @protocol FDParseFileDelegate <NSObject>
 
 @optional
+// ①
 - (void)parseFileWithCode:(NSString *)code
                    values:(NSDictionary *)dicValues;
 
+// ②
+- (void)parseFileWithCodes:(NSArray *)arrCodes;
+
+// ③
 - (void)parseFileWithValues:(NSArray *)arrValues;
 
+// ④
 - (void)parseFileWithCode:(NSString *)code
                    values:(NSDictionary *)dicValues
                     index:(int)index;
 
+// ⑤
 - (void)parseFileWithLanguage:(NSString *)language
                         codes:(NSArray *)codes
                        values:(NSArray *)values;
 
+// ⑥
 - (void)parseException:(NSException *)exception;
+
+// ⑦
+- (void)outputCount:(NSInteger)count
+           allcount:(NSInteger)allcount
+               type:(NSInteger)type
+               flag:(NSInteger)flag
+           userInfo:(NSDictionary *)userInfo;
 
 - (void)parseFinish;
 
@@ -53,9 +68,31 @@
                   bottom:(NSInteger)bottom
                  success:(void(^)(NSArray <NSString*>*))success;
 
++ (void)parsCodesAndLanguagesWithPath:(NSString *)path
+                                 left:(char)left
+                                right:(char)right
+                                  top:(NSInteger)top
+                               bottom:(NSInteger)bottom
+                                limit:(BOOL)isLimit
+                              success:(void(^)(NSArray <NSString*>*, NSArray <NSString*>*))success;
+
 + (void)parsLanguages:(id)obj
                  path:(NSString *)path
                  left:(char)left
                 right:(char)right
                 limit:(BOOL)isLimit;
+
++ (void)parsCodesWithPath:(NSString *)path
+                      top:(NSInteger)top
+                   bottom:(NSInteger)bottom
+                    limit:(BOOL)isLimit
+                  success:(void(^)(NSArray <NSString*>*))success;
+
+// ⑦
++ (void)exportDataToExcel:(id)obj
+        localizeExcelPath:(NSString *)localizeExcelPath
+     localizeContentPaths:(NSArray *)localizeContentPaths
+                languages:(NSArray *)languages
+                    codes:(NSArray <NSString *>*_Nullable)codes;
+
 @end

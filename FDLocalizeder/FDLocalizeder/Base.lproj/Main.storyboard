@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -623,7 +623,7 @@
                                         <menuItem title="Show Sidebar" keyEquivalent="s" id="kIP-vf-haE">
                                             <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
                                             <connections>
-                                                <action selector="toggleSourceList:" target="Ady-hI-5gd" id="iwa-gc-5KM"/>
+                                                <action selector="toggleSidebar:" target="Ady-hI-5gd" id="iwa-gc-5KM"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Enter Full Screen" keyEquivalent="f" id="4J7-dP-txa">
@@ -688,7 +688,7 @@
         <scene sceneID="R2V-B0-nI4">
             <objects>
                 <windowController id="B8D-0N-5wS" sceneMemberID="viewController">
-                    <window key="window" title="FDLocalizeder" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" titlebarAppearsTransparent="YES" titleVisibility="hidden" id="IQv-IB-iLA">
+                    <window key="window" title="FDLocalizeder" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" titlebarAppearsTransparent="YES" titleVisibility="hidden" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
@@ -710,14 +710,14 @@
             <objects>
                 <viewController id="XfG-lQ-9wD" customClass="FDViewController" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
-                        <rect key="frame" x="0.0" y="0.0" width="572" height="501"/>
+                        <rect key="frame" x="0.0" y="0.0" width="623" height="571"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <customView canDrawConcurrently="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZWf-O0-UeF" userLabel="Background View" customClass="MPDragDropView">
-                                <rect key="frame" x="0.0" y="0.0" width="572" height="501"/>
+                                <rect key="frame" x="0.0" y="0.0" width="623" height="571"/>
                                 <subviews>
                                     <customView hidden="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wi1-J9-Cun">
-                                        <rect key="frame" x="358" y="390" width="157" height="70"/>
+                                        <rect key="frame" x="410" y="445" width="157" height="70"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <subviews>
                                             <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wMk-TX-Djx">
@@ -752,19 +752,19 @@
                                         </subviews>
                                     </customView>
                                     <scrollView fixedFrame="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="thm-Wj-Fqn">
-                                        <rect key="frame" x="57" y="68" width="458" height="118"/>
+                                        <rect key="frame" x="57" y="86" width="510" height="158"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <clipView key="contentView" ambiguous="YES" drawsBackground="NO" copiesOnScroll="NO" id="Pug-fW-6yN">
-                                            <rect key="frame" x="0.0" y="0.0" width="458" height="118"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="510" height="158"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <textView ambiguous="YES" editable="NO" selectable="NO" drawsBackground="NO" importsGraphics="NO" verticallyResizable="YES" baseWritingDirection="leftToRight" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="eNe-t2-NIK">
-                                                    <rect key="frame" x="0.0" y="0.0" width="458" height="118"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="510" height="158"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <color key="textColor" red="0.27059" green="0.27059" blue="0.27059" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                    <size key="minSize" width="458" height="118"/>
-                                                    <size key="maxSize" width="463" height="10000000"/>
+                                                    <size key="minSize" width="510" height="158"/>
+                                                    <size key="maxSize" width="510" height="10000000"/>
                                                     <attributedString key="textStorage">
                                                         <fragment>
                                                             <string key="content">FDLocalizeder
@@ -838,22 +838,22 @@ You can click the Finder button or drag the file.</string>
                                                             </attributes>
                                                         </fragment>
                                                     </attributedString>
-                                                    <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                 </textView>
                                             </subviews>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </clipView>
-                                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="5R8-TY-j4z">
+                                        <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="5R8-TY-j4z">
                                             <rect key="frame" x="-100" y="-100" width="87" height="18"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
-                                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="CaK-Oi-kFR">
+                                        <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="CaK-Oi-kFR">
                                             <rect key="frame" x="-100" y="-100" width="15" height="133"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>
                                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="98M-Uz-OQD">
-                                        <rect key="frame" x="57" y="435" width="68" height="19"/>
+                                        <rect key="frame" x="57" y="490" width="70" height="19"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="recessed" title="Add Files" bezelStyle="recessed" image="buttonCell:ioS-wk-7ht:image" imagePosition="overlaps" alignment="center" borderStyle="border" inset="2" id="ioS-wk-7ht">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -864,7 +864,7 @@ You can click the Finder button or drag the file.</string>
                                         </connections>
                                     </button>
                                     <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bsv-e0-jpv">
-                                        <rect key="frame" x="57" y="221" width="458" height="115"/>
+                                        <rect key="frame" x="57" y="276" width="510" height="115"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <subviews>
                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VJN-jX-GT2">
@@ -877,48 +877,37 @@ You can click the Finder button or drag the file.</string>
                                                 </textFieldCell>
                                             </textField>
                                             <scrollView fixedFrame="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DYl-fi-xNS">
-                                                <rect key="frame" x="0.0" y="0.0" width="458" height="78"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="510" height="78"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <clipView key="contentView" ambiguous="YES" id="EDr-DO-0wv">
-                                                    <rect key="frame" x="0.0" y="0.0" width="458" height="78"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="510" height="78"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
                                                         <textView ambiguous="YES" importsGraphics="NO" verticallyResizable="YES" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="bLr-vJ-UTs">
-                                                            <rect key="frame" x="0.0" y="0.0" width="458" height="78"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="510" height="78"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <color key="textColor" red="0.04100066929" green="0.7161795661" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                             <color key="backgroundColor" red="0.88070757772020725" green="0.88070757772020725" blue="0.88070757772020725" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <size key="minSize" width="458" height="78"/>
-                                                            <size key="maxSize" width="463" height="10000000"/>
-                                                            <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <size key="minSize" width="510" height="78"/>
+                                                            <size key="maxSize" width="522" height="10000000"/>
+                                                            <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                         </textView>
                                                     </subviews>
                                                     <color key="backgroundColor" red="0.69713406739999995" green="0.69713406739999995" blue="0.69713406739999995" alpha="0.84999999999999998" colorSpace="custom" customColorSpace="displayP3"/>
                                                 </clipView>
-                                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="e45-jS-OOW">
+                                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="e45-jS-OOW">
                                                     <rect key="frame" x="-100" y="-100" width="87" height="18"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </scroller>
-                                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="bAT-Bv-kB2">
+                                                <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="bAT-Bv-kB2">
                                                     <rect key="frame" x="-100" y="-100" width="15" height="86"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </scroller>
                                             </scrollView>
                                         </subviews>
                                     </customView>
-                                    <button hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4kC-wa-fwU">
-                                        <rect key="frame" x="209" y="25" width="154" height="19"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="recessed" title="Click on add" bezelStyle="recessed" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="JLG-cC-gEn">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="systemBold" size="12"/>
-                                        </buttonCell>
-                                        <connections>
-                                            <action selector="_addLocalizeAction:" target="XfG-lQ-9wD" id="Z1w-3r-fvh"/>
-                                        </connections>
-                                    </button>
                                     <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jWL-bw-uDo">
-                                        <rect key="frame" x="176" y="390" width="106" height="70"/>
+                                        <rect key="frame" x="176" y="445" width="106" height="70"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <subviews>
                                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Ao-BU-1Jj">
@@ -933,6 +922,17 @@ You can click the Finder button or drag the file.</string>
                                             </imageView>
                                         </subviews>
                                     </customView>
+                                    <button hidden="YES" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4kC-wa-fwU">
+                                        <rect key="frame" x="235" y="36" width="154" height="19"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="recessed" title="Click on add" bezelStyle="recessed" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="JLG-cC-gEn">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="systemBold" size="12"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="_addLocalizeAction:" target="XfG-lQ-9wD" id="Z1w-3r-fvh"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <connections>
                                     <outlet property="delegate" destination="XfG-lQ-9wD" id="Y3B-I3-XLI"/>
@@ -961,7 +961,7 @@ You can click the Finder button or drag the file.</string>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="121" y="770.5"/>
+            <point key="canvasLocation" x="146.5" y="805.5"/>
         </scene>
     </scenes>
     <resources>

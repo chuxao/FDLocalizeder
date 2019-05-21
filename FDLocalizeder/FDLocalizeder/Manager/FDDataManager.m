@@ -8,6 +8,8 @@
 
 #import "FDDataManager.h"
 #import "FDCompareManager.h"
+#import "CXSpecialCharacterConversion.h"
+#import "CXRegexHelper.h"
 
 @implementation FDDataManager
 
@@ -48,10 +50,10 @@
         
         for (NSString *key in existAllKeys) {
             NSString *valueOri = dicContent[key];
-            valueOri = [NSString stringWithFormat:@"\"%@\"", [self replaceSpecialCharacters:valueOri]];
+            valueOri = [NSString stringWithFormat:@"\"%@\"", [CXSpecialCharacterConversion replaceSpecialCharacters:valueOri]];
             
             NSString *valueNow = existingCode[key];
-            valueNow = [NSString stringWithFormat:@"\"%@\"", [self replaceSpecialCharacters:valueNow]];
+            valueNow = [NSString stringWithFormat:@"\"%@\"", [CXSpecialCharacterConversion replaceSpecialCharacters:valueNow]];
             
             NSRange range = [contentOri rangeOfString:valueOri];
             
@@ -79,6 +81,7 @@
     }
     
     if (!content.length) {
+        result(YES);
         return;
     }
 
@@ -122,6 +125,27 @@
 //    }
 }
 
+
+- (void)deleteText:(NSString *)filePath
+          delArray:(NSArray *)delArray
+            result:(void(^)(BOOL result))result
+{
+    __block NSString *content = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
+    [delArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+//        obj = [CXSpecialCharacterConversion replaceSpecialCharacters:obj];
+        content = [content stringByReplacingOccurrencesOfString:obj withString:@""];
+        
+    }];
+    
+    NSError *error;
+    BOOL re = [content writeToFile:filePath atomically:YES encoding:NSUTF8StringEncoding error:&error];
+    if (!re) {
+        NSLog(@"替换行操作错误  %@",error);
+    }
+}
+
+
 - (void)writeToFileQueue:(NSString *)filePath
                  content:(NSString *)content
                   result:(void(^)(BOOL result))result
@@ -155,8 +179,8 @@
     
     [queue addOperationWithBlock:^{
         
-        NSString *currentKey = [self replaceSpecialCharacters:key];
-        NSString *currentValue = [self replaceSpecialCharacters:value];
+        NSString *currentKey = [CXSpecialCharacterConversion replaceSpecialCharacters:key];
+        NSString *currentValue = [CXSpecialCharacterConversion replaceSpecialCharacters:value];
         
         NSString *content = [NSString stringWithFormat:@"\"%@\" = \"%@\";",currentKey, currentValue];
         if (codeComment) {
@@ -176,7 +200,7 @@
 #pragma mark - 解析xlsx,NSOperationQueue控制最大并发数,性能良好
     
     NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-    queue.maxConcurrentOperationCount = 20;
+    queue.maxConcurrentOperationCount = 15;
     
     [queue addOperationWithBlock:^{
         NSDictionary *existingCode = [FDCompareManager parseLocalfileToDictionary:filePath];
@@ -187,6 +211,45 @@
         NSString *content = [self _stringFromCodes:codes values:values existingCode:&existingCode codeComment:codeComment];
     
         [self writeToFile:filePath existingCode:existingCode content:content result:result];
+    }];
+}
+
+- (void)deleteTextQueue:(NSString *)filePath
+                  codes:(NSArray *)codes
+            codeComment:(NSString *)codeComment
+                 result:(void(^)(BOOL result))result
+{
+#pragma mark - 解析xlsx,NSOperationQueue控制最大并发数,性能良好
+    
+    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+    queue.maxConcurrentOperationCount = 15;
+    
+    [queue addOperationWithBlock:^{
+        
+        NSDictionary *dicContent = [NSDictionary dictionaryWithContentsOfFile:filePath];
+        NSString *content = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
+        __block NSMutableArray *delArray = [NSMutableArray array];
+        if (codeComment && codeComment.length) {
+            [delArray addObject:codeComment];
+        }
+        
+        [codes enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            
+            NSString *value = dicContent[obj];
+            obj = [CXSpecialCharacterConversion replaceSpecialCharactersForRegex:obj];
+            value = [CXSpecialCharacterConversion replaceSpecialCharactersForRegex:value];
+            NSString *patt = [NSString stringWithFormat:@"\"%@\"\\s*=\\s*\"%@\"\\s*;\n?", obj, value];
+            NSString *delString = [CXRegexHelper getStringWithRegex:patt oriString:content];
+            
+            if (delString && delString.length) {
+                [delArray addObject:delString];
+            }
+            
+        }];
+        
+        [self deleteText:filePath delArray:delArray result:^(BOOL result) {
+            
+        }];
     }];
 }
 
@@ -228,10 +291,10 @@
     
     for (int i = 0; i < codes.count; i++) {
         NSString *code = codes[i];
-        code = [self replaceSpecialCharacters:code];
+        code = [CXSpecialCharacterConversion replaceSpecialCharacters:code];
         
         NSString *value = i < values.count? values[i] : @"";
-        value = [self replaceSpecialCharacters:value];
+        value = [CXSpecialCharacterConversion replaceSpecialCharacters:value];
         
         if (dicExitCode[code]) {
 
@@ -249,15 +312,11 @@
     return msting.copy;
 }
 
-- (NSString *)replaceSpecialCharacters:(NSString *)string
+- (NSArray *)_stringCollectionFromFilePath:(NSString *)filePath
+                                     codes:(NSArray *)codes
+                               codeComment:(NSString *)codeComment
 {
-    NSString *s1 = [string stringByReplacingOccurrencesOfString:@"\\" withString:@"\\\\"];
-    NSString *s2 = [s1 stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
-    NSString *s3 = [s2 stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
-    NSString *s4 = [s3 stringByReplacingOccurrencesOfString:@"\'" withString:@"\\\'"];
-    NSString *s5 = [s4 stringByReplacingOccurrencesOfString:@"%" withString:@"\%"];
-    return s5;
+    return nil;
 }
-
 
 @end

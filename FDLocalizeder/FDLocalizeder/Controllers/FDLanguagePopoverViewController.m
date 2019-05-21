@@ -33,6 +33,10 @@
 
 @property (weak) IBOutlet NSButton *compareButton;
 
+@property (weak) IBOutlet NSButton *textSortingButton;
+
+@property (weak) IBOutlet NSButton *deleteLocalizeButton;
+
 
 #pragma mark - excel select range
 
@@ -70,6 +74,9 @@
 @property (weak) IBOutlet NSButton *checkBox_22;
 @property (weak) IBOutlet NSButton *checkBox_23;
 @property (weak) IBOutlet NSButton *checkBox_24;
+@property (weak) IBOutlet NSButton *checkBox_25;
+@property (weak) IBOutlet NSButton *checkBox_26;
+@property (weak) IBOutlet NSButton *checkBox_27;
 
 
 @end
@@ -122,7 +129,10 @@
                           _checkBox_21,
                           _checkBox_22,
                           _checkBox_23,
-                          _checkBox_24];
+                          _checkBox_24,
+                          _checkBox_25,
+                          _checkBox_26,
+                          _checkBox_27];
 }
 
 - (void)_configUI
@@ -181,6 +191,14 @@
     if (self.compareButton.state == NSOnState) {
         personalModel.compare = YES;
         personalModel.baseLanguage = self.baseLanTextField.stringValue;
+    }
+    
+    if (self.textSortingButton.state == NSOnState) {
+        personalModel.textSorting = YES;
+    }
+    
+    if (self.deleteLocalizeButton.state == NSOnState) {
+        personalModel.deleteLocalize = YES;
     }
     
     if (self.disAppearBlock) {
@@ -306,14 +324,38 @@
 }
 
 - (IBAction)compareAction:(id)sender {
-    self.comparativeAdditionButton.state = NSOffState;
+    [self _settingButtonState:sender];
 }
 
 - (IBAction)compareToAddAction:(id)sender {
-    self.compareButton.state = NSOffState;
+    [self _settingButtonState:sender];
     self.addWithRangeButton.state = NSOffState;
 }
 
+- (IBAction)textSortingAction:(id)sender {
+    [self _settingButtonState:sender];
+    self.addWithRangeButton.state = NSOffState;
+}
+
+- (IBAction)deleteLocalizeAction:(id)sender {
+    [self _settingButtonState:sender];
+}
+
+- (IBAction)exportToExcelAction:(id)sender {
+    [self dismiss];
+    
+    if (self.exportToExcelBLock) {
+        self.exportToExcelBLock();
+    }
+}
+
+- (void)_settingButtonState:(NSButton *)button
+{
+    self.compareButton.state = self.compareButton == button? button.state : NSOffState;
+    self.comparativeAdditionButton.state = self.comparativeAdditionButton == button? button.state : NSOffState;
+    self.textSortingButton.state = self.textSortingButton == button? button.state : NSOffState;
+    self.deleteLocalizeButton.state = self.deleteLocalizeButton == button? button.state : NSOffState;
+}
 
 - (void)dismiss {
     if (self.presentingViewController) {

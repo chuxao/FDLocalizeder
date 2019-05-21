@@ -183,15 +183,30 @@
         weakSelf.mainVM.personalizeModel = personalizeModel;
         
         if (personalizeModel.compare) {
-            weakSelf.addLocalizeButton.title = @"Compare localization";
             weakSelf.tipText.selectable = YES;
-        } else if (personalizeModel.compareToAdd) {
-            weakSelf.addLocalizeButton.title = @"Compare to add";
-            weakSelf.tipText.selectable = NO;
         }
         else {
-            weakSelf.addLocalizeButton.title = @"Click on add";
             weakSelf.tipText.selectable = NO;
+        }
+        
+        if (personalizeModel.compare) {
+            weakSelf.addLocalizeButton.title = @"Compare localization";
+        }
+        
+        else if (personalizeModel.compareToAdd) {
+            weakSelf.addLocalizeButton.title = @"Compare to add";
+        }
+        
+        else if (personalizeModel.textSorting) {
+            weakSelf.addLocalizeButton.title = @"Text Sorting";
+        }
+        
+        else if (personalizeModel.deleteLocalize) {
+            weakSelf.addLocalizeButton.title = @"Delete Localize";
+        }
+        
+        else {
+            weakSelf.addLocalizeButton.title = @"Click on add";
         }
     };
     
@@ -230,6 +245,12 @@
         [weakSelf _setButtonEnable:YES];
         
         [weakSelf.mainVM.mainExtendVM compareStrings];
+    };
+    
+    self.extendVC.exportToExcelBLock = ^() {
+        [weakSelf _setButtonEnable:YES];
+        weakSelf.tipText.string = @"Exporting...\n\n";
+        [weakSelf.mainVM exportToExcel];
     };
 }
 

@@ -15,8 +15,22 @@
 #import "FDLanguagePopoverViewController.h"
 #import "FDPredicateManager.h"
 #import "FDMainExtendViewModel.h"
+#import "CXConsoleViewModel.h"
+#import "MPTask.h"
+
+typedef NS_ENUM(NSInteger , CXInteractionType)
+{
+    CXInteractionTypeAdd            = 0,
+    CXInteractionTypeBackup         = 1,
+    CXInteractionTypeDelete         = 2,
+    CXInteractionTypeExportToExcel  = 3,
+    CXInteractionTypeSortText       = 4,
+};
+
 
 @interface FDMainViewModel ()<FDParseFileDelegate>
+
+@property (nonatomic, strong) CXConsoleViewModel *consoleVM;
 
 @property (nonatomic, strong) NSMutableString *tipString;
 
@@ -52,7 +66,8 @@
     self.mainDataVM.mainVM = self;
     self.mainExtendVM = [FDMainExtendViewModel new];
     self.mainExtendVM.mainVM = self;
-    
+    self.consoleVM = [CXConsoleViewModel new];
+    self.consoleVM.mainVM = self;
     
     // 信号量初始化
     self.semaphore = dispatch_semaphore_create(0);
@@ -86,7 +101,7 @@
     NSLog(@"____%@",self.dicLanguagesPlist);
 }
 
-#pragma mark - FDParseFileDelegate
+#pragma mark - FDParseFileDelegate && block private methods
 
 // 备份操作
 - (void)parseFileWithValues:(NSArray *)arrValues
@@ -102,14 +117,30 @@
         }
     }
     
-    [self dataFactoryWithLanguages:languages.copy language:nil codes:nil values:nil];
+    [self _dataFactoryWithLanguages:languages.copy language:nil codes:nil values:nil interactionType:(CXInteractionTypeBackup)];
+}
+
+// 删除操作
+- (void)_parseFileWithCodes:(NSArray *)arrCodes languages:(NSArray *)languages interactionType:(CXInteractionType)interactionType
+{
+    NSMutableArray *languages_2 = languages.mutableCopy;
+    
+    if ([self _needAddBase]) {
+        NSString *en = @"en";
+        en = [self bindFileWithArray:languages key:en];
+        
+        if ([languages containsObject:en]) {
+            [languages_2 addObject:@"Base"];
+        }
+    }
+    
+    [self _dataFactoryWithLanguages:languages_2 language:nil codes:arrCodes.copy values:nil interactionType:(interactionType)];
 }
 
 - (void)parseFileWithLanguage:(NSString *)language
                         codes:(NSArray *)codes
                        values:(NSArray *)values
 {
- 
     /**
      比较性添加
      */
@@ -126,6 +157,7 @@
                     continue;
                 }
                 
+                // 分离重组
                 NSDictionary *dic = [self.mainExtendVM compareValuesWithFilePath:path codes:codes values:values];
 
                 codes = dic[@"codes"];
@@ -141,8 +173,8 @@
                 
                 [mstrTip appendString:@"********<<\n"];
                 
-                
-                self.mainVC.tipText.string = mstrTip;
+                self.consoleVM.strConsole = mstrTip;
+//                self.mainVC.tipText.string = mstrTip;
                 
                 break;
             }
@@ -151,7 +183,7 @@
     
     
     
-    [self dataFactoryWithLanguages:nil language:language codes:codes values:values];
+    [self _dataFactoryWithLanguages:nil language:language codes:codes values:values interactionType:(CXInteractionTypeAdd)];
     
     if ([self _needAddBase]) {
         NSString *en = @"en";
@@ -186,10 +218,11 @@
  @param codes <#codes description#>
  @param values <#values description#>
  */
-- (void)dataFactoryWithLanguages:(NSArray *)languages   // 代表备份
-                        language:(NSString *)language   // 代表数据添加
-                           codes:(NSArray *)codes
-                          values:(NSArray *)values
+- (void)_dataFactoryWithLanguages:(NSArray *)languages   // 代表备份
+                         language:(NSString *)language   // 代表数据添加
+                            codes:(NSArray *)codes
+                           values:(NSArray *)values
+                  interactionType:(CXInteractionType)type
 {
     NSString *currentlocalizeName = self.mainVC.localizeNamesPopButton.titleOfSelectedItem;
     NSString *currentLanguage = self.dicLanguagesPlist[self.mainVC.languagesPopButton.titleOfSelectedItem];
@@ -208,14 +241,18 @@
     
     __block BOOL canBeAdd = NO;  // 是否可以被添加
     
+    
+    NSMutableArray *marrFilePaths = [NSMutableArray array]; // exportTOExcel
+    NSMutableArray *marrLanguages = [NSMutableArray array]; // exportTOExcel
+    
     for (NSString *localLanguagePath in self.marrLanguagePaths) {
         
         /**
          下面注释的部分用来清空文件内容，慎用
          */
-//        NSString *filePath2 = [NSString stringWithFormat:@"%@/%@.strings",localLanguagePath ,currentlocalizeName];
-//        [[FDDataManager share] truncateFileWithPath:filePath2];
-//        continue;
+        //        NSString *filePath2 = [NSString stringWithFormat:@"%@/%@.strings",localLanguagePath ,currentlocalizeName];
+        //        [[FDDataManager share] truncateFileWithPath:filePath2];
+        //        continue;
         
         // 这里其实是本地代码的文件夹名，比如 id-ID
         NSString *lan = [self _getLanguageFromLanguagePath:localLanguagePath];
@@ -233,12 +270,12 @@
         }
 
         
-        if (languages) {
+        if (type == CXInteractionTypeBackup && languages) {
             if (![languages containsObject:lan]) {
                 continue;
             }
         }
-        else {
+        else if (type == CXInteractionTypeAdd){
             if (![[language lowercaseString] isEqualToString:[lan lowercaseString]]) {
                 continue;
             }
@@ -251,14 +288,14 @@
          数据处理
          */
         count ++;
-        
-        if (languages) {
+
+        if (type == CXInteractionTypeBackup) {
             
             // 备份操作
             [[FDUndoManager share] saveFileWithFilePath:[NSString stringWithFormat:@"%@/%@.strings", localLanguagePath, currentlocalizeName] result:^(BOOL result) {
                 
                 countCompleted ++;
-//                NSLog(@"__________  %lu  %lu %lu",count, countCompleted, languages.count);
+                //                NSLog(@"__________  %lu  %lu %lu",count, countCompleted, languages.count);
                 if (countCompleted >= count) {
                     //                        NSLog(@"__________2  %lu",count);
                     
@@ -267,6 +304,22 @@
                 }
             }];
         }
+        
+        else if (type == CXInteractionTypeDelete) {
+            // 删除操作
+            [[FDDataManager share] deleteTextQueue:filePath codes:codes codeComment:self.mainVC.codeCommentTextView.string result:^(BOOL result) {
+                
+                NSLog(@"一个语言删除完毕");
+            }];
+            
+        }
+        
+        else if (type == CXInteractionTypeExportToExcel) {
+            // 导出操作
+            [marrFilePaths addObject:filePath];
+            [marrLanguages addObject:lan];
+        }
+        
         else {
             self.addLanguageCount ++;
             canBeAdd = YES;
@@ -278,6 +331,7 @@
                                              result:^(BOOL result) {
                                                  
                                                  countCompleted ++;
+
                                                  [self _setTipViewWithLanguage:language result:result];
                                                  
                                                  if (countCompleted >= count) {
@@ -295,14 +349,61 @@
         
     }
     
-    if (languages && count == 0) {
-        // 把内存缓存走掉
-        dispatch_semaphore_signal(self.semaphore);
-        self.mainVC.tipText.string = @"There is no language to add. -- 0";
+    if (type == CXInteractionTypeAdd) {
+        if (languages && count == 0) {
+            // 把内存缓存走掉
+            dispatch_semaphore_signal(self.semaphore);
+            self.consoleVM.strConsole = @"There is no language to add. -- 0";
+            //        self.mainVC.tipText.string = @"There is no language to add. -- 0";
+        }
+        
+        if (codes && !canBeAdd) {
+            [self _setTipViewWithLanguage:language result:NO];
+        }
     }
     
-    if (codes && !canBeAdd) {
-        [self _setTipViewWithLanguage:language result:NO];
+    // exportToExcel 操作
+    if (type == CXInteractionTypeExportToExcel) {
+        [FDFileManager exportDataToExcel:self localizeExcelPath:self.localizeFilePath localizeContentPaths:marrFilePaths.copy languages:marrLanguages.copy codes:codes];
+    }
+}
+
+- (void)outputCount:(NSInteger)count allcount:(NSInteger)allcount type:(NSInteger)type flag:(NSInteger)flag userInfo:(NSDictionary *)userInfo
+{
+    // export
+    if (type == 0) {
+        
+        if (flag == 1) {
+//            NSString *bundel = [[NSBundle mainBundle] resourcePath];
+//            NSString *desktopPath = [[bundel substringToIndex:[bundel rangeOfString:@"Library"].location] stringByAppendingFormat:@"Desktop"];
+            [self.tipString appendString:@"100%\n\nExport Successing ! The target file is in the following folder: "];
+            [self.tipString appendString:userInfo[@"filePath"]];
+            
+            self.consoleVM.strConsole = self.tipString.copy;
+            
+            NSArray *arguments = @[userInfo[@"folderPath"]];
+            [MPTask runTaskWithLanunchPath:CMD_LAUCH arguments:arguments currentDirectoryPath:nil onSuccess:^(NSString *captureString) {
+                
+            } onException:^(NSException *exception) {
+                
+            }];
+            return;
+        }
+        
+//        dispatch_async(dispatch_get_main_queue(), ^{
+            NSInteger percentage = count * 1.0 / allcount * 100;
+            NSMutableString *mstr = self.tipString.mutableCopy;
+            for (NSInteger i = [mstr.copy length]; i <= percentage; i ++) {
+                [mstr appendString:@"▌"];
+            }
+            self.tipString = mstr.mutableCopy;
+//        if (mstr.length % 40 == 0) [mstr appendString:@"\n"];
+            [mstr insertString:@"files are extracted ...\n\n" atIndex:0];
+            [mstr appendFormat:@"%lu%%",percentage];
+        if (percentage == 100) [mstr appendString:@"\nPlease wait moment..."];
+        
+            self.consoleVM.strConsole = mstr.copy;
+//        });
     }
 }
 
@@ -312,7 +413,8 @@
     // 如果没有添加则释放掉
     if (self.addLanguageCount == 0) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.mainVC.tipText.string = @"There is no language to add.  -- 1";
+            self.consoleVM.strConsole = @"There is no language to add.  -- 1";
+//            self.mainVC.tipText.string = @"There is no language to add.  -- 1";
             self.mainVC.addLocalizeButton.enabled = YES;
         });
         
@@ -344,19 +446,20 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         
         if ([self.mainVC.tipText.string containsString:@"Importing"]) {
-            self.mainVC.tipText.string = @"";
+            self.consoleVM.strConsole = @"";
+//            self.mainVC.tipText.string = @"";
         }
         
         if (result) {
-            self.mainVC.tipText.string = [NSString stringWithFormat:@"%@\n【%@】Add Success",self.mainVC.tipText.string, language];
+            self.consoleVM.strConsole = [NSString stringWithFormat:@"%@\n【%@】Add Success",self.mainVC.tipText.string, language];
+//            self.mainVC.tipText.string = [NSString stringWithFormat:@"%@\n【%@】Add Success",self.mainVC.tipText.string, language];
         }
         else {
-            self.mainVC.tipText.string = [NSString stringWithFormat:@"%@\n- ---- ---- ---- ---- 【%@】Unadded",self.mainVC.tipText.string, language];
+            self.consoleVM.strConsole = [NSString stringWithFormat:@"%@\n- ---- ---- ---- ---- 【%@】Unadded",self.mainVC.tipText.string, language];
+//            self.mainVC.tipText.string = [NSString stringWithFormat:@"%@\n- ---- ---- ---- ---- 【%@】Unadded",self.mainVC.tipText.string, language];
         }
     });
 }
-
-
 
 /**
  本地语言一致性匹配
@@ -397,6 +500,35 @@
         return;
     }
     
+    // delete
+    if (self.personalizeModel.deleteLocalize) {
+        
+        /**
+        [FDFileManager parsCodesAndLanguagesWithPath:self.localizeFilePath
+                                                left:self.personalizeModel.leftRow
+                                               right:self.personalizeModel.rightRow
+                                                 top:self.personalizeModel.leftRowIndex
+                                              bottom:self.personalizeModel.rightRowIndex
+                                               limit:self.personalizeModel? self.personalizeModel.addWithRange : NO
+                                             success:^(NSArray<NSString *> *codes, NSArray<NSString *> *languages)
+        {
+            [self _parseFileWithCodes:codes languages:languages];
+        }];
+         */
+        
+        [FDFileManager parsCodesWithPath:self.localizeFilePath
+                                     top:self.personalizeModel.leftRowIndex
+                                  bottom:self.personalizeModel.rightRowIndex
+                                   limit:self.personalizeModel? self.personalizeModel.addWithRange : NO
+                                 success:^(NSArray<NSString *> *codes)
+        {
+            [self _parseFileWithCodes:codes languages:nil interactionType:CXInteractionTypeDelete];
+        }];
+        
+        return;
+    }
+    
+    
     if (self.isAdding) {
         return;
     }
@@ -417,8 +549,8 @@
 ////        NSLog(@"__________3  ");
 //        dispatch_async(dispatch_get_main_queue(), ^{
 
-            NSLog(@"开始添加！！！！！！");
-            
+//            NSLog(@"开始添加！！！！！！");
+    
             [FDFileManager parsFile:self
                                path:self.localizeFilePath
                                left:self.personalizeModel.leftRow
@@ -491,12 +623,12 @@
             
             [tipString appendFormat:@"\n┏       ┓\n     %@  \n┗       ┛\n———————————————————————————————————\n",selectLanguage];
             
-            [tipString appendFormat:@"▧Follow key is only in %@ :▽\n-----------------------\n",baseLanguage];
+            [tipString appendFormat:@"📍Follow key is only in %@ :▽\n-----------------------\n",baseLanguage];
             for (NSString *key in onlyLocal_1) {
                 [tipString appendFormat:@"%@\n",key];
             }
             
-            [tipString appendFormat:@"\n\n▩Follow key is only in %@ :▽\n-----------------------\n",selectLanguage];
+            [tipString appendFormat:@"\n\n📍Follow key is only in %@ :▽\n-----------------------\n",selectLanguage];
             for (NSString *key in onlyLocal_2) {
                 [tipString appendFormat:@"%@\n",key];
             }
@@ -508,8 +640,8 @@
         }
     }
     
-
-    self.mainVC.tipText.string = tipString.copy;
+    self.consoleVM.strConsole = tipString.copy;
+//    self.mainVC.tipText.string = tipString.copy;
 }
 
 - (void)backup
@@ -530,6 +662,24 @@
 {
     [FDFileManager parsFile:self path:self.localizeFilePath];
 }
+
+/**
+ 导出操作
+ */
+- (void)exportToExcel
+{
+    self.tipString = @"".mutableCopy;
+    
+    [FDFileManager parsCodesWithPath:self.localizeFilePath
+                                 top:self.personalizeModel.leftRowIndex
+                              bottom:self.personalizeModel.rightRowIndex
+                               limit:self.personalizeModel? self.personalizeModel.addWithRange : NO
+                             success:^(NSArray<NSString *> *codes)
+     {
+         [self _parseFileWithCodes:codes languages:nil interactionType:CXInteractionTypeExportToExcel];
+     }];
+}
+
 
 #pragma mark - data processing
 - (NSString *)_getLanguageFromLanguagePath:(NSString *)path

@@ -13,8 +13,9 @@
 
 @property (copy, nonatomic) NSString *filePath;
 
-@property (strong, nonatomic) BRAOfficeDocumentPackage *spreadsheet;
-@property (strong, nonatomic) BRAWorksheet *firstWorksheet;
+@property (strong, nonatomic) __block BRAOfficeDocumentPackage *spreadsheet;
+@property (strong, nonatomic) __block BRAWorksheet *firstWorksheet;
+@property (strong, nonatomic) __block BRAWorksheet *secondWorksheet;
 
 @end
 
@@ -140,17 +141,44 @@
 - (void)writeRowWithContent:(NSString *)content
                            :(char)charIndex
                            :(NSInteger)intIndex
+                           :(NSString *)worksheetName
+                           :(void(^)())success
 {
-//    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-//    queue.maxConcurrentOperationCount = 20;
-//
-//    [queue addOperationWithBlock:^{
     
+    dispatch_queue_t queue = dispatch_queue_create("WriteRowWithContent", DISPATCH_QUEUE_SERIAL);
+
+    @synchronized(self) {
         NSString *cellReference = [NSString stringWithFormat:@"%c%lu",charIndex, intIndex];
+    
+        BRAWorksheet *worksheet = self->_firstWorksheet;
+        if (worksheetName) {
+            BRAWorksheet *wSheet = [self->_spreadsheet.workbook worksheetNamed:worksheetName];
+            if (!wSheet) {
+                wSheet = [self->_spreadsheet.workbook createWorksheetNamed:worksheetName];
+            }
+            worksheet = wSheet;
+        }
+        
         //    [[_firstWorksheet cellForCellReference:cellReference shouldCreate:YES] setFormulaString:@"TODAY()"];
-        [[_firstWorksheet cellForCellReference:cellReference shouldCreate:YES] setStringValue:content];
-//        [_spreadsheet saveAs:self.filePath];
-//    }];
+        [[worksheet cellForCellReference:cellReference shouldCreate:YES] setStringValue:content];
+        if (success) {
+            success();
+        }
+    }
+}
+
+- (void)createSecondWorksheetName:(NSString *)worksheetName
+{
+    BRAWorksheet *worksheet = nil;
+    if (worksheetName) {
+        BRAWorksheet *wSheet = [self.spreadsheet.workbook worksheetNamed:worksheetName];
+        if (!wSheet) {
+            wSheet = [self.spreadsheet.workbook createWorksheetNamed:worksheetName];
+        }
+        worksheet = wSheet;
+    }
+    
+    self.secondWorksheet = worksheet;
 }
 
 - (void)save
