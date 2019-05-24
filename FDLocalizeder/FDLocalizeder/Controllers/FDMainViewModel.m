@@ -538,6 +538,7 @@ typedef NS_ENUM(NSInteger , CXInteractionType)
     self.addLanguageCount = 0;
     
     self.tipString = @"".mutableCopy;
+    self.mainVC.tipText.string = @"Importing......";
 
 //    [FDFileManager parsLanguages:self
 //                            path:self.localizeFilePath

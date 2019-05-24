@@ -11,7 +11,7 @@
 #import "FDMainExtendViewModel.h"
 #import "FDProjectFileManager.h"
 #import "FDLanguagePopoverViewController.h"
-
+#import "CXSelectLanguagePathView.h"
 #import "MyCustomAnimator.h"
 
 @interface FDViewController ()
@@ -36,6 +36,7 @@
 @property (strong, nonatomic) FDLanguagePopoverViewController *LanguagePopoverVC;
 @property (strong, nonatomic) FDLanguagePopoverViewController *extendVC;
 
+@property (nonatomic, strong) CXSelectLanguagePathView *selectLanguagePathView;
 @end
 
 
@@ -60,7 +61,10 @@
 
 - (void)_setupData
 {
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(selectLanguagePathNotification:)
+                                                 name:@"SelectLanguagePathNotification"
+                                               object:nil];
 }
 
 
@@ -103,7 +107,6 @@
         return;
     }
     
-    self.tipText.string = @"Importing......";
     [self.mainVM addLocalize];
 }
 
@@ -262,7 +265,6 @@
     self.addLocalizeButton.enabled = enable;
 }
 
-
 - (void)_setUIWithFilePath:(NSString *)filePath
 {
     if (!filePath) {
@@ -310,24 +312,36 @@
     
 }
 
+- (void)selectLanguagePathNotification:(NSNotification *)notification
+{
+    NSString *path = notification.userInfo[@"path"];
+    NSMutableArray *marrPaths = [NSMutableArray array];
+    [self.mainVM.marrLanguagePaths enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([obj containsString:path]) {
+            [marrPaths addObject:obj];
+        }
+    }];
+    
+    self.mainVM.marrLanguagePaths = marrPaths.mutableCopy;
+    
+    [self _setLocalizeNamesPopButton];
+    [self _setLanguagesPathsPopButton];
+    
+    [self.selectLanguagePathView removeFromSuperview];
+}
+
 #pragma mark - setPopButton
 
 - (void)_setPopButton
 {
     if (self.mainVM.selectedProjectPath) {
         [[FDProjectFileManager share] getLocalizesWithPath:self.mainVM.selectedProjectPath result:^(NSSet *localizeNames, NSArray *languagesPathsArray){
-            
             NSArray *sortDesc = @[[[NSSortDescriptor alloc] initWithKey:nil ascending:YES]];
             NSArray *sortSetArray = [localizeNames sortedArrayUsingDescriptors:sortDesc];
             self.mainVM.marrLocalizeNames = sortSetArray.mutableCopy;
-
             self.mainVM.marrLanguagePaths = languagesPathsArray.mutableCopy;
-            
-            NSLog(@"_______________________  %@",self.mainVM.marrLanguagePaths);
-            
-            [self _setLocalizeNamesPopButton];
-            [self _setLanguagesPathsPopButton];
-            
+                        
+            [self _openSelectLanguagePathView:languagesPathsArray];
         }];
     }
 }
@@ -358,6 +372,50 @@
     [self.languagesPopButton addItemsWithTitles:allLanguages];
     
     [self.languagesPopButton selectItemAtIndex:0];
+}
+
+- (void)_openSelectLanguagePathView:(NSArray *)languagesPathsArray
+{
+    NSArray *arrayPaths = [self _getLanguagesPathsArray:languagesPathsArray];
+    if (arrayPaths.count == 0) {
+        return;
+    } else if (arrayPaths.count == 1) {
+        [self _setLocalizeNamesPopButton];
+        [self _setLanguagesPathsPopButton];
+        
+        return;
+    }
+    
+    [CXSelectLanguageManager manager].languagesPaths = arrayPaths;
+    
+    /**
+     NSView 添加方式
+     */
+    CXSelectLanguagePathView *view = nil;
+    NSNib *xib = [[NSNib alloc] initWithNibNamed:@"CXSelectLanguagePathView" bundle:nil];
+    NSArray *viewsArray = [[NSArray alloc] init];
+    [xib instantiateWithOwner:nil topLevelObjects:&viewsArray];
+    for (int i = 0; i < viewsArray.count; i++) {
+        if ([viewsArray[i] isKindOfClass:[NSView class]]) {
+            view = (CXSelectLanguagePathView *)viewsArray[i];
+            break;
+        }
+    }
+    
+    [self.view addSubview:view];
+    self.selectLanguagePathView = view;
+}
+
+- (NSArray *)_getLanguagesPathsArray:(NSArray *)languagesPathsArray
+{
+    NSMutableSet *mset = [NSMutableSet set];
+    [languagesPathsArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSString *path = [obj stringByReplacingOccurrencesOfString:self.mainVM.selectedProjectPath withString:@""];
+        path = [path stringByDeletingLastPathComponent];
+        [mset addObject:path];
+    }];
+    
+    return [mset allObjects];
 }
 
 #pragma mark - lazy load

@@ -225,9 +225,12 @@
     queue.maxConcurrentOperationCount = 15;
     
     [queue addOperationWithBlock:^{
-        
         NSDictionary *dicContent = [NSDictionary dictionaryWithContentsOfFile:filePath];
         NSString *content = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
+        if (!content) {
+            return ;
+        }
+        
         __block NSMutableArray *delArray = [NSMutableArray array];
         if (codeComment && codeComment.length) {
             [delArray addObject:codeComment];
@@ -237,7 +240,14 @@
             
             NSString *value = dicContent[obj];
             obj = [CXSpecialCharacterConversion replaceSpecialCharactersForRegex:obj];
+            if (!obj || [obj length] == 0) {
+                return ;
+            }
             value = [CXSpecialCharacterConversion replaceSpecialCharactersForRegex:value];
+            if (!value) {
+                return ;
+            }
+            
             NSString *patt = [NSString stringWithFormat:@"\"%@\"\\s*=\\s*\"%@\"\\s*;\n?", obj, value];
             NSString *delString = [CXRegexHelper getStringWithRegex:patt oriString:content];
             

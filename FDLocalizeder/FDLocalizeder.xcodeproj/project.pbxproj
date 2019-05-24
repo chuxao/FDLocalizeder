@@ -29,6 +29,9 @@
 		3A872CAB20CA37B200C9D67E /* MyCustomAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A872CA920CA37B200C9D67E /* MyCustomAnimator.m */; };
 		3A872CB320CA37FE00C9D67E /* MyCustomSwiftAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A872CB120CA37FD00C9D67E /* MyCustomSwiftAnimator.swift */; };
 		3A872CB420CA37FE00C9D67E /* MyCustomSwiftSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A872CB220CA37FD00C9D67E /* MyCustomSwiftSegue.swift */; };
+		3ABE8A6F22958C4300D3B01A /* CXSelectLanguagePathView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ABE8A6E22958C4300D3B01A /* CXSelectLanguagePathView.m */; };
+		3ABE8A752295947400D3B01A /* CXSelectLanguagePathView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3ABE8A742295947400D3B01A /* CXSelectLanguagePathView.xib */; };
+		3ABE8A782296A2D800D3B01A /* CXSelectLanguagePathCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ABE8A772296A2D800D3B01A /* CXSelectLanguagePathCellView.m */; };
 		3AC89D6720C4D3F0007C3FEB /* FDPredicateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC89D6620C4D3F0007C3FEB /* FDPredicateManager.m */; };
 		3AD135FE20A041250098664E /* FDProjectFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD135FB20A041250098664E /* FDProjectFileManager.m */; };
 		3AD135FF20A041250098664E /* FDFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD135FC20A041250098664E /* FDFileManager.m */; };
@@ -142,6 +145,11 @@
 		3A872CB020CA37FB00C9D67E /* FDLocalizeder-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FDLocalizeder-Bridging-Header.h"; sourceTree = "<group>"; };
 		3A872CB120CA37FD00C9D67E /* MyCustomSwiftAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCustomSwiftAnimator.swift; sourceTree = "<group>"; };
 		3A872CB220CA37FD00C9D67E /* MyCustomSwiftSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCustomSwiftSegue.swift; sourceTree = "<group>"; };
+		3ABE8A6D22958C4300D3B01A /* CXSelectLanguagePathView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CXSelectLanguagePathView.h; sourceTree = "<group>"; };
+		3ABE8A6E22958C4300D3B01A /* CXSelectLanguagePathView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CXSelectLanguagePathView.m; sourceTree = "<group>"; };
+		3ABE8A742295947400D3B01A /* CXSelectLanguagePathView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CXSelectLanguagePathView.xib; sourceTree = "<group>"; };
+		3ABE8A762296A2D800D3B01A /* CXSelectLanguagePathCellView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CXSelectLanguagePathCellView.h; sourceTree = "<group>"; };
+		3ABE8A772296A2D800D3B01A /* CXSelectLanguagePathCellView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CXSelectLanguagePathCellView.m; sourceTree = "<group>"; };
 		3AC89D6520C4D3F0007C3FEB /* FDPredicateManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDPredicateManager.h; sourceTree = "<group>"; };
 		3AC89D6620C4D3F0007C3FEB /* FDPredicateManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FDPredicateManager.m; sourceTree = "<group>"; };
 		3AD135F820A041250098664E /* FDProjectFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDProjectFileManager.h; sourceTree = "<group>"; };
@@ -410,9 +418,14 @@
 				3A2C3BE520F8737A005A3BB1 /* FDMainExtendViewModel.m */,
 				3AD136C320A539690098664E /* FDMainDataViewModel.h */,
 				3AD136C420A539690098664E /* FDMainDataViewModel.m */,
-				3AD136B120A43C300098664E /* FDLanguagePopoverViewController.m */,
 				3AD136B020A43C300098664E /* FDLanguagePopoverViewController.h */,
+				3AD136B120A43C300098664E /* FDLanguagePopoverViewController.m */,
 				3AD136BB20A444FC0098664E /* FDLanguagePopoverViewController.xib */,
+				3ABE8A6D22958C4300D3B01A /* CXSelectLanguagePathView.h */,
+				3ABE8A6E22958C4300D3B01A /* CXSelectLanguagePathView.m */,
+				3ABE8A742295947400D3B01A /* CXSelectLanguagePathView.xib */,
+				3ABE8A762296A2D800D3B01A /* CXSelectLanguagePathCellView.h */,
+				3ABE8A772296A2D800D3B01A /* CXSelectLanguagePathCellView.m */,
 				3A16879120AACDA80042230A /* CXSliderRangeView.h */,
 				3A16879220AACDA80042230A /* CXSliderRangeView.m */,
 				3A16879420AACDC10042230A /* CXSliderRangeView.xib */,
@@ -535,6 +548,7 @@
 				3AD136BC20A444FC0098664E /* FDLanguagePopoverViewController.xib in Resources */,
 				82FBA3361D654DF7007AE170 /* Main.storyboard in Resources */,
 				3A16879520AACDC10042230A /* CXSliderRangeView.xib in Resources */,
+				3ABE8A752295947400D3B01A /* CXSelectLanguagePathView.xib in Resources */,
 				3ADB72962099D8B800946E67 /* Languages.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -552,6 +566,7 @@
 				3AC89D6720C4D3F0007C3FEB /* FDPredicateManager.m in Sources */,
 				3AD136B220A43C300098664E /* FDLanguagePopoverViewController.m in Sources */,
 				3A872CAA20CA37B200C9D67E /* MyCustomSegue.m in Sources */,
+				3ABE8A782296A2D800D3B01A /* CXSelectLanguagePathCellView.m in Sources */,
 				82FBA32E1D654DF7007AE170 /* main.m in Sources */,
 				3AD136C520A539690098664E /* FDMainDataViewModel.m in Sources */,
 				3A872CB320CA37FE00C9D67E /* MyCustomSwiftAnimator.swift in Sources */,
@@ -573,6 +588,7 @@
 				3A872C7E20CA35D300C9D67E /* FDSecondVC.m in Sources */,
 				3A16878020A98FD00042230A /* FDXMLFileManager.m in Sources */,
 				3ADB72832099C83900946E67 /* MPDragDropView.m in Sources */,
+				3ABE8A6F22958C4300D3B01A /* CXSelectLanguagePathView.m in Sources */,
 				3ADB72A2209C476200946E67 /* FDMainViewModel.m in Sources */,
 				3A3468FC21B6763C00EA6D85 /* FDCompareManager.m in Sources */,
 				3A16877A20A969120042230A /* FDWriteFile.m in Sources */,

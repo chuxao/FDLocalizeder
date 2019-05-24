@@ -12,7 +12,7 @@
 
 + (NSString *)getStringWithRegex:(NSString *)reg oriString:(NSString *)str
 {
-    NSString *url = str;//@"1229436624@qq.com";
+    NSString *url = str;
     NSError *error;
     // 创建NSRegularExpression对象并指定正则表达式  @"[^@]*\\."
     NSRegularExpression *regex = [NSRegularExpression
