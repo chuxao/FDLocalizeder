@@ -21,7 +21,7 @@ Localization language automatic import tool.
 
 #### 使用步骤：
 
- 1. 打开`FDLocalizeder`工程，分别将`xcodeproj`和`xlsx`格式的文件路径添加到`FDLocalizeder`中，这时界面上将出现`xcode`和`Excel`图标；
+ 1. 打开`FDLocalizeder`工程，分别将`xcodeproj/文件夹`和`xlsx`格式的文件或文件夹路径添加到`FDLocalizeder`中，这时界面上将出现`xcode`和`Excel`图标；
 
 2. 选择需要添加的语言以及要添加的位置；
 
