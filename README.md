@@ -1,9 +1,9 @@
-![](https://raw.githubusercontent.com/chuxiaojiajia/FDLocalizeder/master/.source/logo.png)
+![](https://raw.githubusercontent.com/xaoJa/FDLocalizeder/master/.source/logo.png)
 
 # FDLocalizeder
 Localization language automatic import tool.
 
-### [⛳️ 安装包下载点击这里 ⛳️](https://github.com/chuxiaojiajia/FDLocalizeder/releases)
+### [⛳️ 安装包下载点击这里 ⛳️](https://github.com/xaoJa/FDLocalizeder/releases)
 
 #### 【Instructions】
 * 支持本地化更新功能，相同code会覆盖
@@ -29,7 +29,7 @@ Localization language automatic import tool.
 
 4. 点击添加按钮`Click on add`进行添加操作。
 
-<img src="https://raw.githubusercontent.com/chuxiaojiajia/FDLocalizeder/master/.source/EAEC404C98DAECC6BB54A64924C24610.jpeg" width="600" alt="主页面"/>
+<img src="https://raw.githubusercontent.com/xaoJa/FDLocalizeder/master/.source/EAEC404C98DAECC6BB54A64924C24610.jpeg" width="600" alt="主页面"/>
 
 <br>
 
@@ -49,7 +49,7 @@ Localization language automatic import tool.
 
 6. 如果你不需要进行区域性添加，请取消掉勾选框，并`Confirm`。
 
-<img src="https://raw.githubusercontent.com/chuxiaojiajia/FDLocalizeder/master/.source/073331641B4BD2FC98D852E60121D341.png" width="600" alt=""/>
+<img src="https://raw.githubusercontent.com/xaoJa/FDLocalizeder/master/.source/073331641B4BD2FC98D852E60121D341.png" width="600" alt=""/>
 
 <br>
 
@@ -59,7 +59,7 @@ Localization language automatic import tool.
 
 Excel文档请保持如下格式：
 
-<img src="https://raw.githubusercontent.com/chuxiaojiajia/FDLocalizeder/master/.source/F1350746-FC3C-459F-AE0C-8D6CED517678.png" width="700" alt="FDLocalizeder_Excel模板"/>
+<img src="https://raw.githubusercontent.com/xaoJa/FDLocalizeder/master/.source/F1350746-FC3C-459F-AE0C-8D6CED517678.png" width="700" alt="FDLocalizeder_Excel模板"/>
 
 <br>
 
@@ -69,11 +69,11 @@ Excel文档请保持如下格式：
 
 在`LanguzgeBindFile.plist`里将`Excel`所出现的国家名都添加到对应的列表中，使用的时候只要国家名在这里出现过，都可以识别。
 
-<img src="https://raw.githubusercontent.com/chuxiaojiajia/FDLocalizeder/master/.source/3101550-8279e9d744ff28e1.png" width="600" alt=""/>
+<img src="https://raw.githubusercontent.com/xaoJa/FDLocalizeder/master/.source/3101550-8279e9d744ff28e1.png" width="600" alt=""/>
 
 #### 测试结果
 
-<img src="https://raw.githubusercontent.com/chuxiaojiajia/FDLocalizeder/master/.source/EBE063B8-002E-4B22-BA79-912F3D555B6C.png" width="800" alt=""/>
+<img src="https://raw.githubusercontent.com/xaoJa/FDLocalizeder/master/.source/EBE063B8-002E-4B22-BA79-912F3D555B6C.png" width="800" alt=""/>
 
 <br>
 
