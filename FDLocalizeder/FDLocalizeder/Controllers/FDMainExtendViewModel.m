@@ -40,6 +40,7 @@
     for (NSString *key in localKeys) {
         if ([codes containsObject:key]) {
             [inCodes addObject:key];
+            NSString *str = values[[codes indexOfObject:key]];
             [inValues addObject:values[[codes indexOfObject:key]]];
         }else {
             [nonInCodes addObject:key];

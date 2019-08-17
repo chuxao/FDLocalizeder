@@ -26,6 +26,7 @@
 
 @property (nonatomic, strong) NSDictionary *dicLanguagesPlist;
 @property (nonatomic, strong) NSDictionary *diclLanguageBindFile;
+@property (nonatomic, strong) NSDictionary *otherSetting;
 
 
 /**

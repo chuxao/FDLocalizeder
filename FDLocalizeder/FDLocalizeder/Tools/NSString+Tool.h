@@ -14,4 +14,6 @@
 + (NSString *)currentTimeStep;
 + (NSString *)timeFromTimeStepWithFormat:(NSString *)format;
 
+- (NSDictionary *)getLastRangeStrWithFindText:(NSString *)findText;
+
 @end

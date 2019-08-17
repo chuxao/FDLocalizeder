@@ -20,6 +20,7 @@
 		3A16879520AACDC10042230A /* CXSliderRangeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A16879420AACDC10042230A /* CXSliderRangeView.xib */; };
 		3A1687C420AAFD0A0042230A /* SCSelectionBorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1687C220AAFD090042230A /* SCSelectionBorder.m */; };
 		3A1687C720AAFD860042230A /* FDImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1687C620AAFD860042230A /* FDImageView.m */; };
+		3A28048C22BDF5AB0076F481 /* OtherSetting.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3A28048B22BDF5AB0076F481 /* OtherSetting.plist */; };
 		3A2C3BE620F8737B005A3BB1 /* FDMainExtendViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A2C3BE520F8737A005A3BB1 /* FDMainExtendViewModel.m */; };
 		3A3468FC21B6763C00EA6D85 /* FDCompareManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3468FB21B6763C00EA6D85 /* FDCompareManager.m */; };
 		3A86B55122856FE800FFF22F /* CXSpecialCharacterConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A86B55022856FE800FFF22F /* CXSpecialCharacterConversion.m */; };
@@ -126,6 +127,7 @@
 		3A1687C320AAFD0A0042230A /* SCSelectionBorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCSelectionBorder.h; sourceTree = "<group>"; };
 		3A1687C520AAFD860042230A /* FDImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDImageView.h; sourceTree = "<group>"; };
 		3A1687C620AAFD860042230A /* FDImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FDImageView.m; sourceTree = "<group>"; };
+		3A28048B22BDF5AB0076F481 /* OtherSetting.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = OtherSetting.plist; sourceTree = "<group>"; };
 		3A2C3BE420F8737A005A3BB1 /* FDMainExtendViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDMainExtendViewModel.h; sourceTree = "<group>"; };
 		3A2C3BE520F8737A005A3BB1 /* FDMainExtendViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FDMainExtendViewModel.m; sourceTree = "<group>"; };
 		3A3468FA21B6763C00EA6D85 /* FDCompareManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDCompareManager.h; sourceTree = "<group>"; };
@@ -231,6 +233,16 @@
 				3A1687C220AAFD090042230A /* SCSelectionBorder.m */,
 			);
 			path = SCSelectionBorder;
+			sourceTree = "<group>";
+		};
+		3A28048822BDD4520076F481 /* Macro */ = {
+			isa = PBXGroup;
+			children = (
+				3ADB72952099D8B800946E67 /* Languages.plist */,
+				3ADB72A320A02B9F00946E67 /* LanguageBindFile.plist */,
+				3A28048B22BDF5AB0076F481 /* OtherSetting.plist */,
+			);
+			path = Macro;
 			sourceTree = "<group>";
 		};
 		3A872CA420CA37A700C9D67E /* ObjC segues and animators */ = {
@@ -375,6 +387,7 @@
 		82FBA3281D654DF7007AE170 /* FDLocalizeder */ = {
 			isa = PBXGroup;
 			children = (
+				3A28048822BDD4520076F481 /* Macro */,
 				3ADB726A2099C78900946E67 /* XlsxReaderWriter.xcodeproj */,
 				82FBA3291D654DF7007AE170 /* AppDelegate.h */,
 				82FBA32A1D654DF7007AE170 /* AppDelegate.m */,
@@ -395,8 +408,6 @@
 				82FBA32D1D654DF7007AE170 /* main.m */,
 				82FBA3341D654DF7007AE170 /* Main.storyboard */,
 				82FBA3371D654DF7007AE170 /* Info.plist */,
-				3ADB72952099D8B800946E67 /* Languages.plist */,
-				3ADB72A320A02B9F00946E67 /* LanguageBindFile.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -547,6 +558,7 @@
 				3ADB72A420A02B9F00946E67 /* LanguageBindFile.plist in Resources */,
 				3AD136BC20A444FC0098664E /* FDLanguagePopoverViewController.xib in Resources */,
 				82FBA3361D654DF7007AE170 /* Main.storyboard in Resources */,
+				3A28048C22BDF5AB0076F481 /* OtherSetting.plist in Resources */,
 				3A16879520AACDC10042230A /* CXSliderRangeView.xib in Resources */,
 				3ABE8A752295947400D3B01A /* CXSelectLanguagePathView.xib in Resources */,
 				3ADB72962099D8B800946E67 /* Languages.plist in Resources */,
@@ -732,7 +744,7 @@
 				MACH_O_TYPE = mh_execute;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-all_load";
-				PRODUCT_BUNDLE_IDENTIFIER = com.mob.FDLocalizeder;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cx.fdlocalizeder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = macosx;
@@ -766,7 +778,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACH_O_TYPE = mh_execute;
 				OTHER_LDFLAGS = "-all_load";
-				PRODUCT_BUNDLE_IDENTIFIER = com.mob.FDLocalizeder;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cx.fdlocalizeder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = macosx;

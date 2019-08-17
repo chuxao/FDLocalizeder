@@ -37,7 +37,7 @@ static dispatch_queue_t _concurrentQueue;
 {
     __block NSString *tempStrConsole;
     dispatch_sync(_concurrentQueue, ^{
-        tempStrConsole = _strConsole;
+        tempStrConsole = self.strConsole;
     });
     return tempStrConsole;
 }
@@ -45,7 +45,8 @@ static dispatch_queue_t _concurrentQueue;
 - (void)setStrConsole:(NSString *)strConsole
 {
     dispatch_barrier_async(_concurrentQueue, ^{
-        _mstrConsole = [strConsole copy];
+        self.mstrConsole = [strConsole copy];
+//        [self.mainVM.mainVC.tipText performSelectorOnMainThread:@selector(setString:) withObject:strConsole waitUntilDone:YES];
         dispatch_async(dispatch_get_main_queue(), ^{
             self.mainVM.mainVC.tipText.string = strConsole;
         });

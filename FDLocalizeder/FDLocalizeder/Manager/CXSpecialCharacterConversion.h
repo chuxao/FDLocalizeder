@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSString *)replaceSpecialCharacters:(NSString *)string;
 
++ (NSString *)replaceSpecialCharacters2:(NSString *)string;
+
 + (NSString *)replaceSpecialCharactersForRegex:(NSString *)string;
 
 

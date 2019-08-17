@@ -32,7 +32,7 @@ typedef NS_ENUM(NSInteger , CXInteractionType)
 
 @property (nonatomic, strong) CXConsoleViewModel *consoleVM;
 
-@property (nonatomic, strong) NSMutableString *tipString;
+@property (strong) NSMutableString *tipString;
 
 
 // 加锁操作
@@ -44,6 +44,8 @@ typedef NS_ENUM(NSInteger , CXInteractionType)
 
 // 正在添加中。。。
 @property (assign, nonatomic) BOOL isAdding;
+
+@property (nonatomic) dispatch_queue_t setTipTextQueue;
 
 @end
 
@@ -77,6 +79,8 @@ typedef NS_ENUM(NSInteger , CXInteractionType)
         dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
         
     });
+    
+    self.setTipTextQueue = dispatch_queue_create("FDLOCALIZEDER_SETTIPTXTQUEUE", DISPATCH_QUEUE_CONCURRENT);
 }
 
 - (void)transformDicLanguagesWithValueArray:(NSArray *)values
@@ -109,9 +113,9 @@ typedef NS_ENUM(NSInteger , CXInteractionType)
     NSMutableArray *languages = arrValues.mutableCopy;
     
     if ([self _needAddBase]) {
-        NSString *en = @"en";
+        NSString *en = self.otherSetting[@"DevelopmentLanguage"];
         en = [self bindFileWithArray:arrValues key:en];
-        
+
         if ([arrValues containsObject:en]) {
             [languages addObject:@"Base"];
         }
@@ -126,9 +130,9 @@ typedef NS_ENUM(NSInteger , CXInteractionType)
     NSMutableArray *languages_2 = languages.mutableCopy;
     
     if ([self _needAddBase]) {
-        NSString *en = @"en";
+        NSString *en = self.otherSetting[@"DevelopmentLanguage"];
         en = [self bindFileWithArray:languages key:en];
-        
+
         if ([languages containsObject:en]) {
             [languages_2 addObject:@"Base"];
         }
@@ -186,10 +190,10 @@ typedef NS_ENUM(NSInteger , CXInteractionType)
     [self _dataFactoryWithLanguages:nil language:language codes:codes values:values interactionType:(CXInteractionTypeAdd)];
     
     if ([self _needAddBase]) {
-        NSString *en = @"en";
+        NSString *en = self.otherSetting[@"DevelopmentLanguage"];
         en = [self bindFileForKey:en value:language];
-        
-        if ([language isEqualToString:en]) {
+
+        if ([[language lowercaseString] isEqualToString:[en lowercaseString]]) {
             [self parseFileWithLanguage:@"Base" codes:codes values:values];
         }
     }
@@ -323,7 +327,7 @@ typedef NS_ENUM(NSInteger , CXInteractionType)
         else {
             self.addLanguageCount ++;
             canBeAdd = YES;
-            
+            NSLog(@"OOOOOOOOO %@",language);
             [[FDDataManager share] writeToFileQueue:filePath
                                               codes:codes
                                              values:values
@@ -338,6 +342,7 @@ typedef NS_ENUM(NSInteger , CXInteractionType)
                                                      self.isAdding = NO;
                                                      dispatch_async(dispatch_get_main_queue(), ^{
                                                          self.mainVC.addLocalizeButton.enabled = YES;
+                                                         self.consoleVM.strConsole = [NSString stringWithFormat:@"%@\n All Language Is Added",self.mainVC.tipText.string];
                                                      });
                                                      
                                                      dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
@@ -434,8 +439,8 @@ typedef NS_ENUM(NSInteger , CXInteractionType)
 - (NSDictionary *)_addBaseValues:(NSDictionary *)dicValues
 {
     NSMutableDictionary *mdic = dicValues.mutableCopy;
-    if (dicValues[@"en"]) {
-        [mdic setObject:dicValues[@"en"] forKey:@"Base"];
+    if (dicValues[self.otherSetting[@"DevelopmentLanguage"]]) {
+        [mdic setObject:dicValues[self.otherSetting[@"DevelopmentLanguage"]] forKey:@"Base"];
     }
     
     return mdic.copy;
@@ -451,8 +456,10 @@ typedef NS_ENUM(NSInteger , CXInteractionType)
         }
         
         if (result) {
-            self.consoleVM.strConsole = [NSString stringWithFormat:@"%@\n【%@】Add Success",self.mainVC.tipText.string, language];
-//            self.mainVC.tipText.string = [NSString stringWithFormat:@"%@\n【%@】Add Success",self.mainVC.tipText.string, language];
+//            self.consoleVM.strConsole = [NSString stringWithFormat:@"%@\n【%@】Add Success",self.mainVC.tipText.string, language];
+            NSLog(@" %@",language);
+            self.mainVC.tipText.string = [NSString stringWithFormat:@"%@\n【%@】Add Success",self.mainVC.tipText.string, language];
+//            [self.mainVC.tipText performSelectorOnMainThread:@selector(setString:) withObject:[NSString stringWithFormat:@"%@\n【%@】Add Success",self.mainVC.tipText.string, language] waitUntilDone:YES];
         }
         else {
             self.consoleVM.strConsole = [NSString stringWithFormat:@"%@\n- ---- ---- ---- ---- 【%@】Unadded",self.mainVC.tipText.string, language];
@@ -713,6 +720,7 @@ typedef NS_ENUM(NSInteger , CXInteractionType)
 {
     [self _setLanguagesPlist];
     [self _setLanguageBindFilePlist];
+    [self _setOtherSetting];
 }
 
 - (void)_setLanguagesPlist
@@ -735,6 +743,13 @@ typedef NS_ENUM(NSInteger , CXInteractionType)
     NSString *path2 = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"LanguageBindFile.plist"];
     NSDictionary *dic2 = [[NSMutableDictionary alloc] initWithContentsOfFile:path2];
     self.diclLanguageBindFile = dic2;
+}
+
+- (void)_setOtherSetting
+{
+    NSString *path = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"OtherSetting.plist"];
+    NSDictionary *dic = [[NSMutableDictionary alloc] initWithContentsOfFile:path];
+    self.otherSetting = dic;
 }
 
 - (NSMutableArray *)marrLanguagePaths

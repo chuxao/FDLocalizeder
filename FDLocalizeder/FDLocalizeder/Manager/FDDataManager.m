@@ -10,6 +10,7 @@
 #import "FDCompareManager.h"
 #import "CXSpecialCharacterConversion.h"
 #import "CXRegexHelper.h"
+#import "NSString+Tool.h"
 
 @implementation FDDataManager
 
@@ -44,33 +45,43 @@
         NSData *fileData = [NSData dataWithContentsOfFile:filePath];
         
         NSString *contentOri = [[NSString alloc] initWithData:fileData encoding:NSUTF8StringEncoding];//[NSString stringWithContentsOfFile:filePath encoding:kCFStringEncodingUTF8 error:nil];
+        //        contentOri = [CXSpecialCharacterConversion replaceSpecialCharacters:contentOri];
         
         NSArray *existAllKeys = [existingCode allKeys];
-//        NSUInteger locationPadding = 0;
+        //        NSUInteger locationPadding = 0;
         
         for (NSString *key in existAllKeys) {
             NSString *valueOri = dicContent[key];
-            valueOri = [NSString stringWithFormat:@"\"%@\"", [CXSpecialCharacterConversion replaceSpecialCharacters:valueOri]];
+            NSString *valueOri_1 = [NSString stringWithFormat:@"\"%@\"", [CXSpecialCharacterConversion replaceSpecialCharacters:valueOri]];
+            NSString *valueOri_2 = [NSString stringWithFormat:@"\"%@\"", [CXSpecialCharacterConversion replaceSpecialCharacters2:valueOri]];
             
             NSString *valueNow = existingCode[key];
             valueNow = [NSString stringWithFormat:@"\"%@\"", [CXSpecialCharacterConversion replaceSpecialCharacters:valueNow]];
             
-            NSRange range = [contentOri rangeOfString:valueOri];
+            if ([contentOri rangeOfString:valueOri_1].location !=NSNotFound) {
+                valueOri = valueOri_1;
+            }else {
+                valueOri = valueOri_2;
+            }
+            
+//            NSRange range = [contentOri rangeOfString:valueOri];
+            NSDictionary *dicRange = [contentOri getLastRangeStrWithFindText:valueOri];
+            NSRange range = NSMakeRange([dicRange[@"location"] integerValue], [dicRange[@"length"] integerValue]);
             
             if (range.length == 0) {
                 NSLog(@"0000000000000002  %@ \n ======%@ =====",valueOri, contentOri);
             }
-//            if (range.length)
-                contentOri = [contentOri stringByReplacingCharactersInRange:range withString:valueNow];
+            //            if (range.length)
+            contentOri = [contentOri stringByReplacingCharactersInRange:range withString:valueNow];
             
             
-//            long location = [existingCode[key][@"location"] integerValue] + locationPadding;
-//            NSUInteger length = [existingCode[key][@"length"] integerValue];
-//            NSRange range = NSMakeRange(location+1, length-2);
-//            contentOri = [contentOri stringByReplacingCharactersInRange:range withString:
-//                       key];
+            //            long location = [existingCode[key][@"location"] integerValue] + locationPadding;
+            //            NSUInteger length = [existingCode[key][@"length"] integerValue];
+            //            NSRange range = NSMakeRange(location+1, length-2);
+            //            contentOri = [contentOri stringByReplacingCharactersInRange:range withString:
+            //                       key];
             
-//            locationPadding = locationPadding + key.length + 2 - length;
+            //            locationPadding = locationPadding + key.length + 2 - length;
         }
         
         NSError *error;

@@ -46,5 +46,7 @@
 	<string>th</string>
 	<key>Chinese(Traditional)</key>
 	<string>zh-Hant</string>
+	<key>Japanese(ja)</key>
+	<string>ja</string>
 </dict>
 </plist>

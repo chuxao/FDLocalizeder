@@ -18,7 +18,7 @@ NSInteger Code_Horizontal = 2;
 
 
 char MaxRight = 'Z';
-NSInteger MaxBotton = 1000;
+NSInteger MaxBotton = 2000;
 
 
 @interface FDFileManager()
@@ -276,7 +276,7 @@ NSInteger MaxBotton = 1000;
             if (verticalRow != Code_Vertical) {
                 // 获取一排内容
                 NSArray *arrayContents = [xmlManager parsFileVertical:verticalRow top:horizontalRow bottom:row_bottom limit:isLimit];
-                
+                NSLog(@"=================   %i",arrayContents.count);
                 if (!arrayContents.count) {
                     if ([fileManager.delegate respondsToSelector:@selector(parseFinish)]) {
                         [fileManager.delegate parseFinish];
@@ -300,6 +300,7 @@ NSInteger MaxBotton = 1000;
             verticalRow ++;
         }
         
+        NSLog(@"已删除");
         // 循环结束后删除临时文件
         [fileManager.fileManager removeItemAtPath:fileManager.localFile error:nil];
         
@@ -471,11 +472,12 @@ NSInteger MaxBotton = 1000;
         NSArray *arguments = @[@"-R",
                                path,
                                doc];
+        NSLog(@"0000  %@",arguments);
         [MPTask runTaskWithLanunchPath:CMD_CP arguments:arguments currentDirectoryPath:nil onSuccess:^(NSString *captureString) {
-            
+            NSLog(@"1111");
             success(doc);
         } onException:^(NSException *exception) {
-            
+            NSLog(@"2222");
             onException(exception);
         }];
         

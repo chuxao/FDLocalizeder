@@ -20,6 +20,16 @@
     return s5;
 }
 
++ (NSString *)replaceSpecialCharacters2:(NSString *)string
+{
+    NSString *s1 = [string stringByReplacingOccurrencesOfString:@"\\" withString:@"\\\\"];
+    NSString *s2 = [s1 stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
+    NSString *s3 = [s2 stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+//    NSString *s4 = [s3 stringByReplacingOccurrencesOfString:@"\'" withString:@"\\\'"];
+    NSString *s5 = [s3 stringByReplacingOccurrencesOfString:@"%" withString:@"\%"];
+    return s5;
+}
+
 //+ (NSString *)replaceSpecialCharacters:(NSString *)string
 //{
 //    NSString *s1 = [string stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
