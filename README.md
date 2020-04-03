@@ -6,12 +6,21 @@ Localization language automatic import tool.
 ### [⛳️ 安装包下载点击这里 ⛳️](https://github.com/xaochua/FDLocalizeder/releases)
 
 #### 【Instructions】
-* 支持本地化更新功能，相同code会覆盖
-* 支持文件夹添加识别功能
+所有功能如下:
+
+* Excel一键导入xcode工程
+* xcode本地化分类导出至Excel
+* 删除指定语言
+* 本地语言多文件一键注释
+* 本地化更新功能，相同code会覆盖
+* 本地多语言包动态选择
 * 非法语言路径过滤
-* 语言比较、语言比较添加更加完善
-* 支持本地语言到Excel的映射，支持指定code映射
-* 支持本地语言路径动态选择
+* 语言比较，查找遗漏本地化
+* 根据任一语言code添加新语言，并按母文件顺序排序
+* 单语言，不定数语言添加，Excel指定范围添加
+* 指定特定code导出语言包
+* 版本暂存和回退
+* 产品支持功能:Excel转义生成新的Excel文件
 
 ## FDLocalizeder 使用说明
 
