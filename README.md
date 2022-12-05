@@ -38,7 +38,7 @@ Localization language automatic import tool.
 
 4. 点击添加按钮`Click on add`进行添加操作。
 
-<img src="https://imgse.com/i/zyVfFU" width="600" alt="主页面"/>
+[![zyVfFU.md.jpg](https://s1.ax1x.com/2022/12/05/zyVfFU.md.jpg)](https://imgse.com/i/zyVfFU)
 
 <br>
 
@@ -58,7 +58,7 @@ Localization language automatic import tool.
 
 6. 如果你不需要进行区域性添加，请取消掉勾选框，并`Confirm`。
 
-[![zyVfFU.jpg](https://s1.ax1x.com/2022/12/05/zyVfFU.jpg)](https://imgse.com/i/zyVfFU)
+
 <img src="https://raw.githubusercontent.com/chuxao/FDLocalizeder/master/.source/073331641B4BD2FC98D852E60121D341.png" width="600" alt=""/>
 
 <br>
