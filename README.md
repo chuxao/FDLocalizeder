@@ -38,7 +38,7 @@ Localization language automatic import tool.
 
 4. 点击添加按钮`Click on add`进行添加操作。
 
-<img src="https://raw.githubusercontent.com/xaochua/FDLocalizeder/master/.source/EAEC404C98DAECC6BB54A64924C24610.jpeg" width="600" alt="主页面"/>
+<img src="https://imgse.com/i/zyVfFU" width="600" alt="主页面"/>
 
 <br>
 
