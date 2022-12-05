@@ -58,7 +58,7 @@ Localization language automatic import tool.
 
 6. 如果你不需要进行区域性添加，请取消掉勾选框，并`Confirm`。
 
-<img src="https://raw.githubusercontent.com/xaochua/FDLocalizeder/master/.source/073331641B4BD2FC98D852E60121D341.png" width="600" alt=""/>
+<img src="https://raw.githubusercontent.com/chuxao/FDLocalizeder/master/.source/073331641B4BD2FC98D852E60121D341.png" width="600" alt=""/>
 
 <br>
 
@@ -68,7 +68,7 @@ Localization language automatic import tool.
 
 Excel文档请保持如下格式：
 
-<img src="https://raw.githubusercontent.com/xaochua/FDLocalizeder/master/.source/F1350746-FC3C-459F-AE0C-8D6CED517678.png" width="700" alt="FDLocalizeder_Excel模板"/>
+<img src="https://raw.githubusercontent.com/chuxao/FDLocalizeder/master/.source/F1350746-FC3C-459F-AE0C-8D6CED517678.png" width="700" alt="FDLocalizeder_Excel模板"/>
 
 <br>
 
