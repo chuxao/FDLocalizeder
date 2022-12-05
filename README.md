@@ -58,7 +58,7 @@ Localization language automatic import tool.
 
 6. 如果你不需要进行区域性添加，请取消掉勾选框，并`Confirm`。
 
-
+[![zyV4W4.md.png](https://s1.ax1x.com/2022/12/05/zyV4W4.md.png)](https://imgse.com/i/zyV4W4)
 <img src="https://raw.githubusercontent.com/chuxao/FDLocalizeder/master/.source/073331641B4BD2FC98D852E60121D341.png" width="600" alt=""/>
 
 <br>
@@ -69,6 +69,7 @@ Localization language automatic import tool.
 
 Excel文档请保持如下格式：
 
+[![zyVRoT.md.png](https://s1.ax1x.com/2022/12/05/zyVRoT.md.png)](https://imgse.com/i/zyVRoT)
 <img src="https://raw.githubusercontent.com/chuxao/FDLocalizeder/master/.source/F1350746-FC3C-459F-AE0C-8D6CED517678.png" width="700" alt="FDLocalizeder_Excel模板"/>
 
 <br>
@@ -79,10 +80,12 @@ Excel文档请保持如下格式：
 
 在`LanguzgeBindFile.plist`里将`Excel`所出现的国家名都添加到对应的列表中，使用的时候只要国家名在这里出现过，都可以识别。
 
+[![zyV2wV.md.png](https://s1.ax1x.com/2022/12/05/zyV2wV.md.png)](https://imgse.com/i/zyV2wV)
 <img src="https://raw.githubusercontent.com/xaochua/FDLocalizeder/master/.source/3101550-8279e9d744ff28e1.png" width="600" alt=""/>
 
 #### 测试结果
 
+[![zyVhYF.png](https://s1.ax1x.com/2022/12/05/zyVhYF.png)](https://imgse.com/i/zyVhYF)
 <img src="https://raw.githubusercontent.com/xaochua/FDLocalizeder/master/.source/EBE063B8-002E-4B22-BA79-912F3D555B6C.png" width="800" alt=""/>
 
 <br>
